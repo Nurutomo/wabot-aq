@@ -14,7 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "@adiwajshing/baileys": "^3.3.2",
-    "file-type": "^16.0.1",
+    "file-type": "^16.1.0",
+    "node-fetch": "^2.6.1",
+    "qrcode": "^1.4.4",
     "syntax-error": "^1.4.0",
     "yargs": "^16.2.0"
   }
