@@ -1,0 +1,21 @@
+{
+  "name": "wabot-aq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@adiwajshing/baileys": "^3.3.2",
+    "file-type": "^16.0.1",
+    "syntax-error": "^1.4.0",
+    "yargs": "^16.2.0"
+  }
+}
