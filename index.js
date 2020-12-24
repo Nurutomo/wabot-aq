@@ -28,7 +28,7 @@ conn.on('message-new', async m => {
     let _prefix = plugin.customPrefix ? plugin.customPrefix : prefix
 	  if ((usedPrefix = (_prefix.exec(m.text) || '')[0])) {
 		  let args = m.text.replace(usedPrefix, '').split` `.filter(v=>v)
-		  let command = args.shift().toLowerCase()
+		  let command = (args.shift() || '').toLowerCase()
       let isOwner = m.fromMe
       let isMods = isOwner || global.mods.includes(m.sender)
       let isPrems = isMods || global.prems.includes(m.sender)
@@ -68,14 +68,14 @@ global.mods = []
 global.prems = []
 
 function printMsg(m) {
-  let sender = conn.getName(m.sender)
+  let sender = conn.getName(m.sender) || m.messageStubParameters.map(v => v.split('@')[0] + (conn.getName(v) ? ' ~' + conn.getName(v) : '')).join(' & ')
   let chat = conn.getName(m.chat)
   let ansi = '\x1b]'
   console.log(
     '(%s) %s\n[%s] to [%s] <%s>%s\n',
     (m.messageTimestamp ? new Date(1000 * (m.messageTimestamp.low || m.messageTimestamp)) : new Date()).toTimeString(),
     m.messageStubType ? WA_MESSAGE_STUB_TYPES[m.messageStubType] : '',
-    m.sender.split('@')[0] + (sender ? ' ~' + sender : ''),
+    m.messageStubParameters.lengths ? sender : m.sender.split('@')[0] + (sender ? ' ~' + sender : ''),
     m.chat + (chat ? ' ~' + chat : ''),
     m.mtype ? m.mtype.replace(/message$/i, '') : '',
     typeof m.text == 'string' ? '\n' + m.text

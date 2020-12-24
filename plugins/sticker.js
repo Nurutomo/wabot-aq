@@ -1,8 +1,11 @@
-let fetch = require('node-fetch')
+const fetch = require('node-fetch')
+const FormData = require('form-data')
 
 let handler  = async m => {
-  if (/image/.test(m.mtype)) {
-    let img = await conn.downloadM(m)
+  let q = m.quoted ? { message: { [m.quoted.mtype]: m.quoted }} : m
+  if (/image/.test((m.quoted ? m.quoted : m).mtype)) {
+    let img = await conn.downloadM(q)
+    if (!img) throw img
     let stiker = await sticker(img)
     conn.sendMessage(m.chat, stiker, MessageType.sticker, {
       quoted: m
