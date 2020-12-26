@@ -7,6 +7,7 @@ else global.conns = []
 
 let handler  = async (m, { conn }) => {
   if (global.conn.user.jid == conn.user.jid) {
+    let id = global.conns.length
     let conn = new WAConnection()
     conn.on('qr', async qr => {
       global.conn.sendFile(m.chat, await qrcode.toDataURL(qr, { scale: 8 }), 'qrcode.png', 'Scan QR ini untuk jadi bot sementara\n\n1. Klik titik tiga di pojok kanan atas\n2. Ketuk WhatsApp Web\n3. Scan QR ini \nQR Expired dalam 20 detik',m)
@@ -15,7 +16,11 @@ let handler  = async (m, { conn }) => {
     conn.on('message-new', global.conn.handler)
     conn.regenerateQRIntervalMs = null
     conn.connect()
-    setTimeout()
+    setTimeout(() => {
+      if (conn.user) return
+      conn.close()
+      delete glonal.conns[id]
+    }, 60000)
     global.conns.push(conn)
   } else conn.reply(m.chat, 'Tidak bisa membuat bot didalam bot!', m)
 }
