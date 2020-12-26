@@ -1,6 +1,6 @@
 let qrcode = require("qrcode")
 
-let handler  = async (m, { args }) => {
+let handler  = async (m, { conn, args }) => {
   conn.sendFile(m.chat, await qrcode.toDataURL(args.join(' '), { scale: 8 }), 'qrcode.png', '¯\\_(ツ)_/¯', m)
 }
 handler.command = /^qr$/i

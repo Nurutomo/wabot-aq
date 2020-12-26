@@ -1,7 +1,7 @@
 let syntaxerror = require('syntax-error')
 let util = require('util')
 
-let handler  = async (m, { usedPrefix }) => {
+let handler  = async (m, { conn, usedPrefix }) => {
   let _return
   let _syntax = ''
   try {

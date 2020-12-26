@@ -1,7 +1,8 @@
 const fetch = require('node-fetch')
 const FormData = require('form-data')
+const { MessageType } = require('@adiwajshing/baileys')
 
-let handler  = async m => {
+let handler  = async (m, { conn }) => {
   let q = m.quoted ? { message: { [m.quoted.mtype]: m.quoted }} : m
   if (/image/.test((m.quoted ? m.quoted : m).mtype)) {
     let img = await conn.downloadM(q)

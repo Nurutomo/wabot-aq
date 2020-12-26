@@ -1,10 +1,14 @@
-let handler  = async (m, { usedPrefix: _p }) => {
+let handler  = async (m, { conn, usedPrefix: _p }) => {
   conn.reply(m.chat, `
 ∆ Menu ∆
 ${_p}menu
 ${_p}qr <teks>
-${_p}stiker (kadang rusak)
+${_p}stiker (caption)
 
+Experimental:
+${_p}jadibot
+
+Advanced:
 > return 'javascript eval ' + m.sender
 `.trim(), m)
 }
