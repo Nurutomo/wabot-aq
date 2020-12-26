@@ -19,7 +19,7 @@ let handler  = async (m, { conn }) => {
     setTimeout(() => {
       if (conn.user) return
       conn.close()
-      delete glonal.conns[id]
+      delete global.conns[id]
     }, 60000)
     global.conns.push(conn)
   } else conn.reply(m.chat, 'Tidak bisa membuat bot didalam bot!', m)
