@@ -5,11 +5,11 @@ let handler  = async (m, { conn, usedPrefix }) => {
   let _return
   let _syntax = ''
   try {
-    let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', m.text.replace(/^> /, ''))
+    let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', m.text.replace(/^> /, ''))
     _return = await exec((...args) => {
       console.log(...args)
       conn.reply(m.chat, util.format(...args), m)
-    }, m, handler, require)
+    }, m, handler, require, conn)
   } catch (e) {
     let err = await syntaxerror(m.text.replace(/^> /, ''))
     if (err) _syntax = '```' + err + '```\n\n'

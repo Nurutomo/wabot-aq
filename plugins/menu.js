@@ -5,8 +5,16 @@ ${_p}menu
 ${_p}qr <teks>
 ${_p}stiker (caption)
 
+Group:
+${_p}add nomor1,nomor2,dst
+${_p}kick @mention
+${_p}promote @mention
+${_p}demote @mention
+${_p}linkgrup
+${_p}pengumuman <teks>
+
 Experimental:
-${_p}jadibot
+${_p}jadibot [kode login jika ada / kosongin]
 
 Advanced:
 > return 'javascript eval ' + m.sender
