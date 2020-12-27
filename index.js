@@ -17,8 +17,8 @@ fs.existsSync(authFile) && conn.loadAuthInfo(authFile)
 opts['big-qr'] && conn.on('qr', qr => generate(qr, { small: false }))
 conn.on('credentials-updated', () => fs.writeFileSync(authFile, JSON.stringify(conn.base64EncodedAuthInfo())))
 
-conn.on('message-new', async m => {
-	simple.smsg(conn, m)
+conn.handler = async function (m) {
+	simple.smsg(this, m)
   printMsg(m)
   if (!m.text) return
 	let usedPrefix
@@ -30,39 +30,52 @@ conn.on('message-new', async m => {
 		  let args = m.text.replace(usedPrefix, '').split` `.filter(v=>v)
 		  let command = (args.shift() || '').toLowerCase()
       let isOwner = m.fromMe
-      let isMods = isOwner || global.mods.includes(m.sender)
-      let isPrems = isMods || global.prems.includes(m.sender)
-      let fail = plugin.fail || global.dfail
-      if (plugin.owner && !isOwner) {
-        fail('owner', m)
-        continue
-      }
-      if (plugin.mods && !isMods) {
-        fail('mods', m)
-        continue
-      }
-      if (plugin.premium && !isPrems) {
-        fail('premium', m)
-        continue
-      }
-			if (plugin.group && !m.isGroup) {
-        fail('group', m)
-        continue
-      }
-			if (plugin.private && m.isGroup) {
-        fail('private', m)
-        continue
-      }
 			let isAccept = plugin.command instanceof RegExp ? plugin.command.test(command) :
       plugin.command instanceof Array ? plugin.command.includes(command) :
       plugin.command instanceof String ? plugin.command == command : false
 			if (!isAccept) continue
+      let isMods = isOwner || global.mods.includes(m.sender)
+      let isPrems = isMods || global.prems.includes(m.sender)
+      let participants = m.isGroup ? (await this.groupMetadata(m.chat)).participants : []
+      let user = m.isGroup ? participants.filter(u => u.jid == m.sender)[0] : {}
+      let bot = m.isGroup ? participants.filter(u => u.jid == this.user.jid)[0] : {}
+      let isAdmin = user.isAdmin || user.isSuperAdmin || false
+      let isBotAdmin = bot.isAdmin || bot.isSuperAdmin || false
+      let fail = plugin.fail || global.dfail
+      if (plugin.owner && !isOwner) {
+        fail('owner', m, this)
+        continue
+      }
+      if (plugin.mods && !isMods) {
+        fail('mods', m, this)
+        continue
+      }
+      if (plugin.premium && !isPrems) {
+        fail('premium', m, this)
+        continue
+      }
+			if (plugin.group && !m.isGroup) {
+        fail('group', m, this)
+        continue
+      } else if (plugin.botAdmin && !isBotAdmin) {
+        fail('botAdmin', m, this)
+        continue
+      } else if (plugin.admin && !isAdmin) {
+        fail('admin', m, this)
+        continue
+      }
+			if (plugin.private && m.isGroup) {
+        fail('private', m, this)
+        continue
+      }
       
-      plugin(m, { usedPrefix, args, command }).catch(e => conn.reply(m.chat, util.format(e), m))
+      plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
 			break
 		}
 	} 
-})
+}
+
+conn.on('message-new', conn.handler) 
 
 global.mods = []
 global.prems = []
@@ -87,7 +100,7 @@ function printMsg(m) {
   )
 }
 
-global.dfail = (type, m) => {
+global.dfail = (type, m, conn) => {
   let msg = {
     owner: 'Perintah ini hanya dapat digunakan oleh Owner Nomor!',
     mods: 'Perintah ini hanya dapat digunakan oleh Moderator!',
