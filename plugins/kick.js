@@ -1,6 +1,7 @@
 let handler = async (m, { conn, args }) => {
-  let users = m.mentionedJid
-  conn.groupRemove(m.chat, users)
+  let ownerGroup = m.chat.replace(/\-+/, '')
+  let users = m.mentionedJid.filter(u => u.includes(ownerGroup))
+  for (let user of users) await conn.groupRemove(m.chat, [user])
 }
 handler.command = /^(kick|\-)$/i
 handler.owner = false
