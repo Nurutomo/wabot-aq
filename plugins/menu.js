@@ -4,6 +4,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
 ${_p}menu
 ${_p}qr <teks>
 ${_p}stiker (caption)
+${_p}bucin
 
 Group:
 ${_p}add nomor1,nomor2,dst
@@ -12,6 +13,7 @@ ${_p}promote @mention
 ${_p}demote @mention
 ${_p}linkgrup
 ${_p}pengumuman <teks>
+${_p}listonline [groupid]
 
 Experimental:
 ${_p}jadibot [kode login jika ada / kosongin]
