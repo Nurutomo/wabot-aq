@@ -5,11 +5,11 @@ let handler  = async (m, { conn, usedPrefix }) => {
   let _return
   let _syntax = ''
   try {
-    let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', m.text.replace(/^> /, ''))
+    let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', m.text.replace(/^> /, ''))
     _return = await exec((...args) => {
       console.log(...args)
       conn.reply(m.chat, util.format(...args), m)
-    }, m, handler, require, conn)
+    }, m, handler, require, conn, CustomArray, {...process, exit: function exit() { return ':P' }})
   } catch (e) {
     let err = await syntaxerror(m.text.replace(/^> /, ''))
     if (err) _syntax = '```' + err + '```\n\n'
@@ -33,3 +33,9 @@ handler.fail = null
 
 module.exports = handler
 
+class CustomArray extends Array {
+  constructor(...args) {
+    if (typeof args[0] == 'number') return super(Math.min(args[0], 10000))
+    else return super(...args)
+  }
+}

@@ -3,6 +3,7 @@ let { generate } = require('qrcode-terminal')
 let simple = require('./lib/simple')
 let yargs = require('yargs/yargs')
 let syntaxerror = require('syntax-error')
+let chalk = require('chalk')
 let fs = require('fs')
 let path = require('path')
 let util = require('util')
@@ -10,7 +11,7 @@ let WAConnection = simple.WAConnection(_WAConnection)
 global.conn = new WAConnection()
 
 let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
-let prefix = new RegExp('^[' + (opts['prefix'] || '!#$%.') + ']')
+let prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%.') + ']')
 
 let authFile = `${opts._[0] || 'session'}.data.json`
 fs.existsSync(authFile) && conn.loadAuthInfo(authFile)
@@ -18,87 +19,76 @@ opts['big-qr'] && conn.on('qr', qr => generate(qr, { small: false }))
 conn.on('credentials-updated', () => fs.writeFileSync(authFile, JSON.stringify(conn.base64EncodedAuthInfo())))
 
 conn.handler = async function (m) {
-	simple.smsg(this, m)
-  printMsg(m)
-  if (!m.text) return
-	let usedPrefix
-	for (let name in global.plugins) {
-	  let plugin = global.plugins[name]
-    if (!plugin) continue
-    let _prefix = plugin.customPrefix ? plugin.customPrefix : prefix
-	  if ((usedPrefix = (_prefix.exec(m.text) || '')[0])) {
-		  let args = m.text.replace(usedPrefix, '').split` `.filter(v=>v)
-		  let command = (args.shift() || '').toLowerCase()
-      let isOwner = m.fromMe
-			let isAccept = plugin.command instanceof RegExp ? plugin.command.test(command) :
-      plugin.command instanceof Array ? plugin.command.includes(command) :
-      plugin.command instanceof String ? plugin.command == command : false
-			if (!isAccept) continue
-      let isMods = isOwner || global.mods.includes(m.sender)
-      let isPrems = isMods || global.prems.includes(m.sender)
-      let participants = m.isGroup ? (await this.groupMetadata(m.chat)).participants : []
-      let user = m.isGroup ? participants.filter(u => u.jid == m.sender)[0] : {}
-      let bot = m.isGroup ? participants.filter(u => u.jid == this.user.jid)[0] : {}
-      let isAdmin = user.isAdmin || user.isSuperAdmin || false
-      let isBotAdmin = bot.isAdmin || bot.isSuperAdmin || false
-      let fail = plugin.fail || global.dfail
-      if (plugin.owner && !isOwner) {
-        fail('owner', m, this)
-        continue
-      }
-      if (plugin.mods && !isMods) {
-        fail('mods', m, this)
-        continue
-      }
-      if (plugin.premium && !isPrems) {
-        fail('premium', m, this)
-        continue
-      }
-			if (plugin.group && !m.isGroup) {
-        fail('group', m, this)
-        continue
-      } else if (plugin.botAdmin && !isBotAdmin) {
-        fail('botAdmin', m, this)
-        continue
-      } else if (plugin.admin && !isAdmin) {
-        fail('admin', m, this)
-        continue
-      }
-			if (plugin.private && m.isGroup) {
-        fail('private', m, this)
-        continue
-      }
-      
-      plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
-			break
-		}
-	} 
+  try {
+  	simple.smsg(this, m)
+    if (!m.text) return
+    if (m.isBaileys) return
+  	let usedPrefix
+  	for (let name in global.plugins) {
+  	  let plugin = global.plugins[name]
+      if (!plugin) continue
+      let _prefix = plugin.customPrefix ? plugin.customPrefix : prefix
+  	  if ((usedPrefix = (_prefix.exec(m.text) || '')[0])) {
+  		  let args = m.text.replace(usedPrefix, '').split` `.filter(v=>v)
+  		  let command = (args.shift() || '').toLowerCase()
+        let isOwner = m.fromMe
+  			let isAccept = plugin.command instanceof RegExp ? plugin.command.test(command) :
+        plugin.command instanceof Array ? plugin.command.includes(command) :
+        plugin.command instanceof String ? plugin.command == command : false
+  			if (!isAccept) continue
+        let isMods = isOwner || global.mods.includes(m.sender)
+        let isPrems = isMods || global.prems.includes(m.sender)
+        let participants = m.isGroup ? (await this.groupMetadata(m.chat)).participants : []
+        let user = m.isGroup ? participants.filter(u => u.jid == m.sender)[0] : {}
+        let bot = m.isGroup ? participants.filter(u => u.jid == this.user.jid)[0] : {}
+        let isAdmin = user.isAdmin || user.isSuperAdmin || false
+        let isBotAdmin = bot.isAdmin || bot.isSuperAdmin || false
+        let fail = plugin.fail || global.dfail
+        if (plugin.owner && !isOwner) {
+          fail('owner', m, this)
+          continue
+        }
+        if (plugin.mods && !isMods) {
+          fail('mods', m, this)
+          continue
+        }
+        if (plugin.premium && !isPrems) {
+          fail('premium', m, this)
+          continue
+        }
+  			if (plugin.group && !m.isGroup) {
+          fail('group', m, this)
+          continue
+        } else if (plugin.botAdmin && !isBotAdmin) {
+          fail('botAdmin', m, this)
+          continue
+        } else if (plugin.admin && !isAdmin) {
+          fail('admin', m, this)
+          continue
+        }
+  			if (plugin.private && m.isGroup) {
+          fail('private', m, this)
+          continue
+        }
+
+        await plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
+        isCommand = true
+  			break
+  		}
+  	}
+  } finally {
+    try {
+      require('./lib/print')(m, this)
+    } catch (e) {
+      console.log(m, e)
+    }
+  }
 }
 
 conn.on('message-new', conn.handler) 
 
 global.mods = []
 global.prems = []
-
-function printMsg(m) {
-  let sender = conn.getName(m.sender) || m.messageStubParameters.map(v => v.split('@')[0] + (conn.getName(v) ? ' ~' + conn.getName(v) : '')).join(' & ')
-  let chat = conn.getName(m.chat)
-  let ansi = '\x1b]'
-  console.log(
-    '(%s) %s\n[%s] to [%s] <%s>%s\n',
-    (m.messageTimestamp ? new Date(1000 * (m.messageTimestamp.low || m.messageTimestamp)) : new Date()).toTimeString(),
-    m.messageStubType ? WA_MESSAGE_STUB_TYPES[m.messageStubType] : '',
-    m.messageStubParameters.lengths ? sender : m.sender.split('@')[0] + (sender ? ' ~' + sender : ''),
-    m.chat + (chat ? ' ~' + chat : ''),
-    m.mtype ? m.mtype.replace(/message$/i, '') : '',
-    typeof m.text == 'string' ? '\n' + m.text
-      // .replace(/(\s|^)((https?:\/\/)?(\S+?\.)?\S+?\.(com|co|id|me|co\.id|xyz|org)(\/\S+?))?(\s|$)/g, `$1${ansi}34m$2${ansi}39m$7`)
-      // .replace(/(^|\s)_(.+)?_($|\s)/g, `$1${ansi}3m$2${ansi}23m$3`)
-      // .replace(/(^|\s)\*(.+)?\*($|\s)/g, `$1${ansi}1m$2${ansi}22m$3`)
-      // .replace(/(^|\s)~(.+)?~($|\s)/g, `$1${ansi}9m$2${ansi}29m$3`)
-      : ''
-  )
-}
 
 global.dfail = (type, m, conn) => {
   let msg = {

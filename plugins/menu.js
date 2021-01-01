@@ -14,6 +14,7 @@ ${_p}demote @mention
 ${_p}linkgrup
 ${_p}pengumuman <teks>
 ${_p}listonline [groupid]
+${_p}grouplist
 
 Experimental:
 ${_p}jadibot [kode login jika ada / kosongin]
