@@ -2,12 +2,17 @@ const fetch = require('node-fetch')
 const FormData = require('form-data')
 const { MessageType } = require('@adiwajshing/baileys')
 
-let handler  = async (m, { conn }) => {
+let handler  = async (m, { conn, args }) => {
   let q = m.quoted ? { message: { [m.quoted.mtype]: m.quoted }} : m
   if (/image/.test((m.quoted ? m.quoted : m).mtype)) {
     let img = await conn.downloadM(q)
     if (!img) throw img
     let stiker = await sticker(img)
+    conn.sendMessage(m.chat, stiker, MessageType.sticker, {
+      quoted: m
+    })
+  } else if (args[0]) {
+    let stiker = await sticker(false, args[0])
     conn.sendMessage(m.chat, stiker, MessageType.sticker, {
       quoted: m
     })
@@ -48,11 +53,11 @@ function queryURL(queries) {
 }
 
 let { fromBuffer } = require('file-type')
-async function sticker(img) {
-    let url = await uploadImage(img)
+async function sticker(img, url) {
+    url = url ? url : await uploadImage(img)
     let {
         mime
-    } = await fromBuffer(img)
+    } = url ? {mime:'image/jpeg'} : await fromBuffer(img)
     let sc = `let im = await loadImg('data:${mime};base64,'+(await window.loadToDataURI('${url}')))
 c.width = c.height = 512
 let max = Math.max(im.width, im.height)

@@ -1,12 +1,16 @@
 let handler  = async (m, { conn, usedPrefix: _p }) => {
-  let preview = await conn.generateLinkPreview('https://github.com/Nurutomo/wabot-aq')
-  conn.reply(m.chat, {...preview, text: `
+  let preview = {}
+  try {
+    preview = await global.conn.generateLinkPreview('https://github.com/Nurutomo/wabot-aq')
+  } finally {
+    let text =  `
 • ----- Menu ----- •
 ${more.repeat(1000)}
 Universal:
 ${_p}menu
 ${_p}qr <teks>
 ${_p}stiker (caption)
+${_p}stiker <url>
 ${_p}bucin
 ${_p}ssweb <url>
 ${_p}sswebf <url>
@@ -27,6 +31,10 @@ ${_p}grouplist
 
 Experimental:
 ${_p}jadibot [kode login jika ada / kosongin]
+${_p}berhenti
+
+Owner Nomor:
+${_p}bcgc <teks>
 
 Advanced:
 > return m
@@ -36,7 +44,9 @@ Coded using *Vim* on Android \\w Termux
 by *@Nurutomo*
 https://github.com/Nurutomo/wabot-aq
 • ---------------- •
-`.trim()}, m)
+`.trim()
+    conn.reply(m.chat, {...preview, text}, m)
+  }
 }
 handler.command = /^(menu|help|\?)$/i
 handler.owner = false

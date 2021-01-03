@@ -17,6 +17,7 @@
     "chalk": "^4.1.0",
     "file-type": "^16.1.0",
     "form-data": "^3.0.0",
+    "google-it": "^1.6.0",
     "jsdom": "^16.4.0",
     "node-fetch": "^2.6.1",
     "qrcode": "^1.4.4",

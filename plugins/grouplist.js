@@ -1,5 +1,5 @@
 let handler  = async (m, { conn }) => {
-  let txt = Object.keys(conn.chats.dict).filter(v=>/g\.us/.test(v)).map(v=>`${conn.getName(v)}\n${v}`).join`\n\n`
+  let txt = conn.chats.array.filter(v => v.jid.endsWith('g.us')).map(v =>`${conn.getName(v.jid)}\n${v.jid} [${v.read_only ? 'Left' : 'Joined'}]`).join`\n\n`
   conn.reply(m.chat, 'List Groups:\n' + txt, m)
 }
 handler.command = /^(group(s|list))$/i

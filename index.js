@@ -72,7 +72,7 @@ conn.handler = async function (m) {
         }
 
         await plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
-        isCommand = true
+        m.isCommand = true
   			break
   		}
   	}
