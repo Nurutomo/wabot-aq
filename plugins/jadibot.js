@@ -9,9 +9,17 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
   if (global.conn.user.jid == conn.user.jid) {
     let id = global.conns.length
     let conn = new WAConnection()
-    if (args[0] && args[0].length > 200) await conn.loadAuthInfo(JSON.parse(Buffer.from(args[0], 'base64').toString()))
+    if (args[0] && args[0].length > 200) {
+      let json = Buffer.from(args[0], 'base64').toString('utf-8')
+      // global.conn.reply(m.isGroup ? m.sender : m.chat, json, m)
+      let obj = JSON.parse(json)
+      await conn.loadAuthInfo(obj)
+    }
     conn.on('qr', async qr => {
-      global.conn.sendFile(m.chat, await qrcode.toDataURL(qr, { scale: 8 }), 'qrcode.png', 'Scan QR ini untuk jadi bot sementara\n\n1. Klik titik tiga di pojok kanan atas\n2. Ketuk WhatsApp Web\n3. Scan QR ini \nQR Expired dalam 20 detik',m)
+      let scan = await global.conn.sendFile(m.chat, await qrcode.toDataURL(qr, { scale: 8 }), 'qrcode.png', 'Scan QR ini untuk jadi bot sementara\n\n1. Klik titik tiga di pojok kanan atas\n2. Ketuk WhatsApp Web\n3. Scan QR ini \nQR Expired dalam 20 detik', m)
+      setTimeout(() => {
+        global.conn.deleteMessage(m.chat, scan.key)
+      }, 30000)
     })
     conn.once('connection-validated', user => {
       global.conn.reply(m.chat, 'Berhasil tersambung dengan WhatsApp Anda.\n*NOTE: kalo bot aku mati, bot kamu juga.*\n' + JSON.stringify(user, null, 2), m)

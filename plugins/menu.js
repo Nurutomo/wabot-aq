@@ -3,7 +3,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
   try {
     preview = await global.conn.generateLinkPreview('https://github.com/Nurutomo/wabot-aq')
   } finally {
-    let text =  `
+    let text =  conn.menu ? conn.menu.replace(/%p/g, _p) : `
 • ----- Menu ----- •
 ${more.repeat(1000)}
 Universal:
@@ -35,6 +35,7 @@ ${_p}berhenti
 
 Owner Nomor:
 ${_p}bcgc <teks>
+${_p}setmenu <teks> (Semua tanda %p diubah menjadi prefix bot)
 
 Advanced:
 > return m

@@ -9,6 +9,9 @@ let path = require('path')
 let util = require('util')
 let WAConnection = simple.WAConnection(_WAConnection)
 global.conn = new WAConnection()
+global.timestamp = {
+  start: new Date
+}
 
 let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
 let prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%.') + ']')
@@ -103,7 +106,9 @@ global.dfail = (type, m, conn) => {
   msg && conn.reply(m.chat, msg, m)
 }
 
-!opts['test'] && conn.connect()
+!opts['test'] && conn.connect().then(() => {
+  global.timestamp.connect = new Date
+})
 opts['test'] && process.stdin.on('data', chunk => conn.emit('message-new', { text: chunk.toString() }))
 // let strQuot = /(["'])(?:(?=(\\?))\2.)*?\1/
 
