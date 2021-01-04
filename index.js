@@ -92,12 +92,13 @@ conn.handler = async function (m) {
         }
 
         m.isCommand = true
+        m.exp += plugin.exp ? plugin.exp : 9
         await plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
   			break
   		}
   	}
   } finally {
-    global.DATABASE.data.users[m.sender].exp += 9
+    global.DATABASE.data.users[m.sender].exp += m.exp
     try {
       require('./lib/print')(m, this)
     } catch (e) {
