@@ -12,6 +12,11 @@ global.conn = new WAConnection()
 global.timestamp = {
   start: new Date
 }
+global.DATABASE = new (require('./lib/database'))('database.json', null, 2)
+if (!global.DATABASE.data.users) global.DATABASE.data = {
+  users: {},
+  groups: {}
+}
 
 let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
 let prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%.') + ']')
@@ -24,8 +29,20 @@ conn.on('credentials-updated', () => fs.writeFileSync(authFile, JSON.stringify(c
 conn.handler = async function (m) {
   try {
   	simple.smsg(this, m)
+    if (!m.fromMe && opts['self']) return
     if (!m.text) return
     if (m.isBaileys) return
+    try {
+      if (global.DATABASE._data.users[m.sender]) {
+        if (global.DATABASE._data.users[m.sender].exp) global.DATABASE._data.users[m.sender].exp++
+        else global.DATABASE._data.users[m.sender].exp = 1
+      } else global.DATABASE._data.users[m.sender] = {
+        exp: 1
+      }
+      global.DATABASE.save()
+    } catch (e) {
+      console.log(e, global.DATABASE.data)
+    }
   	let usedPrefix
   	for (let name in global.plugins) {
   	  let plugin = global.plugins[name]
@@ -74,12 +91,13 @@ conn.handler = async function (m) {
           continue
         }
 
-        await plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
         m.isCommand = true
+        await plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
   			break
   		}
   	}
   } finally {
+    global.DATABASE.data.users[m.sender].exp += 9
     try {
       require('./lib/print')(m, this)
     } catch (e) {
@@ -100,7 +118,7 @@ global.dfail = (type, m, conn) => {
     premium: 'Perintah ini hanya untuk member Premium!',
     group: 'Perintah ini hanya dapat digunakan di Grup!',
     private: 'Perintah ini hanya dapat digunakan di Chat Pribadi!',
-    admin: 'Anda bukan admin grup!',
+    admin: 'Perintah ini hanya untuk admin grup!',
     botAdmin: 'Jadikan bot sebagai admin untuk menggunakan perintah ini!'
   }[type]
   msg && conn.reply(m.chat, msg, m)
