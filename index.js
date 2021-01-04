@@ -29,22 +29,25 @@ conn.on('credentials-updated', () => fs.writeFileSync(authFile, JSON.stringify(c
 conn.handler = async function (m) {
   try {
   	simple.smsg(this, m)
+    m.exp = 1
     if (!m.fromMe && opts['self']) return
     if (!m.text) return
     if (m.isBaileys) return
     try {
       if (global.DATABASE._data.users[m.sender]) {
-        if (global.DATABASE._data.users[m.sender].exp) global.DATABASE._data.users[m.sender].exp++
+        if (typeof global.DATABASE._data.users[m.sender].exp == 'number' &&
+          !isNaN(global.DATABASE._data.users[m.sender].exp)
+        ) global.DATABASE._data.users[m.sender].exp++
         else global.DATABASE._data.users[m.sender].exp = 1
       } else global.DATABASE._data.users[m.sender] = {
         exp: 1
       }
-      global.DATABASE.save()
     } catch (e) {
       console.log(e, global.DATABASE.data)
+    } finally {
+      global.DATABASE.save()
     }
   	let usedPrefix
-    m.exp = 0
   	for (let name in global.plugins) {
   	  let plugin = global.plugins[name]
       if (!plugin) continue
@@ -93,14 +96,18 @@ conn.handler = async function (m) {
         }
 
         m.isCommand = true
-        m.exp += plugin.exp ? plugin.exp : 9
+        m.exp += 'exp' in plugin ? parseInt(plugin.exp) : 10
         await plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
   			break
   		}
   	}
   } finally {
-    global.DATABASE.data.users[m.sender].exp += m.exp
+    //console.log(global.DATABASE._data.users[m.sender])
+    if (m && m.sender && global.DATABASE._data.users[m.sender]) {
+      global.DATABASE._data.users[m.sender].exp += m.exp
+    }
     try {
+      await global.DATABASE.save()
       require('./lib/print')(m, this)
     } catch (e) {
       console.log(m, e)
@@ -109,7 +116,7 @@ conn.handler = async function (m) {
 }
 
 conn.on('message-new', conn.handler) 
-
+conn.on('error', conn.logger.error)
 global.mods = []
 global.prems = []
 
