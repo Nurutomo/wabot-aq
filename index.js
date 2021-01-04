@@ -44,6 +44,7 @@ conn.handler = async function (m) {
       console.log(e, global.DATABASE.data)
     }
   	let usedPrefix
+    m.exp = 0
   	for (let name in global.plugins) {
   	  let plugin = global.plugins[name]
       if (!plugin) continue
