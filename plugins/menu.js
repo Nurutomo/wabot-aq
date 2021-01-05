@@ -43,6 +43,7 @@ ${_p}menu
 ${_p}qr <teks>
 ${_p}stiker (caption)
 ${_p}stiker <url>
+${_p}toimg (reply)
 ${_p}bucin
 ${_p}ssweb <url>
 ${_p}sswebf <url>
@@ -67,6 +68,7 @@ ${_p}grouplist
 Experimental:
 ${_p}jadibot [kode login jika ada / kosongin]
 ${_p}berhenti
+${_p}getcode
 
 Owner Nomor:
 ${_p}bcgc <teks>
@@ -82,7 +84,7 @@ Advanced:
 Coded using *Vim* on Android \\w Termux
 by *@Nurutomo*
 https://github.com/Nurutomo/wabot-aq
-Request/Tanya Fitur: https://t.me/Nurutomo2
+Request/Tanya Fitur: https://t.me/wabotermux
 • ---------------- •
 `.trim()
     conn.reply(m.chat, {...preview, text}, m)

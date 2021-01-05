@@ -1,6 +1,6 @@
 let handler = async (m, { conn, args }) => {
   let users = args.join` `.split`,`.map(v => v.replace(/\D/g, '') + '@s.whatsapp.net').filter(v => v.length > 20)
-  conn.groupAdd(m.chat, users)
+  for (let user of users) conn.groupAdd(m.chat, user)
 }
 handler.command = /^(add|\+)$/i
 handler.owner = false

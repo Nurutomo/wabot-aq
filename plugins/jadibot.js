@@ -26,8 +26,9 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
     })
     conn.on('message-new', global.conn.handler)
     conn.regenerateQRIntervalMs = null
-    conn.connect().then(({user}) => {
-      global.conn.sendMessage(user.jid, `Nanti kalo mau login lagi\n*${usedPrefix + command} ${Buffer.from(JSON.stringify(conn.base64EncodedAuthInfo())).toString('base64')}*`, MessageType.extendedText)
+    conn.connect().then(async ({user}) => {
+      await global.conn.sendMessage(user.jid, `Kamu bisa login tanpa qr dengan pesan dibawab ini. untuk mendapatkan kode lengkapnya, silahkan kirim *${usedPrefix}getcode* untuk mendapatkan kode yang akurat`, MessageType.extendedText)
+      global.conn.sendMessage(user.jid, `${usedPrefix + command} ${Buffer.from(JSON.stringify(conn.base64EncodedAuthInfo())).toString('base64')}`, MessageType.extendedText)
     })
     setTimeout(() => {
       if (conn.user) return
