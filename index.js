@@ -19,7 +19,7 @@ if (!global.DATABASE.data.users) global.DATABASE.data = {
 }
 
 let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
-let prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%.') + ']')
+global.prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%\\-+£¢€¥^°=¶∆×÷π√✓©®:;?&.') + ']')
 
 let authFile = `${opts._[0] || 'session'}.data.json`
 fs.existsSync(authFile) && conn.loadAuthInfo(authFile)
@@ -34,6 +34,7 @@ conn.handler = async function (m) {
     if (!m.text) return
     if (m.isBaileys) return
     try {
+      global.DATABASE.load()
       if (global.DATABASE._data.users[m.sender]) {
         if (typeof global.DATABASE._data.users[m.sender].exp == 'number' &&
           !isNaN(global.DATABASE._data.users[m.sender].exp)
@@ -51,7 +52,7 @@ conn.handler = async function (m) {
   	for (let name in global.plugins) {
   	  let plugin = global.plugins[name]
       if (!plugin) continue
-      let _prefix = plugin.customPrefix ? plugin.customPrefix : prefix
+      let _prefix = plugin.customPrefix ? plugin.customPrefix : conn.prefix ? conn.prefix : global.prefix
   	  if ((usedPrefix = (_prefix.exec(m.text) || '')[0])) {
   		  let args = m.text.replace(usedPrefix, '').split` `.filter(v=>v)
   		  let command = (args.shift() || '').toLowerCase()
@@ -137,6 +138,7 @@ global.dfail = (type, m, conn) => {
   global.timestamp.connect = new Date
 })
 opts['test'] && process.stdin.on('data', chunk => conn.emit('message-new', { text: chunk.toString() }))
+process.on('uncaughtException', console.error)
 // let strQuot = /(["'])(?:(?=(\\?))\2.)*?\1/
 
 let pluginFilter = filename => /\.js$/.test(filename)
