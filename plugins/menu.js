@@ -23,7 +23,6 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       minute: 'numeric',
       second: 'numeric'
     })
-
     let text =  conn.menu ? conn.menu
       .replace(/%p/g, _p)
       .replace(/%exp/g, exp)
