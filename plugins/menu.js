@@ -3,7 +3,9 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
   try {
     if (!conn.menu) preview = await conn.generateLinkPreview('https://github.com/Nurutomo/wabot-aq')
   } catch (e) {
-    if (!conn.menu) preview = await global.conn.generateLinkPreview('https://github.com/Nurutomo/wabot-aq')
+    try {
+      if (!conn.menu) preview = await global.conn.generateLinkPreview('https://github.com/Nurutomo/wabot-aq')
+    } catch (e) {}
   } finally {
     let exp = global.DATABASE.data.users[m.sender].exp
     let name = conn.getName(m.sender)
@@ -106,3 +108,28 @@ module.exports = handler
 
 const more = String.fromCharCode(8206)
 const readMore = more.repeat(4001)
+/*                                                                                                     ╭─「 𝗠𝗲𝗱𝗶𝗮 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 」
+│ • #memes                                                                                           │ • #asupan ⚡
+│ • #ajg
+│ • #bcl                                                                                             │ • #koceng
+│ • #pokemon                                                                                         ╰────
+
+╭─「 𝗪𝗶𝗯𝘂 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 」                                                                                │ • #loli
+│ • #shota ⚡                                                                                        │ • #waifu
+│ • #hentai ⚡
+│ • #husbu                                                                                           │ • #nekoNime ⚡
+│ • #randomBlowjob ⚡
+│ • #randomCry ⚡
+│ • #randomHug ⚡                                                                                    │ • #randomKiss ⚡
+│ • #malAnime
+│ • #malCharacter
+│ • #whatAnime
+╰────
+╭─「 𝗜𝗻𝗳𝗼𝗿𝗺𝗮𝘁𝗶𝗼𝗻 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 」
+│ • #infoGempa                                                                                       │ • #cuaca                                                                                           │ • #covidIndo
+│ • #checkIP ⚡
+╰────
+╭─「 𝗢𝘁𝗵𝗲𝗿 𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 」                                                                               │ • #artiNama
+│ • #artiMimpi ⚡                                                                                    │ • #artiZodiak ⚡                                                                                   │ • #ramalPasangan                                                                                   │ • #nomorHoki)
+*/
+

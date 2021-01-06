@@ -12,14 +12,15 @@ global.conn = new WAConnection()
 global.timestamp = {
   start: new Date
 }
-global.DATABASE = new (require('./lib/database'))('database.json', null, 2)
+
+let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
+global.prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%\\-+£¢€¥^°=¶∆×÷π√✓©®:;?&.') + ']')
+
+global.DATABASE = new (require('./lib/database'))(opts._[0] ? opts._[0] + '_' : '' + 'database.json', null, 2)
 if (!global.DATABASE.data.users) global.DATABASE.data = {
   users: {},
   groups: {}
 }
-
-let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
-global.prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%\\-+£¢€¥^°=¶∆×÷π√✓©®:;?&.') + ']')
 
 let authFile = `${opts._[0] || 'session'}.data.json`
 fs.existsSync(authFile) && conn.loadAuthInfo(authFile)
