@@ -4,11 +4,11 @@ let handler = async (m, { conn, args }) => {
     for (let id of users) conn.sendMessage(id, args.join` `, m.mtype, m.msg.contextInfo ? {
       contextInfo: m.msg.contextInfo
     } : {})
-    conn.reply(m.chat, `_Berhasil mengirim broadcast ke ${user.length} nomor yang jadi bot_`, m)
+    conn.reply(m.chat, `_Berhasil mengirim broadcast ke ${users.length} nomor yang jadi bot_`, m)
   } else conn.reply(m.chat, 'Fitur ini hanya untuk host bot',  m)
 }
 handler.command = /^(broadcast|bc)(jadi)?bot$/i
-handler.owner = false
+handler.owner = true
 handler.mods = false
 handler.premium = false
 handler.group = false
