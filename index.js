@@ -1,5 +1,6 @@
 let { WAConnection: _WAConnection, WA_MESSAGE_STUB_TYPES } = require('@adiwajshing/baileys')
 let { generate } = require('qrcode-terminal')
+let qrcode = require('qrcode')
 let simple = require('./lib/simple')
 let yargs = require('yargs/yargs')
 let syntaxerror = require('syntax-error')
@@ -26,14 +27,15 @@ if (!global.DATABASE.data.groups) global.DATABASE.data.groups = {}
 if (!global.DATABASE.data.chats) global.DATABASE.data.chats = {}
 if (opts['server']) {
   let express = require('express')
-  let app = express()
-  app.all('*', (req, res) => res.end('200 OK'))
+  global.app = express()
+  app.all('*', (req, res) => res.end(await qrcode.toBuffer(global.qr)))
   app.listen(PORT, () => console.log('App listened on port', PORT))
 }
 global.conn = new WAConnection()
 let authFile = `${opts._[0] || 'session'}.data.json`
 fs.existsSync(authFile) && conn.loadAuthInfo(authFile)
-opts['big-qr'] && conn.on('qr', qr => generate(qr, { small: false }))
+(opts['big-qr'] || opts['server']) && conn.on('qr', qr => generate(qr, { small: false }))
+opts['server'] && conn.on('qr', qr => { global.qr = qr })
 conn.on('credentials-updated', () => fs.writeFileSync(authFile, JSON.stringify(conn.base64EncodedAuthInfo())))
 let lastJSON = JSON.stringify(global.DATABASE.data)
 setInterval(async () => {
