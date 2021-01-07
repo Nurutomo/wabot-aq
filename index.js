@@ -8,11 +8,11 @@ let fs = require('fs')
 let path = require('path')
 let util = require('util')
 let WAConnection = simple.WAConnection(_WAConnection)
-global.conn = new WAConnection()
 global.timestamp = {
   start: new Date
 }
-
+const PORT = process.env.PORT || 3000
+exre
 let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
 global.opts = Object.freeze({...opts})
 global.prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%\\-+£¢€¥^°=¶∆×÷π√✓©®:;?&.') + ']')
@@ -25,7 +25,13 @@ if (!global.DATABASE.data.users) global.DATABASE.data = {
 }
 if (!global.DATABASE.data.groups) global.DATABASE.data.groups = {}
 if (!global.DATABASE.data.chats) global.DATABASE.data.chats = {}
-
+if (opts['server']) {
+  let express = require('express')
+  let app = express()
+  app.all('*', (req, res) => res.end('200 OK'))
+  app.listen(PORT, () => console.log('App listened on port', PORT))
+}
+global.conn = new WAConnection()
 let authFile = `${opts._[0] || 'session'}.data.json`
 fs.existsSync(authFile) && conn.loadAuthInfo(authFile)
 opts['big-qr'] && conn.on('qr', qr => generate(qr, { small: false }))
