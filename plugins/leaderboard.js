@@ -14,6 +14,8 @@ ${sorted.slice(0, len).map(([user, data], i) => (i + 1) + '. @' + user.split`@`[
     }
   })
 }
+handler.help = ['leaderboard [jumlah user]']
+handler.tags = ['xp']
 handler.command = /^(leaderboard)$/i
 handler.owner = false
 handler.mods = false

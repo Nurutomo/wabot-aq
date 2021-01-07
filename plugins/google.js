@@ -12,6 +12,8 @@ let handler = async (m, { conn, command, args }) => {
   let ss = await (await fetch('https://nurutomo.herokuapp.com/api/ssweb?delay=1000&url=' + encodeURIComponent(url) + '&full=' + full)).buffer()
   conn.sendFile(m.chat, ss, 'screenshot.png', url + '\n\n' + msg, m)
 }
+handler.help = ['google', 'googlef'].map(v => v + ' <pencarian>')
+handler.tags = ['internet']
 handler.command = /^googlef?$/i
 handler.owner = false
 handler.mods = false

@@ -7,6 +7,8 @@ let handler = async (m, { conn, args }) => {
     conn.reply(m.chat, `_Berhasil mengirim broadcast ke ${users.length} nomor yang jadi bot_`, m)
   } else conn.reply(m.chat, 'Fitur ini hanya untuk host bot',  m)
 }
+handler.help = ['broadcastjadibot','bcbot'].map(v => v + ' <teks>')
+handler.tags = ['host']
 handler.command = /^(broadcast|bc)(jadi)?bot$/i
 handler.owner = true
 handler.mods = false

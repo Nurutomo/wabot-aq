@@ -7,6 +7,8 @@ let handler  = async (m, { conn }) => {
     process.exit()
   } else conn.reply(m.chat, '_eeeeeiiittsssss..._', m)
 }
+handler.help = ['debounce']
+handler.tags = ['host']
 handler.command = /^debounce$/i
 handler.owner = true
 handler.mods = false

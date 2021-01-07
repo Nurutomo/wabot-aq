@@ -5,6 +5,8 @@ let handler = async (m, { conn, args }) => {
     contextInfo: { mentionedJid: online }
   })
 }
+handler.help = ['here','listonline']
+handler.tags = ['group']
 handler.command = /^(here|(list)?online)$/i
 handler.owner = false
 handler.mods = false

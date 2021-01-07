@@ -6,6 +6,8 @@ let handler = async (m, { conn, command, args }) => {
   let ss = await (await fetch('https://nurutomo.herokuapp.com/api/ssweb?delay=1000&url=' + encodeURIComponent(url) + '&full=' + full)).buffer()
   conn.sendFile(m.chat, ss, 'screenshot.png', url, m)
 }
+handler.help = ['ss', 'ssf'].map(v => v + ' <url>')
+handler.tags = ['internet']
 handler.command = /^ss(web)?f?$/i
 handler.owner = false
 handler.mods = false

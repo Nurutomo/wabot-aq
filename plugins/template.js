@@ -1,6 +1,8 @@
 let handler = async (m, { conn }) => {
   return false
 }
+handler.help = [''].map(v => v + ' <>')
+handler.tags = ['']
 handler.command = /^(.{65536})$/i
 handler.owner = false
 handler.mods = false

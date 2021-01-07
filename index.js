@@ -14,40 +14,59 @@ global.timestamp = {
 }
 
 let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
+global.opts = Object.freeze({...opts})
 global.prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%\\-+£¢€¥^°=¶∆×÷π√✓©®:;?&.') + ']')
 
 global.DATABASE = new (require('./lib/database'))(opts._[0] ? opts._[0] + '_' : '' + 'database.json', null, 2)
 if (!global.DATABASE.data.users) global.DATABASE.data = {
   users: {},
-  groups: {}
+  groups: {},
+  chats: {},
 }
+if (!global.DATABASE.data.groups) global.DATABASE.data.groups = {}
+if (!global.DATABASE.data.chats) global.DATABASE.data.chats = {}
 
 let authFile = `${opts._[0] || 'session'}.data.json`
 fs.existsSync(authFile) && conn.loadAuthInfo(authFile)
 opts['big-qr'] && conn.on('qr', qr => generate(qr, { small: false }))
 conn.on('credentials-updated', () => fs.writeFileSync(authFile, JSON.stringify(conn.base64EncodedAuthInfo())))
-
+let lastJSON = JSON.stringify(global.DATABASE.data)
+setInterval(async () => {
+  conn.logger.info('Saving database . . .')
+  if (JSON.stringify(global.DATABASE.data) == lastJSON) conn.logger.info('Database is up to date')
+  else {
+    global.DATABASE.save()
+    conn.logger.info('Done saving database!')
+    lastJSON = JSON.stringify(global.DATABASE.data)
+  }
+}, 60 * 1000) // Save every minute
 conn.handler = async function (m) {
   try {
   	simple.smsg(this, m)
-    m.exp = 1
+    m.exp = 0
+    m.limit = false
     if (!m.fromMe && opts['self']) return
     if (!m.text) return
     if (m.isBaileys) return
     try {
-      global.DATABASE.load()
       if (global.DATABASE._data.users[m.sender]) {
         if (typeof global.DATABASE._data.users[m.sender].exp == 'number' &&
           !isNaN(global.DATABASE._data.users[m.sender].exp)
-        ) global.DATABASE._data.users[m.sender].exp++
-        else global.DATABASE._data.users[m.sender].exp = 1
+        ) m.exp += 1
+        else global.DATABASE._data.users[m.sender].exp = 0
+        if (typeof global.DATABASE._data.users[m.sender].limit != 'number' ||
+          isNaN(global.DATABASE._data.users[m.sender].limit)
+        ) global.DATABASE._data.users[m.sender].limit = 50
+        if (typeof global.DATABASE._data.users[m.sender].lastclaim != 'number' ||
+          isNaN(global.DATABASE._data.users[m.sender].lastclaim)
+        ) global.DATABASE._data.users[m.sender].lastclaim = 0
       } else global.DATABASE._data.users[m.sender] = {
-        exp: 1
+        exp: 0,
+        limit: 50,
+        lastclaim: 0,
       }
     } catch (e) {
       console.log(e, global.DATABASE.data)
-    } finally {
-      global.DATABASE.save()
     }
   	let usedPrefix
   	for (let name in global.plugins) {
@@ -99,7 +118,9 @@ conn.handler = async function (m) {
 
         m.isCommand = true
         m.exp += 'exp' in plugin ? parseInt(plugin.exp) : 10
+        if (!isPrems && global.DATABASE._data.users[m.sender].limit < 1 && plugin.limit) continue
         await plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
+        if (!isPrems) m.limit = m.limit || plugin.limit || false
   			break
   		}
   	}
@@ -107,9 +128,9 @@ conn.handler = async function (m) {
     //console.log(global.DATABASE._data.users[m.sender])
     if (m && m.sender && global.DATABASE._data.users[m.sender]) {
       global.DATABASE._data.users[m.sender].exp += m.exp
+      global.DATABASE._data.users[m.sender].limit -= m.limit * 1
     }
     try {
-      await global.DATABASE.save()
       require('./lib/print')(m, this)
     } catch (e) {
       console.log(m, e)
@@ -127,7 +148,7 @@ global.dfail = (type, m, conn) => {
     owner: 'Perintah ini hanya dapat digunakan oleh Owner Nomor!',
     mods: 'Perintah ini hanya dapat digunakan oleh Moderator!',
     premium: 'Perintah ini hanya untuk member Premium!',
-    group: 'Perintah ini hanya dapat digunakan di Grup!',
+    group: 'Perintah ini hanya dapat digunakan di grup!',
     private: 'Perintah ini hanya dapat digunakan di Chat Pribadi!',
     admin: 'Perintah ini hanya untuk admin grup!',
     botAdmin: 'Jadikan bot sebagai admin untuk menggunakan perintah ini!'
@@ -176,3 +197,5 @@ fs.watch(path.join(__dirname, 'plugins'), (event, filename) => {
     }
   }
 })
+
+process.on('exit', () => global.DATABASE.save())

@@ -1,6 +1,8 @@
 let handler  = async (m, { conn }) => {
   conn.reply(m.chat,`“${pickRandom(global.bucin)}”`, m)
 }
+handler.help = ['bucin']
+handler.tags = ['quotes']
 handler.command = /^(bucin)$/i
 handler.owner = false
 handler.mods = false
@@ -91,7 +93,7 @@ global.bucin = [
   "Kuharap aku bisa menghilangkan perasaan ini secepat aku kehilanganmu.",
   "Demi cinta kita menipu diri sendiri. Berusaha kuat nyatanya jatuh secara tak terhormat.",
   "Anggaplah aku rumahmu, jika kamu pergi kamu mengerti kemana arah pulang. Menetaplah bila kamu mau dan pergilah jika kamu bosan...",
-  "Aku bingung, apakah aku harus kecewa atu tidak? Jika aku kecewa, emang siapa diriku baginya?<br><br>Kalau aku tidak kecewa, tapi aku menunggu ucapannya.",
+  "Aku bingung, apakah aku harus kecewa atu tidak? Jika aku kecewa, emang siapa diriku baginya?\n\nKalau aku tidak kecewa, tapi aku menunggu ucapannya.",
   "Rinduku seperti ranting yang tetap berdiri.Meski tak satupun lagi dedaunan yang menemani, sampai akhirnya mengering, patah, dan mati.",
   "Kurasa kita sekarang hanya dua orang asing yang memiliki kenangan yang sama.",
   "Buatlah aku bisa membencimu walau hanya beberapa menit, agar tidak terlalu berat untuk melupakanmu.",

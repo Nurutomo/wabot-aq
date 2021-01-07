@@ -38,6 +38,8 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
     global.conns.push(conn)
   } else conn.reply(m.chat, 'Tidak bisa membuat bot didalam bot!\n\nhttps://wa.me/' + global.conn.user.jid.split`@`[0] + '?text=.jadibot', m)
 }
+handler.help = ['jadibot']
+handler.tags = ['jadibot']
 handler.command = /^jadibot$/i
 handler.owner = false
 handler.mods = false

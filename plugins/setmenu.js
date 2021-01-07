@@ -8,6 +8,8 @@ let handler  = async (m, { conn, args }) => {
     conn.reply(m.chat, 'Menu direset', m)
   }
 }
+handler.help = ['setmenu'].map(v => v + ' <teks>')
+handler.tags = ['owner']
 handler.command = /^set(menu|help|\?)$/i
 handler.owner = true
 handler.mods = false

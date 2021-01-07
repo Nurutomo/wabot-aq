@@ -1,7 +1,9 @@
 let handler = async (m, { conn, args }) => {
   let users = m.mentionedJid
-  conn.groupDemoteAdmin(m.chat, users)
+  for (let user of users) conn.groupDemoteAdmin(m.chat, user).catch(console.log)
 }
+handler.help = ['demote','member','v'].map(v => v + ' @user')
+handler.tags = ['admin']
 handler.command = /^(demote|member|v)$/i
 handler.owner = false
 handler.mods = false

@@ -1,24 +1,27 @@
 let syntaxerror = require('syntax-error')
 let util = require('util')
 
-let handler  = async (m, { conn, usedPrefix }) => {
+let handler  = async (m, { conn, usedPrefix, args }) => {
   let _return
   let _syntax = ''
+  let _text = /^=/.test(usedPrefix) ? 'return ' : '' + args.join` `
   try {
-    let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', m.text.replace(/^> /, ''))
+    let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', 'args', _text)
     _return = await exec((...args) => {
       console.log(...args)
-      conn.reply(m.chat, util.format(...args), m)
-    }, m, handler, require, conn, CustomArray, {...process, exit: function exit() { return ':P' }})
+      return conn.reply(m.chat, util.format(...args), m)
+    }, m, handler, require, conn, CustomArray, {...process, exit: function exit() { return ':P' }}, args)
   } catch (e) {
-    let err = await syntaxerror(m.text.replace(/^> /, ''))
+    let err = await syntaxerror(_text)
     if (err) _syntax = '```' + err + '```\n\n'
     _return = e
   } finally {
     conn.reply(m.chat, _syntax + util.format(_return), m)
   }
 }
-handler.customPrefix = /^> /
+handler.help = ['> ', '=> ']
+handler.tags = ['advanced']
+handler.customPrefix = /^=?> /
 handler.command = /(?:)/i
 handler.owner = false
 handler.mods = false
