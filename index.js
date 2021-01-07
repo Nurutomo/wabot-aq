@@ -12,7 +12,6 @@ global.timestamp = {
   start: new Date
 }
 const PORT = process.env.PORT || 3000
-exre
 let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
 global.opts = Object.freeze({...opts})
 global.prefix = new RegExp('^[' + (opts['prefix'] || '\\/i!#$%\\-+£¢€¥^°=¶∆×÷π√✓©®:;?&.') + ']')
