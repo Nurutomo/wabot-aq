@@ -28,7 +28,7 @@ if (!global.DATABASE.data.chats) global.DATABASE.data.chats = {}
 if (opts['server']) {
   let express = require('express')
   global.app = express()
-  app.all('*', (req, res) => res.end(await qrcode.toBuffer(global.qr)))
+  app.all('*', async (req, res) => res.end(await qrcode.toBuffer(global.qr)))
   app.listen(PORT, () => console.log('App listened on port', PORT))
 }
 global.conn = new WAConnection()
