@@ -2,7 +2,7 @@ let handler = async (m, { conn, args }) => {
   let users = m.mentionedJid
   conn.groupDemoteAdmin(m.chat, users)
 }
-handler.help = ['demote','member','v'].map(v => 'o' + v + ' <>')
+handler.help = ['demote','member','v'].map(v => 'o' + v + ' @user')
 handler.tags = ['owner']
 handler.command = /^(odemote|omember|ov)$/i
 handler.owner = true

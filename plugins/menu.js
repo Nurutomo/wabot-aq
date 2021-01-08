@@ -23,11 +23,14 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       'main': 'Main',
       'xp': 'Exp & Limit',
       'sticker': 'Sticker',
+      'quotes': 'Quotes',
       'admin': 'Admin',
       'group': 'Group',
       'tools': 'Tools',
       'jadibot': 'Jadi Bot',
       'owner': 'Owner',
+      'host': 'Host',
+      'advanced': 'Advanced'
       'info': 'Info',
     }
     let help = Object.values(global.plugins).map(plugin => {
