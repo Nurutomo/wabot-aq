@@ -84,8 +84,11 @@ conn.handler = async function (m) {
       if (!plugin) continue
       let _prefix = plugin.customPrefix ? plugin.customPrefix : conn.prefix ? conn.prefix : global.prefix
   	  if ((usedPrefix = (_prefix.exec(m.text) || '')[0])) {
-  		  let args = m.text.replace(usedPrefix, '').split` `.filter(v=>v)
-  		  let command = (args.shift() || '').toLowerCase()
+        let noPrefix = m.text.replace(usedPrefix, '')
+  		  let [command, ...args] = noPrefix.trim().split` `.filter(v=>v)
+        let _args = noPrefix.trim().split` `.slice(1)
+        let text = _args.join` `
+  		  command = (command || '').toLowerCase()
         let isOwner = m.fromMe
   			let isAccept = plugin.command instanceof RegExp ? plugin.command.test(command) :
         plugin.command instanceof Array ? plugin.command.includes(command) :
@@ -129,7 +132,15 @@ conn.handler = async function (m) {
         m.isCommand = true
         m.exp += 'exp' in plugin ? parseInt(plugin.exp) : 10
         if (!isPrems && global.DATABASE._data.users[m.sender].limit < 1 && plugin.limit) continue
-        await plugin(m, { usedPrefix, args, command, conn: this }).catch(e => this.reply(m.chat, util.format(e), m))
+        await plugin(m, {
+          usedPrefix,
+          noPrefix,
+          _args,
+          args,
+          command,
+          text,
+          conn: this
+        }).catch(e => this.reply(m.chat, util.format(e), m))
         if (!isPrems) m.limit = m.limit || plugin.limit || false
   			break
   		}

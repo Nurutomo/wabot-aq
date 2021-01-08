@@ -1,8 +1,8 @@
 let { MessageType } = require('@adiwajshing/baileys')
 
-let handler = async (m, { conn, args }) => {
+let handler = async (m, { conn, text }) => {
   let users = (await conn.groupMetadata(m.chat)).participants.map(u => u.jid)
-  conn.sendMessage(m.chat, args.join` `, MessageType.extendedText, { contextInfo: { mentionedJid: users } })
+  conn.sendMessage(m.chat, text, MessageType.extendedText, { contextInfo: { mentionedJid: users } })
 }
 handler.help = ['pengumuman','announce','hidetag'].map(v => v + ' [teks]')
 handler.tags = ['group']

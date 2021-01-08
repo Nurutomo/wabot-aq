@@ -1,5 +1,5 @@
-let handler = async (m, { conn, args }) => {
-  let [ l, r ] = args.join` `.split`|`
+let handler = async (m, { conn, text }) => {
+  let [ l, r ] = text.split`|`
   if (!l) l = ''
   if (!r) r = ''
   conn.reply(m.chat, l + readMore + r, m)

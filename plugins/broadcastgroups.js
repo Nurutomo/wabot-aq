@@ -1,6 +1,6 @@
-let handler  = async (m, { conn, args }) => {
+let handler  = async (m, { conn, text }) => {
   let groups = conn.chats.array.filter(v => v.jid.endsWith('g.us') && !v.read_only && v.message).map(v => v.jid)
-  for (let id of groups) conn.sendMessage(id, args.join` ` + (/broadcast/im.test(args.join` `) ? '' : ('\n' + readMore + '• _*BROADCAST*_ •')), m.mtype, m.msg.contextInfo ? {
+  for (let id of groups) conn.sendMessage(id, text + (/broadcast/im.test(text) ? '' : ('\n' + readMore + '• _*BROADCAST*_ •')), m.mtype, m.msg.contextInfo ? {
     contextInfo: m.msg.contextInfo
   } : {})
   conn.reply(m.chat, `_Mengirim pesan broadcast ke ${groups.length} grup_`, m)

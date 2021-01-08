@@ -1,6 +1,6 @@
-let handler  = async (m, { conn, args }) => {
+let handler  = async (m, { conn, text }) => {
   if (args.length > 0) {
-    conn.menu = args.join` `
+    conn.menu = text
     conn.reply(m.chat, 'Menu berhasil diatur\n' + info, m)
   } else {
     conn.menu = ''
