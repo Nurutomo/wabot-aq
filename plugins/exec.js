@@ -1,10 +1,10 @@
 let syntaxerror = require('syntax-error')
 let util = require('util')
 
-let handler  = async (m, { conn, usedPrefix, args }) => {
+let handler  = async (m, { conn, usedPrefix, command, text }) => {
   let _return
   let _syntax = ''
-  let _text = /^=/.test(usedPrefix) ? 'return ' : '' + args.join` `
+  let _text = (/^=/.test(usedPrefix) ? 'return ' : '') + command + ' ' + text
   try {
     let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', 'args', _text)
     _return = await exec((...args) => {
