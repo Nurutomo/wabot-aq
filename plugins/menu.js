@@ -30,7 +30,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       'jadibot': 'Jadi Bot',
       'owner': 'Owner',
       'host': 'Host',
-      'advanced': 'Advanced'
+      'advanced': 'Advanced',
       'info': 'Info',
     }
     let help = Object.values(global.plugins).map(plugin => {
