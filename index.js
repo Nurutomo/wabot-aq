@@ -36,9 +36,9 @@ if (opts['server']) {
 }
 global.conn = new WAConnection()
 let authFile = `${opts._[0] || 'session'}.data.json`
-fs.existsSync(authFile) && conn.loadAuthInfo(authFile)
-(opts['big-qr'] || opts['server']) && conn.on('qr', qr => generate(qr, { small: false }))
-opts['server'] && conn.on('qr', qr => { global.qr = qr })
+if (fs.existsSync(authFile)) conn.loadAuthInfo(authFile)
+if (opts['big-qr'] || opts['server']) conn.on('qr', qr => generate(qr, { small: false }))
+if (opts['server']) conn.on('qr', qr => { global.qr = qr })
 conn.on('credentials-updated', () => fs.writeFileSync(authFile, JSON.stringify(conn.base64EncodedAuthInfo())))
 let lastJSON = JSON.stringify(global.DATABASE.data)
 setInterval(async () => {
@@ -177,10 +177,11 @@ global.dfail = (type, m, conn) => {
   msg && conn.reply(m.chat, msg, m)
 }
 
-!opts['test'] && conn.connect().then(() => {
+
+if (opts['test']) process.stdin.on('data', chunk => conn.emit('message-new', { text: chunk.toString() }))
+else conn.connect().then(() => {
   global.timestamp.connect = new Date
 })
-opts['test'] && process.stdin.on('data', chunk => conn.emit('message-new', { text: chunk.toString() }))
 process.on('uncaughtException', console.error)
 // let strQuot = /(["'])(?:(?=(\\?))\2.)*?\1/
 
