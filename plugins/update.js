@@ -1,4 +1,4 @@
-let { execSync } = require('child_process'
+let { execSync } = require('child_process')
 let handler = async (m, { conn }) => {
   if (global.conn.user.jid == conn.user.jid) {
     let stdout = exexSync('git pull')
