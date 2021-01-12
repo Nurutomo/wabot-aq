@@ -1,4 +1,5 @@
-let handler = async (m, { conn, args }) => {
+let handler = async (m, { conn, args, usedPrefix }) => {
+  if (usedPrefix == ':') return
   let users = m.mentionedJid
   for (let user of users) conn.groupDemoteAdmin(m.chat, user).catch(console.log)
 }

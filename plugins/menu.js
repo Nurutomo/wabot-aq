@@ -33,7 +33,12 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       'host': 'Host',
       'advanced': 'Advanced',
       'info': 'Info',
+      '': 'No Category',
     }
+    for (let plugin of global.plugins)
+      if ('tags' in plugin)
+        for (let tag of plugin.tags)
+          if (!tag in  tags) tags[tag] = tag
     let help = Object.values(global.plugins).map(plugin => {
       return {
         help: plugin.help,
@@ -49,7 +54,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
           if (menu.help) groups[tag].push(menu)
     }
     conn.menu = conn.menu ? conn.menu : {}
-    let before = conn.menu.before || `${conn.getName(conn.user.jid)} • Bot\n\nHai, %name!\n*%exp XP*\n*%limit Limit*\n*%week %weton %date*\n*%time*\n%readmore`
+    let before = conn.menu.before || `${conn.getName(conn.user.jid)} • Bot\n\nHai, %name!\n*%exp XP*\n*%limit Limit*\n*%week %weton, %date*\n*%time*\n%readmore`
     let header = conn.menu.header || '╭─「 %category 」'
     let body   = conn.menu.body   || '│ • %cmd'
     let footer = conn.menu.footer || '╰────\n'
@@ -64,16 +69,13 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       _text += footer + '\n'
     }
     text =  typeof conn.menu == 'string' ? conn.menu : typeof conn.menu == 'object' ? _text : ''
-    text = text
-      .replace(/%p/g, _p)
-      .replace(/%exp/g, exp)
-      .replace(/%limit/g, limit)
-      .replace(/%name/g, name)
-      .replace(/%weton/g, weton)
-      .replace(/%week/g, week)
-      .replace(/%date/g, date)
-      .replace(/%time/g, time)
-      .replace(/%readmore/g, readMore)
+    let replace = {
+      '%': '%',
+      p: _p,
+      exp, limit, name, weton, week, date, time,
+      readmore: readMore
+    }
+    text = text.replace(new RegExp(`%(${Object.keys(replace).join`|`})`, 'g'), (_, name) => replace[name])
     conn.reply(m.chat, text.trim(), m)
   } catch (e) {
     conn.reply(m.chat, 'Maaf, menu sedang error', m)
