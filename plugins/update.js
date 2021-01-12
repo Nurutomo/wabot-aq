@@ -1,7 +1,7 @@
 let { execSync } = require('child_process')
 let handler = async (m, { conn }) => {
   if (global.conn.user.jid == conn.user.jid) {
-    let stdout = exexSync('git pull')
+    let stdout = execSync('git pull')
     conn.reply(m.chat, stdout.toString(), m)
   }
 }
