@@ -35,8 +35,8 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       'info': 'Info',
       '': 'No Category',
     }
-    for (let plugin of global.plugins)
-      if ('tags' in plugin)
+    for (let plugin of Object.values(global.plugins))
+      if (plugin && 'tags' in plugin)
         for (let tag of plugin.tags)
           if (!tag in  tags) tags[tag] = tag
     let help = Object.values(global.plugins).map(plugin => {
