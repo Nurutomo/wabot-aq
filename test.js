@@ -1,5 +1,6 @@
 let fs = require('fs')
 let path = require('path')
+let assert = require('assert')
 let { spawn } = require('child_process')
 let folders = ['.', ...Object.keys(require('./package.json').directories)]
 let files = []
@@ -10,6 +11,6 @@ for (let file of files) {
   if (file == path.join(__dirname, __filename)) continue
   console.error('Checking', file)
   spawn('node', ['-c', file])
-  .on('exit', () => console.error('Done', file))
-  .stderr.on('data', chunk => console.log(chunk.toString()))
+  .on('exit', () => assert.ok(file) & console.log('Done', file))
+  .stderr.on('data', chunk => assert.fail(chunk.toString()))
 }

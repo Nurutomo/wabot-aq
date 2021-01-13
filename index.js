@@ -96,11 +96,15 @@ conn.handler = async function (m) {
   			if (!isAccept) continue
         let isMods = isOwner || global.mods.includes(m.sender)
         let isPrems = isMods || global.prems.includes(m.sender)
-        let participants = m.isGroup ? (await this.groupMetadata(m.chat)).participants : []
+        let groupMetadata = m.isGroup ? await this.groupMetadata(m.chat) : {}
+        let participants = m.isGroup ? groupMetadata.participants : []
         let user = m.isGroup ? participants.filter(u => u.jid == m.sender)[0] : {}
         let bot = m.isGroup ? participants.filter(u => u.jid == this.user.jid)[0] : {}
         let isAdmin = user.isAdmin || user.isSuperAdmin || false
         let isBotAdmin = bot.isAdmin || bot.isSuperAdmin || false
+        if (plugin.before) plugin.before({
+          usedPrefix
+        })
         let fail = plugin.fail || global.dfail
         if (plugin.owner && !isOwner) {
           fail('owner', m, this)
@@ -132,16 +136,23 @@ conn.handler = async function (m) {
         m.isCommand = true
         m.exp += 'exp' in plugin ? parseInt(plugin.exp) : 10
         if (!isPrems && global.DATABASE._data.users[m.sender].limit < 1 && plugin.limit) continue
-        await plugin(m, {
-          usedPrefix,
-          noPrefix,
-          _args,
-          args,
-          command,
-          text,
-          conn: this
-        }).catch(e => this.reply(m.chat, util.format(e), m))
-        if (!isPrems) m.limit = m.limit || plugin.limit || false
+        try {
+          await plugin(m, {
+            usedPrefix,
+            noPrefix,
+            _args,
+            args,
+            command,
+            text,
+            conn: this,
+            participants,
+            groupMetdadata
+          })
+          if (!isPrems) m.limit = m.limit || plugin.limit || false
+        } catch (e) {
+          console.log(e)
+          conn.reply(m.chat, util.format(e), m)
+        }
   			break
   		}
   	}
@@ -203,7 +214,8 @@ console.log(global.plugins)
 fs.watch(path.join(__dirname, 'plugins'), (event, filename) => {
   if (pluginFilter(filename)) {
     let dir = './plugins/' + filename
-    if (delete require.cache[require.resolve(dir)]) {
+    if (require.resolve(dir) in require.cache) {
+      delete require.cache[require.resolve(dir)]
       if (fs.existsSync(require.resolve(dir))) conn.logger.info(`re - require plugin '${dir}'`)
       else {
         conn.logger.warn(`deleted plugin '${dir}'`)
