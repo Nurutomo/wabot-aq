@@ -135,7 +135,10 @@ conn.handler = async function (m) {
 
         m.isCommand = true
         m.exp += 'exp' in plugin ? parseInt(plugin.exp) : 10
-        if (!isPrems && global.DATABASE._data.users[m.sender].limit < 1 && plugin.limit) continue
+        if (!isPrems && global.DATABASE._data.users[m.sender].limit < 1 && plugin.limit) {
+          this.reply(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, m)
+          continue
+        }
         try {
           await plugin(m, {
             usedPrefix,
@@ -151,8 +154,9 @@ conn.handler = async function (m) {
           if (!isPrems) m.limit = m.limit || plugin.limit || false
         } catch (e) {
           console.log(e)
-          conn.reply(m.chat, util.format(e), m)
-        }
+          this.reply(m.chat, util.format(e), m)
+        } finally {
+          if (m.limit == true) this.reply(m.chat, '1 Limit terpakai', m)
   			break
   		}
   	}

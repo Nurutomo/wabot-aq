@@ -44,7 +44,8 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       return {
         help: plugin.help,
         tags: plugin.tags,
-        prefix: 'customPrefix' in plugin
+        prefix: 'customPrefix' in plugin,
+        limit: plugin.limit
       }
     })
     let groups = {}
@@ -57,7 +58,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     conn.menu = conn.menu ? conn.menu : {}
     let before = conn.menu.before || `${conn.getName(conn.user.jid)} • Bot\n\nHai, %name!\n*%exp XP*\n*%limit Limit*\n*%week %weton, %date*\n*%time*\n%readmore`
     let header = conn.menu.header || '╭─「 %category 」'
-    let body   = conn.menu.body   || '│ • %cmd'
+    let body   = conn.menu.body   || '│ • %cmd%islimit'
     let footer = conn.menu.footer || '╰────\n'
     let after  = conn.menu.after  || conn.user.jid == global.conn.user.jid ? '' : `\nPowered by https://wa.me${global.conn.user.jid}`
     let _text  = before + '\n'
@@ -65,7 +66,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       _text += header.replace(/%category/g, tags[tag]) + '\n'
       for (let menu of groups[tag]) {
         for (let help of menu.help)
-          _text += body.replace(/%cmd/g, menu.prefix ? help : '%p' + help) + '\n'
+          _text += body.replace(/%cmd/g, menu.prefix ? help : '%p' + help).replace(/%islimit/g, ' (Limit)')  + '\n'
       }
       _text += footer + '\n'
     }

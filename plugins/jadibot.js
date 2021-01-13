@@ -35,6 +35,7 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
       conn.close()
       delete global.conns[id]
     }, 60000)
+    conn.on('close', conn.logger.info)
     global.conns.push(conn)
   } else conn.reply(m.chat, 'Tidak bisa membuat bot didalam bot!\n\nhttps://wa.me/' + global.conn.user.jid.split`@`[0] + '?text=.jadibot', m)
 }
@@ -51,6 +52,7 @@ handler.admin = false
 handler.botAdmin = false
 
 handler.fail = null
+handler.limit = true
 
 module.exports = handler
 
