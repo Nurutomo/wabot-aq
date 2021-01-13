@@ -27,6 +27,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       'quotes': 'Quotes',
       'admin': 'Admin',
       'group': 'Group',
+      'downloader': 'Downloader',
       'tools': 'Tools',
       'jadibot': 'Jadi Bot',
       'owner': 'Owner',
