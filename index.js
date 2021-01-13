@@ -146,7 +146,7 @@ conn.handler = async function (m) {
             text,
             conn: this,
             participants,
-            groupMetdadata
+            groupMetadata
           })
           if (!isPrems) m.limit = m.limit || plugin.limit || false
         } catch (e) {
