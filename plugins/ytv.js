@@ -1,4 +1,4 @@
-let fetch = require('fetch')
+let fetch = require('node-fetch')
 let { JSDOM } = require('jsdom')
 let limit = 300
 let handler = async (m, { conn, args }) => {

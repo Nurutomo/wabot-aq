@@ -5,7 +5,7 @@ let handler = async (m, { conn }) => {
     global.DATABASE._data.users[m.sender].lastclaim = new Date * 1
   } else conn.reply(m.chat, 'Anda sudah mengklaim klaim harian  hari ini', m)
 }
-handler.help = ['daily', 'claim'])
+handler.help = ['daily', 'claim']
 handler.tags = ['xp']
 handler.command = /^(daily|claim)$/i
 handler.owner = false
