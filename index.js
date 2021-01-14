@@ -157,6 +157,7 @@ conn.handler = async function (m) {
           this.reply(m.chat, util.format(e), m)
         } finally {
           if (m.limit == true) this.reply(m.chat, '1 Limit terpakai', m)
+        }
   			break
   		}
   	}
