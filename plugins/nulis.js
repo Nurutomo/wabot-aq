@@ -6,10 +6,11 @@ let fontPath = 'src/font/Zahraaa.ttf'
 let handler  = async (m, { conn, args }) => {
   let inputPath ='src/kertas/magernulis1.jpg'
   let outputPath = 'tmp/hasil.jpg'
-  let tgl = new Date().toLocaleDateString()
-  let hari = ':v'
+  let d = new Date
+  let tgl = d.toLocaleDateString('id-Id')
+  let hari = d.toLocaleDateString('id-Id', { weekday: 'long' })
   let teks = args.join` `
-  conn.reply(m.chat, util.format({fontPath, inputPath, outputPath, tgl, hari, teks}), m)
+  // conn.reply(m.chat, util.format({fontPath, inputPath, outputPath, tgl, hari, teks}), m)
   spawn('convert', [
     inputPath,
     '-font',
@@ -17,39 +18,39 @@ let handler  = async (m, { conn, args }) => {
     '-size',
     '1024x784',
     '-pointsize',
-    '100',
+    '20',
     '-interline-spacing',
     '1',
     '-annotate',
-    '+4100+460',
+    '+800+80',
     hari,
     '-font',
     fontPath,
     '-size',
-    '700x960',
+    '1024x784',
     '-pointsize',
-    '100',
+    '18',
     '-interline-spacing',
     '1',
     '-annotate',
-    '+4100+640',
+    '+808+105',
     tgl,
     '-font',
     fontPath,
     '-size',
-    '6000x8000',
+    '1024x784',
     '-pointsize',
-    '130',
+    '25',
     '-interline-spacing',
-    '1',
+    '-17',
     '-annotate',
-    '+1010+1010',
+    '+350+148',
     teks,
     outputPath
   ])
   .on('error', e => conn.reply(m.chat, util.format(e), m))
   .on('exit', () => {
-    conn.sendFile(m.chat, outputPath, 'nulis.jpg', 'p')
+    conn.sendFile(m.chat, outputPath, 'nulis.jpg', 'Hati² ketahuan:v')
   })
 }
 handler.help = ['n'].map(v => v + 'ulis <teks>')
