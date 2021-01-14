@@ -61,7 +61,7 @@ function ytv(url) {
                     console.log('Scraping...')
                     document = (new JSDOM(res.result)).window.document
                     yaha = document.querySelectorAll('td')
-                    filesize = yaha[yaha.length - 23].innerHTML
+                    filesize = yaha[yaha.length - 10].innerHTML
                     id = /var k__id = "(.*?)"/.exec(document.body.innerHTML) || ['', '']
                     thumb = document.querySelector('img').src
                     title = document.querySelector('b').innerHTML
