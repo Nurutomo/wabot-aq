@@ -8,7 +8,7 @@ let handler  = async (m, { conn, args, usedPrefix }) => {
   let math = genMath(mode)
   global.math[id] = [
     await conn.reply(m.chat, `Berapa hasil dari *${math.str}*?\nTimeout: ${math.time.toFixed(2)} detik\nBonus Jawaban Benar: ${math.bonus} XP`, m),
-    math, 4
+    math, 4,
     setTimeout(() => {
       if (global.math[id]) conn.reply(m.chat, `Waktu habis!\nJawabannya adalah ${math.result}`, global.math[id][0])
       delete global.math[id]
