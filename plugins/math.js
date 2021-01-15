@@ -41,7 +41,7 @@ function genMath(mode) {
   let a = randomInt(a1, a2)
   let b = randomInt(b1, b2)
   let op = pickRandom([...ops])
-  let result = (new Function(`return ${a} ${op.replace('/', '*'} ${b}`))()
+  let result = (new Function(`return ${a} ${op.replace('/', '*')} ${b}`))()
   if (op == '/') [a, result] = [result, a]
   return {
     str: `${a} ${operators[op]} ${b}`,
