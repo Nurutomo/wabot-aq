@@ -149,7 +149,10 @@ conn.handler = async function (m) {
             text,
             conn: this,
             participants,
-            groupMetadata
+            groupMetadata,
+            isAdmin,
+            isBotAdmin,
+            isPrems
           })
           if (!isPrems) m.limit = m.limit || plugin.limit || false
         } catch (e) {
