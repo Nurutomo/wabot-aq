@@ -98,8 +98,8 @@ conn.handler = async function (m) {
         let isPrems = isMods || global.prems.includes(m.sender)
         let groupMetadata = m.isGroup ? await this.groupMetadata(m.chat) : {}
         let participants = m.isGroup ? groupMetadata.participants : []
-        let user = m.isGroup ? participants.filter(u => u.jid == m.sender)[0] : {}
-        let bot = m.isGroup ? participants.filter(u => u.jid == this.user.jid)[0] : {}
+        let user = m.isGroup ? participants.find(u => u.jid == m.sender) : {}
+        let bot = m.isGroup ? participants.find(u => u.jid == this.user.jid) : {}
         let isAdmin = user.isAdmin || user.isSuperAdmin || false
         let isBotAdmin = bot.isAdmin || bot.isSuperAdmin || false
         if (plugin.before) plugin.before({
