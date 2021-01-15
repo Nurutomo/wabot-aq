@@ -75,7 +75,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     text =  typeof conn.menu == 'string' ? conn.menu : typeof conn.menu == 'object' ? _text : ''
     let replace = {
       '%': '%',
-      p: _p, uptime: _uptime
+      p: _p, uptime: _uptime,
       exp, limit, name, weton, week, date, time,
       readmore: readMore
     }
