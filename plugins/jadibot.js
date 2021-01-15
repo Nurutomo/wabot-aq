@@ -6,7 +6,7 @@ if (global.conns instanceof Array) console.log()// for (let i of global.conns) g
 else global.conns = []
 
 let handler  = async (m, { conn, args, usedPrefix, command }) => {
-  if (args[0] == 'plz' || global.conn.user.jid == conn.user.jid) {
+  if ((args[0] && args[0] == 'plz') || global.conn.user.jid == conn.user.jid) {
     let id = global.conns.length
     let conn = new WAConnection()
     if (args[0] && args[0].length > 200) {

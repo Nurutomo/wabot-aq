@@ -3,7 +3,7 @@ let handler = async (m, { conn }) => {
   let id = m.chat
   if (!m.quoted) return
   if (m.quoted.sender != conn.user.jid) return
-  if (!/^Berapa hasil dari.+\?\nTimeout:.+detik\nBonus Jawaban Benar:.+\nXP$/i.test(m.quoted.text)) return
+  if (!/^Berapa hasil dari/i.test(m.quoted.text)) return
   if (!(m.chat in global.math)) return conn.reply(m.chat, 'Soal itu telah berakhir', m)
   if (m.quoted.id == global.math[id][0].id) {
   let math = global.math[id][1]

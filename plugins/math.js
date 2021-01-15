@@ -7,7 +7,7 @@ let handler  = async (m, { conn, args, usedPrefix }) => {
   if (id in global.math) return conn.reply(m.chat, 'Masih ada soal belum terjawab di chat ini', global.math[id][0])
   let math = genMath(mode)
   global.math[id] = [
-    await conn.reply(m.chat, `Berapa hasil dari *${math.str}*?\nTimeout: ${math.time.toFixed(2)} detik\nBonus Jawaban Benar: ${math.bonus} XP`, m),
+    await conn.reply(m.chat, `Berapa hasil dari *${math.str}*?\n\nTimeout: ${(math.time / 1000).toFixed(2)} detik\nBonus Jawaban Benar: ${math.bonus} XP`, m),
     math, 4,
     setTimeout(() => {
       if (global.math[id]) conn.reply(m.chat, `Waktu habis!\nJawabannya adalah ${math.result}`, global.math[id][0])
@@ -22,11 +22,11 @@ handler.command = /^math/i
 module.exports = handler
 
 let modes = {
-  noob: [-3, 3,-3, 3, '+-', 60000, 35],
-  easy: [-10, 10, -10, 10, '+-', 60000, 50],
-  medium: [-40, 40, -20, 20, '*/+-', 90000, 150],
-  hard: [-100, 100, -70, 70, '*/+-', 180000, 400],
-  extreme: [-9999, 9999, -9999, 9999, '*/+-', 300000, 9999]
+  noob: [-3, 3,-3, 3, '+-', 20000, 35],
+  easy: [-10, 10, -10, 10, '+-', 30000, 50],
+  medium: [-40, 40, -20, 20, '*/+-', 50000, 150],
+  hard: [-100, 100, -70, 70, '*/+-', 60000, 400],
+  extreme: [-999999, 999999, -999999, 999999, '*/+-', 300000, 9999]
 }
 
 let operators = {
@@ -41,7 +41,7 @@ function genMath(mode) {
   let a = randomInt(a1, a2)
   let b = randomInt(b1, b2)
   let op = pickRandom([...ops])
-  let result = (new Function(`return ${a} ${op.replace('/', '*')} ${b}`))()
+  let result = (new Function(`return ${a} ${op.replace('/', '*')} ${b < 0 ? `(${b})` : b}`))()
   if (op == '/') [a, result] = [result, a]
   return {
     str: `${a} ${operators[op]} ${b}`,
