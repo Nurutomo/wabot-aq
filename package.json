@@ -27,6 +27,7 @@
     "google-it": "^1.6.0",
     "jsdom": "^16.4.0",
     "node-fetch": "^2.6.1",
+    "node-gtts": "^2.0.2",
     "qrcode": "^1.4.4",
     "syntax-error": "^1.4.0",
     "yargs": "^16.2.0"

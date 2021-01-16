@@ -53,5 +53,5 @@ Bagian Menu Header & Footer:
 
 Bagian Menu Body:
 %cmd (Command)
-%isLimit (Jika command di limit)
+%islimit (Jika command di limit)
 `.trim()

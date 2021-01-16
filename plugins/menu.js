@@ -28,6 +28,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       'quotes': 'Quotes',
       'admin': 'Admin',
       'group': 'Group',
+      'internet': 'Internet',
       'downloader': 'Downloader',
       'tools': 'Tools',
       'jadibot': 'Jadi Bot',
@@ -61,7 +62,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     let header = conn.menu.header || '╭─「 %category 」'
     let body   = conn.menu.body   || '│ • %cmd%islimit'
     let footer = conn.menu.footer || '╰────\n'
-    let after  = conn.menu.after  || conn.user.jid == global.conn.user.jid ? '' : `\nPowered by https://wa.me${global.conn.user.jid}`
+    let after  = conn.menu.after  || conn.user.jid == global.conn.user.jid ? '' : `\nPowered by https://wa.me/${global.conn.user.jid.split`@`[0]}`
     let _text  = before + '\n'
     for (let tag in groups) {
       _text += header.replace(/%category/g, tags[tag]) + '\n'
@@ -99,6 +100,7 @@ handler.admin = false
 handler.botAdmin = false
 
 handler.fail = null
+handler.exp = 3
 
 module.exports = handler
 
