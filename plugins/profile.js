@@ -1,5 +1,5 @@
 let handler = async (m, { conn }) => {
-  let pp
+  let pp = './src/avatar_contact.png'
   try {
     pp = await conn.getProfilePicture(m.sender)
   } catch (e) {
@@ -12,12 +12,11 @@ Number: +${m.sender.split`@`[0]}
 Link: https://wa.me/${m.sender.split`@`[0]}
 `.trim()
     let mentionedJid = [m.sender]
-    if (pp) conn.sendFile(m.chat, pp, 'pp.jpg', str, m, false, { contextInfo: { mentionedJid }})
-    else conn.reply(m.chat, str, m, { contextInfo: { mentionedJid }})
+    conn.sendFile(m.chat, pp, 'pp.jpg', str, m, false, { contextInfo: { mentionedJid }})
   }
 }
 handler.help = ['profile']
 handler.tags = ['tools']
-handler.command = /^profile$/
+handler.command = /^profile$/i
 module.exports = handler
 

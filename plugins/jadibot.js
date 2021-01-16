@@ -6,6 +6,8 @@ if (global.conns instanceof Array) console.log()// for (let i of global.conns) g
 else global.conns = []
 
 let handler  = async (m, { conn, args, usedPrefix, command }) => {
+  let parent = args[0] && args[0] == 'plz' ? conn : global.conn
+  let auth = false
   if ((args[0] && args[0] == 'plz') || global.conn.user.jid == conn.user.jid) {
     let id = global.conns.length
     let conn = new WAConnection()
@@ -14,21 +16,23 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
       // global.conn.reply(m.isGroup ? m.sender : m.chat, json, m)
       let obj = JSON.parse(json)
       await conn.loadAuthInfo(obj)
+      auth = true
     }
     conn.on('qr', async qr => {
-      let scan = await global.conn.sendFile(m.chat, await qrcode.toDataURL(qr, { scale: 8 }), 'qrcode.png', 'Scan QR ini untuk jadi bot sementara\n\n1. Klik titik tiga di pojok kanan atas\n2. Ketuk WhatsApp Web\n3. Scan QR ini \nQR Expired dalam 20 detik', m)
+      let scan = await parent.sendFile(m.chat, await qrcode.toDataURL(qr, { scale: 8 }), 'qrcode.png', 'Scan QR ini untuk jadi bot sementara\n\n1. Klik titik tiga di pojok kanan atas\n2. Ketuk WhatsApp Web\n3. Scan QR ini \nQR Expired dalam 20 detik', m)
       setTimeout(() => {
-        global.conn.deleteMessage(m.chat, scan.key)
+        parent.deleteMessage(m.chat, scan.key)
       }, 30000)
     })
     conn.once('connection-validated', user => {
-      global.conn.reply(m.chat, 'Berhasil tersambung dengan WhatsApp Anda.\n*NOTE: kalo bot aku mati, bot kamu juga.*\n' + JSON.stringify(user, null, 2), m)
+      parent.reply(m.chat, 'Berhasil tersambung dengan WhatsApp - mu.\n*NOTE: Ini cuma numpang*\n' + JSON.stringify(user, null, 2), m)
     })
     conn.on('message-new', global.conn.handler)
     conn.regenerateQRIntervalMs = null
     conn.connect().then(async ({user}) => {
-      await global.conn.sendMessage(user.jid, `Kamu bisa login tanpa qr dengan pesan dibawab ini. untuk mendapatkan kode lengkapnya, silahkan kirim *${usedPrefix}getcode* untuk mendapatkan kode yang akurat`, MessageType.extendedText)
-      global.conn.sendMessage(user.jid, `${usedPrefix + command} ${Buffer.from(JSON.stringify(conn.base64EncodedAuthInfo())).toString('base64')}`, MessageType.extendedText)
+      if (auth) return
+      await parent.sendMessage(user.jid, `Kamu bisa login tanpa qr dengan pesan dibawah ini. untuk mendapatkan kode lengkapnya, silahkan kirim *${usedPrefix}getcode* untuk mendapatkan kode yang akurat`, MessageType.extendedText)
+      parent.sendMessage(user.jid, `${usedPrefix + command} ${Buffer.from(JSON.stringify(conn.base64EncodedAuthInfo())).toString('base64')}`, MessageType.extendedText)
     })
     setTimeout(() => {
       if (conn.user) return
@@ -37,7 +41,7 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
     }, 60000)
     conn.on('close', conn.logger.info)
     global.conns.push(conn)
-  } else conn.reply(m.chat, 'Tidak bisa membuat bot didalam bot!\n\nhttps://wa.me/' + global.conn.user.jid.split`@`[0] + '?text=.jadibot', m)
+  } else throw 'Tidak bisa membuat bot didalam bot!\n\nhttps://wa.me/' + global.conn.user.jid.split`@`[0] + '?text=.jadibot'
 }
 handler.help = ['jadibot']
 handler.tags = ['jadibot']
