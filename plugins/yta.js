@@ -10,10 +10,10 @@ let handler = async (m, { conn, args, isPrems, isOwner }) => {
 *Filesize:* ${filesizeF}
 *${isLimit ? 'Pakai ': ''}Link:* ${dl_link}
 `.trim(), m)
-  if (!isLimit) conn.sendFile(m.chat, dl_link, 'video.mp4', `
+  if (!isLimit) conn.sendFile(m.chat, dl_link, title + '.mp3', `
 *Title:* ${title}
 *Filesize:* ${filesizeF}
-`.trim(), m)
+`.trim(), m, false, { asDocument: true })
 }
 handler.help = ['mp3','a'].map(v => 'yt' + v + ' <url>')
 handler.tags = ['downloader']

@@ -16,23 +16,9 @@ function tts(lang, text) {
     try {
       let tts = gtts(lang)
       let filePath = path.join(__dirname, '../tmp', (1 * new Date) + '.wav')
-      let mp3 = filePath.replace(/wav$/, 'opus')
       tts.save(filePath, text, () => {
-        spawn('ffmpeg', [
-          '-i', path.resolve(filePath),
-          '-vn',
-          '-c:a', 'libopus',
-          '-b:a', '128k',
-          '-vbr', 'on',
-          '-compression_level', '10',
-          path.resolve(mp3)
-        ])
-        .on('exit', (err) => {
+          resolve(fs.readFileSync(filePath))
           fs.unlinkSync(filePath)
-          if (err) reject(err)
-          resolve(fs.readFileSync(mp3))
-          fs.unlinkSync(mp3)
-        })
       })
     } catch (e) { reject(e) }
   })
