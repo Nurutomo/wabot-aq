@@ -10,11 +10,12 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args }) =>
     m.reply('Fuck you!')
     throw '-_-'
   }
+  let i = 20
   try {
     let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', 'args', 'global', _text)
     _return = await exec((...args) => {
       console.log(...args)
-      return conn.reply(m.chat, util.format(...args), m)
+      if (--i > 0)return conn.reply(m.chat, util.format(...args), m)
     }, m, handler, require, { ...conn, deleteChat: conn.clearAuthInfo }, CustomArray, {...process, exit: function exit() { return ':P' }}, args, Object.freeze({ ...global, global: 'Lu mau apa kesini -_-'}))
   } catch (e) {
     let err = await syntaxerror(_text)
