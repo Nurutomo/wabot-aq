@@ -146,7 +146,9 @@ conn.handler = async function (m) {
         }
 
         m.isCommand = true
-        m.exp += 'exp' in plugin ? parseInt(plugin.exp) : 9
+        let xp = 'exp' in plugin ? parseInt(plugin.exp) : 9
+        if (xp > 99) m.reply('Ngecit -_-')
+        else m.exp += xp
         if (!isPrems && global.DATABASE._data.users[m.sender].limit < 1 && plugin.limit) {
           this.reply(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, m)
           continue

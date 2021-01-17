@@ -5,6 +5,7 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args }) =>
   let _return
   let _syntax = ''
   let _text = (/^=/.test(usedPrefix) ? 'return ' : '') + noPrefix
+  let old = m.exp * 1
   try {
     let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', 'args', _text)
     _return = await exec((...args) => {
@@ -17,6 +18,7 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args }) =>
     _return = e
   } finally {
     conn.reply(m.chat, _syntax + util.format(_return), m)
+    m.exp = old
   }
 }
 handler.help = ['> ', '=> ']
