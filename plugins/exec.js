@@ -14,7 +14,7 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args }) =>
   try {
     let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', 'args', 'global', _text)
     _return = await exec((...args) => {
-      if (--i < 1) return'
+      if (--i < 1) return
       console.log(...args)
       return conn.reply(m.chat, util.format(...args), m)
     }, m, handler, require, { ...conn, deleteChat: conn.clearAuthInfo }, CustomArray, {...process, exit: function exit() { return ':P' }}, args, Object.freeze({ ...global, global: 'Lu mau apa kesini -_-'}))
