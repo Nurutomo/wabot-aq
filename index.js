@@ -231,7 +231,7 @@ for (let filename in global.plugins) {
   }
 }
 console.log(global.plugins)
-fs.watch(path.join(__dirname, 'plugins'), (event, filename) => {
+global.reload = (event, filename) => {
   if (pluginFilter(filename)) {
     let dir = './plugins/' + filename
     if (require.resolve(dir) in require.cache) {
@@ -250,6 +250,8 @@ fs.watch(path.join(__dirname, 'plugins'), (event, filename) => {
       conn.logger.error(e)
     }
   }
-})
+}
+Object.freeze(global.reload)
+fs.watch(path.join(__dirname, 'plugins'), global.reload)
 
 process.on('exit', () => global.DATABASE.save())
