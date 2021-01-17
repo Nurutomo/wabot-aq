@@ -1,5 +1,5 @@
 let { MessageType } = require('@adiwajshing/baileys')
-let handler = async (m, { conn }) => {
+let handler = async (m, { conn, text }) => {
   let cm = copy(m)
   if (m.isGroup) cm.participant = m.mentionedJid[0]
   cm.key.fromMe = false
