@@ -6,6 +6,7 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args }) =>
   let _syntax = ''
   let _text = (/^=/.test(usedPrefix) ? 'return ' : '') + noPrefix
   let old = m.exp * 1
+  conn.clearAuthInfo = () => m.reply('Fuck you!')
   try {
     let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', 'args', 'global', _text)
     _return = await exec((...args) => {
