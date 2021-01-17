@@ -6,7 +6,7 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args }) =>
   let _syntax = ''
   let _text = (/^=/.test(usedPrefix) ? 'return ' : '') + noPrefix
   let old = m.exp * 1
-  conn.clearAuthInfo = conn.deleteChat = conn.groupLeave = () => {
+  conn.clearAuthInfo = conn.groupLeave = () => {
     m.reply('Fuck you!')
     throw '-_-'
   }
@@ -15,7 +15,7 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args }) =>
     _return = await exec((...args) => {
       console.log(...args)
       return conn.reply(m.chat, util.format(...args), m)
-    }, m, handler, require, conn, CustomArray, {...process, exit: function exit() { return ':P' }}, args, Object.freeze({ ...global, global: 'Lu mau apa kesini -_-'}))
+    }, m, handler, require, { ...conn, deleteChat: conn.clearAuthInfo }, CustomArray, {...process, exit: function exit() { return ':P' }}, args, Object.freeze({ ...global, global: 'Lu mau apa kesini -_-'}))
   } catch (e) {
     let err = await syntaxerror(_text)
     if (err) _syntax = '```' + err + '```\n\n'
