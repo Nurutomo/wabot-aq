@@ -17,7 +17,7 @@ ${sortedLim.slice(0, len).map(([user, data], i) => (i + 1) + '. @' + user.split`
 `.trim()
   conn.reply(m.chat, text, m, {
     contextInfo: {
-      mentionedJid: [...usersExp.slice(0, len), usersLim.slice(0, len))
+      mentionedJid: [...usersExp.slice(0, len), ...usersLim.slice(0, len))
     }
   })
 }
