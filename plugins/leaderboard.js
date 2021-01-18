@@ -13,7 +13,7 @@ ${sortedExp.slice(0, len).map(([user, data], i) => (i + 1) + '. @' + user.split`
 • *Limit Leaderboard Top ${len}* •
 Kamu: *${usersLim.indexOf(m.sender) + 1}* dari *${usersLim.length}*
 
-${sortedLim.slice(0, len).map(([user, data], i) => (i + 1) + '. @' + user.split`@`[0] + ': *' + data.exp + ' Limit*').join`\n`}
+${sortedLim.slice(0, len).map(([user, data], i) => (i + 1) + '. @' + user.split`@`[0] + ': *' + data.limit + ' Limit*').join`\n`}
 `.trim()
   conn.reply(m.chat, text, m, {
     contextInfo: {
