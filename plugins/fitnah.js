@@ -8,15 +8,13 @@ let handler = async (m, { conn, text }) => {
   if (!who) throw 'Tag salah satu lah'
   cm.key.fromMe = false
   cm.message[m.mtype] = copy(m.msg)
-  txt = text.replace('@' + who.split`@`[0], '').trimStart()
-	if (m.mtype == MessageType.text) cm.message[m.mtype] = txt
-	if (m.mtype == MessageType.extendedText) cm.message[m.mtype].text = txt
-  else if (m.mtype == MessageType.image || m.mtype == MessageType.video) cm.message[m.mtype].caption = txt
-
-  conn.emit('message-new', cm)
+  let sp = '@' + who.split`@`[0]
+  let [fake, ...real] = text.split(sp)
+  conn.fakeReply(m.chat, real.join(sp).trimStart(), who, fake.trimEnd()/*, { contextInfo: {
+    mentionedJid: [conn.parseMention(real.join(sp))]
+  }}*/)
 }
-handler.command = /^sudo$/
-handler.owner = true
+handler.command = /^(fitnah|fakereply)$/
 
 module.exports = handler
 
