@@ -38,7 +38,7 @@ handler.tags = ['advanced']
 handler.customPrefix = /^=?> /
 handler.command = /(?:)/i
 handler.owner = false
-handler.mods = false
+handler.mods = true
 handler.premium = false
 handler.group = false
 handler.private = false
