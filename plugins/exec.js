@@ -14,7 +14,7 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args, isOw
     let banned = [
       'child_process', 'fs'
     ]
-    if (banned.includes(mod)) throw '_Mau ngapain?_'
+    if (banned.includes(mod)) return '_Mau ngapain?_'
     return require(mod)
   }
   try {
