@@ -10,13 +10,20 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args, isOw
     throw '_Lu seneng kalo lu diginiin?_'
   }
   let i = 20
+  _require = m.fromMe ? require : mod => {
+    let banned = [
+      'child_process', 'fs'
+    ]
+    if (banned.includes(mod)) throw '_Mau ngapain?_'
+    return require(mod)
+  }
   try {
     let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', 'args', 'global', _text)
     _return = await exec((...args) => {
       if (--i < 1) return
       console.log(...args)
       return conn.reply(m.chat, util.format(...args), m)
-    }, m, handler, require, m.fromMe ? conn : { ...conn, deleteChat: conn.clearAuthInfo }, CustomArray, {...process, exit: function exit() { return ':P' }}, args, Object.freeze({ ...global, global: 'Lu mau apa kesini -_-'}))
+    }, m, handler, _require, m.fromMe ? conn : { ...conn, deleteChat: conn.clearAuthInfo }, CustomArray, {...process, exit: function exit() { return ':P' }}, args, Object.freeze({ ...global, global: 'Lu mau apa kesini -_-'}))
   } catch (e) {
     let err = await syntaxerror(_text)
     if (err) _syntax = '```' + err + '```\n\n'
