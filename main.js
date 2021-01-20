@@ -251,7 +251,7 @@ for (let filename in global.plugins) {
     delete global.plugins[filename]
   }
 }
-console.log(global.plugins)
+console.log(Object.keys(global.plugins))
 global.reload = (event, filename) => {
   if (pluginFilter(filename)) {
     let dir = './plugins/' + filename

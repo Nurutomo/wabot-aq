@@ -1,8 +1,16 @@
 global.math = global.math ? global.math : {}
 let handler  = async (m, { conn, args, usedPrefix }) => {
-  if (args.length < 1) return conn.reply(m.chat, 'Mode: noob | easy | medium | hard | extreme\n\nContoh penggunaan: ' + usedPrefix + 'math medium', m)
+  if (args.length < 1) return conn.reply(m.chat, `
+Mode: ${Object.keys(modes).join(' | ')}
+
+Contoh penggunaan: ${usedPrefix}math medium
+`.trim(), m)
   let mode = args[0].toLowerCase()
-  if (!(mode in modes)) return conn.reply(m.chat, 'Mode: noob | easy | medium | hard | extreme\n\nContoh penggunaan: ' + usedPrefix + 'math medium', m)
+  if (!(mode in modes)) return conn.reply(m.chat, `
+Mode: ${Object.keys(modes).join(' | ')}
+
+Contoh penggunaan: ${usedPrefix}math medium
+`.trim(), m)
   let id = m.chat
   if (id in global.math) return conn.reply(m.chat, 'Masih ada soal belum terjawab di chat ini', global.math[id][0])
   let math = genMath(mode)
@@ -22,12 +30,16 @@ handler.command = /^math/i
 module.exports = handler
 
 let modes = {
-  noob: [-3, 3,-3, 3, '+-', 20000, 35],
-  easy: [-10, 10, -10, 10, '+-', 30000, 50],
-  medium: [-40, 40, -20, 20, '*/+-', 50000, 150],
-  hard: [-100, 100, -70, 70, '*/+-', 60000, 400],
-  extreme: [-999999, 999999, -999999, 999999, '*/+-', 300000, 9999]
+  noob: [-3, 3,-3, 3, '+-', 15000, 10],
+  easy: [-10, 10, -10, 10, '*/+-', 20000, 40],
+  medium: [-40, 40, -20, 20, '*/+-', 40000, 150],
+  hard: [-100, 100, -70, 70, '*/+-', 60000, 350],
+  extreme: [-999999, 999999, -999999, 999999, '*/', 99999, 9999],
+  impossible: [-99999999999, 99999999999, -99999999999, 999999999999, '*/', 30000, 35000],
+  impossible2: [-999999999999999, 999999999999999, -999, 999, '/', 30000, 5000]
 }
+
+let tutor = 
 
 let operators = {
   '+': '+',
