@@ -51,7 +51,7 @@ function ytv(url) {
         if (ytIdRegex.test(url)) {
             let ytId = ytIdRegex.exec(url)
             url = 'https://youtu.be/' + ytId[1]
-            post('https://www.y2mate.com/mates/en60/analyze/ajax', {
+            post('https://www.y2mate.com/mates/id4/analyze/ajax', {
                 url,
                 q_auto: 0,
                 ajax: 1
@@ -66,7 +66,7 @@ function ytv(url) {
                     thumb = document.querySelector('img').src
                     title = document.querySelector('b').innerHTML
 
-                    post('https://www.y2mate.com/mates/en60/convert', {
+                    post('https://www.y2mate.com/mates/id4/convert', {
                         type: 'youtube',
                         _id: id[1],
                         v_id: ytId[1],
