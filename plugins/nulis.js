@@ -2,6 +2,7 @@ let util = require('util')
 let path = require('path')
 let { spawn } = require('child_process')
 
+// Font By MFarelS:V
 let fontPath = 'src/font/Zahraaa.ttf'
 let handler  = async (m, { conn, args }) => {
   let inputPath ='src/kertas/magernulis1.jpg'
@@ -22,7 +23,7 @@ let handler  = async (m, { conn, args }) => {
     '-interline-spacing',
     '1',
     '-annotate',
-    '+800+80',
+    '+806+78',
     hari,
     '-font',
     fontPath,
@@ -33,18 +34,18 @@ let handler  = async (m, { conn, args }) => {
     '-interline-spacing',
     '1',
     '-annotate',
-    '+808+105',
+    '+806+102',
     tgl,
     '-font',
     fontPath,
     '-size',
     '1024x784',
     '-pointsize',
-    '25',
+    '20',
     '-interline-spacing',
-    '-17',
+    '-7.5',
     '-annotate',
-    '+350+148',
+    '+344+142',
     teks,
     outputPath
   ])
@@ -69,3 +70,5 @@ handler.fail = null
 
 module.exports = handler
 
+// BY MFARELS NJEENK
+// https://GitHub.com/MFarelS/
