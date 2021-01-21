@@ -1,21 +1,23 @@
 const fetch = require('node-fetch')
+const fs = require('fs')
+const path = require('path')
 const FormData = require('form-data')
 const { MessageType } = require('@adiwajshing/baileys')
 
 let handler  = async (m, { conn, args }) => {
-  let q = m.quoted ? { message: { [m.quoted.mtype]: m.quoted }} : m
-  if (/image/.test((m.quoted ? m.quoted : m.msg).mimetype || '')) {
-    let img = await conn.downloadM(q)
-    if (!img) throw img
-    let stiker = await sticker(img)
-    conn.sendMessage(m.chat, stiker, MessageType.sticker, {
+  let stiker = false
+  try {
+    let q = m.quoted ? { message: { [m.quoted.mtype]: m.quoted }} : m
+    if (/image/.test((m.quoted ? m.quoted : m.msg).mimetype || '')) {
+      let img = await conn.downloadM(q)
+      if (!img) throw img
+      stiker = await sticker2(img)
+    } else if (args[0]) stiker = await sticker2(false, args[0])
+  } finally {
+    if (stiker) conn.sendMessage(m.chat, stiker, MessageType.sticker, {
       quoted: m
     })
-  } else if (args[0]) {
-    let stiker = await sticker(false, args[0])
-    conn.sendMessage(m.chat, stiker, MessageType.sticker, {
-      quoted: m
-    })
+    else throw 'No image'
   }
 }
 handler.help = ['stiker (caption|reply media)', 'stiker <url>']
@@ -33,6 +35,41 @@ handler.botAdmin = false
 handler.fail = null
 
 module.exports = handler
+
+let tmp = path.join(__dirname, '../tmp')
+function sticker2(img, url) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (url) {
+        let res = await fetch(url)
+        img = await res.buffer()
+      }
+      let inp = path.join(tmp, +new Date + '.jpeg')
+      let png = path.join(tmp, +new Date + '.png')
+      let out = path.join(tmp, +new Date + '.webp')
+      fs.writeFileSync(inp, img)
+      spawn('ffmpeg', [
+        '-y',
+        '-i', inp,
+        '-vf', 'scale=512:512:flags=lanczos:force_original_aspect_ratio=decrease,format=rgba,pad=512:512:(ow-iw)/2:(oh-ih)/2:color=#00000000,setsar=1',
+        png
+      ])
+      .on('error', reject)
+      .on('close', () => {
+        fs.unlinkSync(inp)
+        spawn('convert', [png, out])
+        .on('error', reject)
+        .on('close', () => {
+          fs.unlinkSync(png)
+          resolve(fs.readFileSync(out))
+          fs.unlinkSync(out)
+        })
+      })
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
 
 async function canvas(code, type = 'png', quality = 0.92) {
     let res = await fetch('https://nurutomo.herokuapp.com/api/canvas?' + queryURL({
