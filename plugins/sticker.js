@@ -1,6 +1,7 @@
 const fetch = require('node-fetch')
 const fs = require('fs')
 const path = require('path')
+const { spawn } = require('child_process')
 const FormData = require('form-data')
 const { MessageType } = require('@adiwajshing/baileys')
 
