@@ -17,7 +17,6 @@ let handler  = async (m, { conn, args }) => {
     if (stiker) conn.sendMessage(m.chat, stiker, MessageType.sticker, {
       quoted: m
     })
-    else throw 'No image'
   }
 }
 handler.help = ['stiker (caption|reply media)', 'stiker <url>']
