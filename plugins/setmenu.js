@@ -22,14 +22,14 @@ let handler  = async (m, { conn, command, text }) => {
 handler.help = ['', 'before','header','body','footer','after'].map(v => 'setmenu' + v + ' <teks>')
 handler.tags = ['owner']
 handler.command = /^set(menu|help|\?)(before|header|body|footer|after)?$/i
-handler.owner = true
+handler.owner = false
 handler.mods = false
-handler.premium = false
-handler.group = false
+handler.premium = true
+handler.group = true
 handler.private = false
 
-handler.admin = false
-handler.botAdmin = false
+handler.admin = true
+handler.botAdmin = true
 
 handler.fail = null
 
