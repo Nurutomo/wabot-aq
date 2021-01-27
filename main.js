@@ -169,6 +169,8 @@ conn.handler = async function (m) {
             conn: this,
             participants,
             groupMetadata,
+            isROwner,
+            isOwner,
             isAdmin,
             isBotAdmin,
             isPrems

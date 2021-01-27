@@ -1,10 +1,10 @@
 let { spawn }  = require('child_process');
 let handler  = async (m, { conn }) => {
   if (global.conn.user.jid == conn.user.jid) {
-    await conn.reply(m.chat, 'Mereset bot:v', m)
+    await m.reply('Sedang Mereset Bot...\nMohon tunggu sekitar 1 menit')
     process.send('reset')
     process.exit()
-  } else conn.reply(m.chat, '_eeeeeiiittsssss..._', m)
+  } else throw '_eeeeeiiittsssss..._'
 }
 handler.help = ['debounce']
 handler.tags = ['host']
