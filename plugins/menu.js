@@ -1,5 +1,8 @@
+let fs = require ('fs')
+let path = require('path')
 let handler  = async (m, { conn, usedPrefix: _p }) => {
   try {
+    let package = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')))
     let exp = global.DATABASE.data.users[m.sender].exp
     let limit = global.DATABASE.data.users[m.sender].limit
     let name = conn.getName(m.sender)
@@ -60,11 +63,26 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
           if (menu.help) groups[tag].push(menu)
     }
     conn.menu = conn.menu ? conn.menu : {}
-    let before = conn.menu.before || `${conn.getName(conn.user.jid)} • Bot\n\nHai, %name!\n*%exp XP*\n*%limit Limit*\n*%week %weton, %date*\n*%time*\n_Uptime: %uptime_\n%totalreg User in database\n%readmore`
+    let before = conn.menu.before || `
+╭─「 ${conn.getName(conn.user.jid)} 」
+│ Hai, %name!
+│
+│ *%exp XP*
+│ Tersisa *%limit Limit*
+│
+│ Tanggal: *%week %weton, %date*
+│ Waktu: *%time*
+│
+│ Uptime: *%uptime*
+│ Database: %totalreg nomor
+│ Github:
+│ %github
+╰────
+%readmore`
     let header = conn.menu.header || '╭─「 %category 」'
     let body   = conn.menu.body   || '│ • %cmd%islimit'
     let footer = conn.menu.footer || '╰────\n'
-    let after  = conn.menu.after  || conn.user.jid == global.conn.user.jid ? '' : `\nPowered by https://wa.me/${global.conn.user.jid.split`@`[0]}`
+    let after  = conn.menu.after  || (conn.user.jid == global.conn.user.jid ? '' : `Powered by https://wa.me/${global.conn.user.jid.split`@`[0]}`) + `\n*%npmname@^%version*\n\`\`\`\%npmdesc\`\`\``
     let _text  = before + '\n'
     for (let tag in groups) {
       _text += header.replace(/%category/g, tags[tag]) + '\n'
@@ -79,6 +97,10 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     let replace = {
       '%': '%',
       p: _p, uptime,
+      npmname: package.name,
+      npmdesc: package.description,
+      version: package.version,
+      github: package.homepage ? package.homepage.url || package.homepage : '[unknown github url]',
       exp, limit, name, weton, week, date, time, totalreg,
       readmore: readMore
     }

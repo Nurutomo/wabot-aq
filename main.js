@@ -9,6 +9,13 @@ let fs = require('fs')
 let path = require('path')
 let util = require('util')
 let WAConnection = simple.WAConnection(_WAConnection)
+
+
+global.owner = ['6281515860089'] // Put your number here
+global.mods = [] // Want some help?
+global.prems = [] // Premium user has unlimited limit
+
+
 global.timestamp = {
   start: new Date
 }
@@ -236,13 +243,11 @@ conn.on('message-new', conn.handler)
 conn.on('group-add', conn.onAdd)
 conn.on('group-leave', conn.onLeave)
 conn.on('error', conn.logger.error)
-conn.on('close', () => {
-  conn.loadAuthInfo(fs.readFileSync(authFile))
-  conn.connect()
+conn.on('close', async () => {
+  await conn.loadAuthInfo(authFile)
+  await conn.connect()
+  global.timestamp.connect = new Date
 })
-global.owner = ['628155860089']
-global.mods = []
-global.prems = []
 
 global.dfail = (type, m, conn) => {
   let msg = {
@@ -278,10 +283,14 @@ if (opts['test']) {
     timestamp: +new Date
   })
   process.stdin.on('data', chunk => conn.sendMessage('123@s.whatsapp.net', chunk.toString().trimEnd(), 'conversation'))
+} else {
+  process.stdin.on('data', chunk => {
+    process.send(chunk.toString().trimEnd())
+  })
+  conn.connect().then(() => {
+    global.timestamp.connect = new Date
+  })
 }
-else conn.connect().then(() => {
-  global.timestamp.connect = new Date
-})
 process.on('uncaughtException', console.error)
 // let strQuot = /(["'])(?:(?=(\\?))\2.)*?\1/
 

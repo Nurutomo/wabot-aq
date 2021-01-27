@@ -1,7 +1,8 @@
 {
   "name": "wabot-aq",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Customizable WhatsApp Bot",
+  "depecrated": false,
   "main": "index.js",
   "directories": {
     "lib": "lib",
@@ -14,10 +15,21 @@
   },
   "keywords": [
     "termux-whatsapp-bot",
-    "whatsapp-bot"
+    "whatsapp-bot",
+    "whatsapp",
+    "js-whatsapp"
   ],
-  "author": "Nurutomo",
-  "license": "ISC",
+  "homepage": "https://github.com/Nurutomo/wabot-aq",
+  "author": {
+    "name" :"Nurutomo"
+  },
+  "repository": {
+    "url": "https://github.com/Nurutomo/wabot-aq.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Nurutomo/wabot-aq/issues"
+  },
+  "license": "GPL3",
   "dependencies": {
     "@adiwajshing/baileys": "^3.4.1",
     "cfonts": "^2.9.1",

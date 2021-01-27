@@ -48,6 +48,10 @@ Universal:
 %time (Jam)
 %uptime (Uptime Bot)
 %totalreg (Jumlah User yang ada di database)
+%npmname
+%npmdesc
+%version
+%github
 
 Bagian Menu Header & Footer:
 %category (Kategori)
