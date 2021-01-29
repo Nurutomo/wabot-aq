@@ -1,6 +1,6 @@
 {
   "name": "wabot-aq",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Customizable WhatsApp Bot",
   "depecrated": false,
   "main": "index.js",
@@ -21,7 +21,7 @@
   ],
   "homepage": "https://github.com/Nurutomo/wabot-aq",
   "author": {
-    "name" :"Nurutomo"
+    "name": "Nurutomo"
   },
   "repository": {
     "url": "https://github.com/Nurutomo/wabot-aq.git"
@@ -37,7 +37,7 @@
     "express": "^4.17.1",
     "file-type": "^16.1.0",
     "form-data": "^3.0.0",
-    "google-it": "^1.6.0",
+    "google-it": "^1.6.1",
     "jsdom": "^16.4.0",
     "node-fetch": "^2.6.1",
     "node-gtts": "^2.0.2",
