@@ -3,6 +3,7 @@ let handler = async (m, { text }) => {
   let res = await fetch('https://api.xteam.xyz/simsimi?kata=' + encodeURIComponent(text))
   let json = await res.json()
   if (json.status) m.reply(json.jawaban)
+  else throw json
 }
 handler.help = ['sim', ''].map(v => v + 'simi <teks>')
 handler.tags = ['fun']

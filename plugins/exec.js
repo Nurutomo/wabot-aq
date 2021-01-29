@@ -9,7 +9,7 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args, grou
   try {
     let i = 15
     let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', 'args', 'groupMetadata', _text)
-    _return = await exec((...args) => {
+    _return = await exec.call(conn, (...args) => {
       if (--i < 1) return
       console.log(...args)
       return conn.reply(m.chat, util.format(...args), m)

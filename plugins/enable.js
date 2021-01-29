@@ -6,6 +6,9 @@ let handler = async (m, { usedPrefix, command, text, args }) => {
     case 'welcome':
       chat.welcome = isEnable
       break
+    case 'delete':
+      chat.delete = isEnable
+      break
     default:
       return m.reply(`
 List option: welcome

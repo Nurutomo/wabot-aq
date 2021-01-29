@@ -199,6 +199,7 @@ conn.handler = async function (m) {
           if (!isPrems) m.limit = m.limit || plugin.limit || false
         } catch (e) {
           // Error occured
+          m.error = e
           console.log(e)
           m.reply(util.format(e))
         } finally {
@@ -261,12 +262,14 @@ conn.onLeave = async function  ({ m, participants }) {
 }
 
 conn.onDelete = async function (m) {
+  let chat = global.DATABASE._data.chats[m.key.remoteJid]
+  if (chat.delete) return
   await this.reply(m.key.remoteJid, `Terdeteksi @${m.participant.split`@`[0]} telah menghapus pesan`, m.message, {
     contextInfo: {
       mentionedJid: [m.participant]
     }
   })
-  this.copyNForward(m.key.remoteJid, m.message)
+  this.copyNForward(m.key.remoteJid, m.message).catch(e => console.log(e, m))
 }
 
 conn.on('message-new', conn.handler)
@@ -275,10 +278,11 @@ conn.on('group-add', conn.onAdd)
 conn.on('group-leave', conn.onLeave)
 conn.on('error', conn.logger.error)
 conn.on('close', async () => {
-  if (conn.state == 'reconnecting') return
-  await conn.loadAuthInfo(authFile)
-  await conn.connect()
-  global.timestamp.connect = new Date
+  if (conn.state == 'close') {
+    await conn.loadAuthInfo(authFile)
+    await conn.connect()
+    global.timestamp.connect = new Date
+  }
 })
 
 global.dfail = (type, m, conn) => {
