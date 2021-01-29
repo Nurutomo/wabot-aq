@@ -11,7 +11,7 @@ let handler = async (m, { usedPrefix, command, text, args }) => {
       break
     default:
       return m.reply(`
-List option: welcome
+List option: welcome | delete
 
 Contoh:
 ${usedPrefix}enable welcome
