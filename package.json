@@ -43,6 +43,7 @@
     "node-gtts": "^2.0.2",
     "qrcode": "^1.4.4",
     "syntax-error": "^1.4.0",
+    "terminal-image": "^1.2.1",
     "yargs": "^16.2.0"
   }
 }
