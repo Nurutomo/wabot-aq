@@ -1,0 +1,19 @@
+{
+  "users": {
+    "2219191@s.whatsapp.net": {
+      "exp": 16,
+      "limit": 10,
+      "lastclaim": 0
+    }
+  },
+  "groups": {},
+  "chats": {
+    "123@s.whatsapp.net": {
+      "isBanned": false,
+      "welcome": false,
+      "sWelcome": "",
+      "sBye": "",
+      "delete": true
+    }
+  }
+}

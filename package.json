@@ -1,6 +1,6 @@
 {
   "name": "wabot-aq",
-  "version": "1.2.2",
+  "version": "1.2.8",
   "description": "Customizable WhatsApp Bot",
   "depecrated": false,
   "main": "index.js",
@@ -32,6 +32,7 @@
   "license": "GPL3",
   "dependencies": {
     "@adiwajshing/baileys": "^3.4.1",
+    "awesome-phonenumber": "^2.45.0",
     "cfonts": "^2.9.1",
     "chalk": "^4.1.0",
     "express": "^4.17.1",
@@ -44,6 +45,7 @@
     "qrcode": "^1.4.4",
     "syntax-error": "^1.4.0",
     "terminal-image": "^1.2.1",
+    "url-regex": "^5.0.0",
     "yargs": "^16.2.0"
   }
 }

@@ -1,6 +1,7 @@
 console.log('Starting...')
 let { spawn } = require('child_process')
 let path = require('path')
+let fs = require('fs')
 const CFonts  = require('cfonts')
 CFonts.say('TERMUX WHATSAPP BOT', {
   font: 'chrome',
@@ -28,8 +29,14 @@ function start() {
       console.log('RESET')
       p.kill()
       start()
-      delete p
     }
+  })
+  .on('error', e => {
+    console.error(e)
+    fs.watchFile(args[0], () => {
+      start()
+      fs.unwatchFile(args[0])
+    })
   })
 }
 

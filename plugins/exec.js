@@ -15,7 +15,10 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args, grou
       return conn.reply(m.chat, util.format(...args), m)
     }, m, handler, require, conn, CustomArray, {...process, exit: function exit() { return ':P' }}, args, groupMetadata)
   } catch (e) {
-    let err = await syntaxerror(_text)
+    let err = await syntaxerror(_text, {
+      allowReturnOutsideFunction: true,
+      allowAwaitOutsideFunction: true
+    })
     if (err) _syntax = '```' + err + '```\n\n'
     _return = e
   } finally {

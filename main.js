@@ -4,6 +4,7 @@ let qrcode = require('qrcode')
 let simple = require('./lib/simple')
 let yargs = require('yargs/yargs')
 let syntaxerror = require('syntax-error')
+let fetch = require('node-fetch')
 let chalk = require('chalk')
 let fs = require('fs')
 let path = require('path')
@@ -14,8 +15,18 @@ let WAConnection = simple.WAConnection(_WAConnection)
 global.owner = ['6281515860089'] // Put your number here
 global.mods = [] // Want some help?
 global.prems = [] // Premium user has unlimited limit
+global.APIs = { // API Prefix
+  // name: 'https://website'
+  nrtm: 'https://nurutomo.herokuapp.com',
+  xteam: 'https://api.xteam.xyz'
+}
+global.APIKeys = { // APIKey Here
+  // 'https://website': 'apikey'
+  'https://api.xteam.xyz': 'xteamapi'
+}
 
 
+global.API = (name, path = '/', query = {}, options = {}) => fetch((name in global.APIs ? url = global.APIs[name] : name) + path + (query ? '?' + Object.entries(query).map(([key, val]) => encodeURICompoment(key) + (val ? '=' + encodeURIComponent(val) : '')).join('&') : ''), options)
 global.timestamp = {
   start: new Date
 }
@@ -24,7 +35,7 @@ let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
 global.opts = Object.freeze({...opts})
 global.prefix = new RegExp('^[' + (opts['prefix'] || '‎xzXZ\\/i!#$%\\-+£¢€¥^°=¶∆×÷π√✓©®:;?&.') + ']')
 
-global.DATABASE = new (require('./lib/database'))(opts._[0] ? opts._[0] + '_' : '' + 'database.json', null, 2)
+global.DATABASE = new (require('./lib/database'))((opts._[0] ? opts._[0] + '_' : '') + 'database.json', null, 2)
 if (!global.DATABASE.data.users) global.DATABASE.data = {
   users: {},
   groups: {},
@@ -264,7 +275,12 @@ conn.onLeave = async function  ({ m, participants }) {
 conn.onDelete = async function (m) {
   let chat = global.DATABASE._data.chats[m.key.remoteJid]
   if (chat.delete) return
-  await this.reply(m.key.remoteJid, `Terdeteksi @${m.participant.split`@`[0]} telah menghapus pesan`, m.message, {
+  await this.reply(m.key.remoteJid, `
+Terdeteksi @${m.participant.split`@`[0]} telah menghapus pesan
+
+Untuk mematikan fitur ini, ketik
+*.enable delete*
+`.trim(), m.message, {
     contextInfo: {
       mentionedJid: [m.participant]
     }

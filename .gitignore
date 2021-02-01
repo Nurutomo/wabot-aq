@@ -2,3 +2,4 @@ node_modules
 *.data.json
 .*.swp
 tmp
+package-lock.json
