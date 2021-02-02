@@ -1,9 +1,11 @@
 let fetch = require('node-fetch')
 let { JSDOM } = require('jsdom')
 let limit = 30
+let serverlist = ['id4', 'en60']
 let handler = async (m, { conn, args, isPrems, isOwner }) => {
   if (!args || !args[0]) return conn.reply(m.chat, 'Uhm... urlnya mana?', m)
-  let { dl_link, thumb, title, filesize, filesizeF} = await ytv(args[0])
+  let server = (args[1] || 'id4').toLowerCase()
+  let { dl_link, thumb, title, filesize, filesizeF} = await ytv(args[0], serverlist.includes(server) ? server : 'id4')
   let isLimit = (isPrems || isOwner ? 99 : limit) * 1024 < filesize
   conn.sendFile(m.chat, thumb, 'thumbnail.jpg', `
 *Title:* ${title}
@@ -15,7 +17,7 @@ let handler = async (m, { conn, args, isPrems, isOwner }) => {
 *Filesize:* ${filesizeF}
 `.trim(), m)
 }
-handler.help = ['mp4','v',''].map(v => 'yt' + v + ' <url>')
+handler.help = ['mp4','v',''].map(v => 'yt' + v + ' <url> [server: id4, en60]')
 handler.tags = ['downloader']
 handler.command = /^yt(v|mp4)?$/i
 handler.owner = false
@@ -46,12 +48,12 @@ function post(url, formdata) {
     })
 }
 const ytIdRegex = /(?:http(?:s|):\/\/|)(?:(?:www\.|)youtube(?:\-nocookie|)\.com\/(?:watch\?.*(?:|\&)v=|embed\/|v\/)|youtu\.be\/)([-_0-9A-Za-z]{11})/
-function ytv(url) {
+function ytv(url, server = 'id4') {
     return new Promise((resolve, reject) => {
         if (ytIdRegex.test(url)) {
             let ytId = ytIdRegex.exec(url)
             url = 'https://youtu.be/' + ytId[1]
-            post('https://www.y2mate.com/mates/id4/analyze/ajax', {
+            post(`https://www.y2mate.com/mates/${server}/analyze/ajax`, {
                 url,
                 q_auto: 0,
                 ajax: 1
@@ -66,7 +68,7 @@ function ytv(url) {
                     thumb = document.querySelector('img').src
                     title = document.querySelector('b').innerHTML
 
-                    post('https://www.y2mate.com/mates/id4/convert', {
+                    post(`https://www.y2mate.com/mates/${server}/convert`, {
                         type: 'youtube',
                         _id: id[1],
                         v_id: ytId[1],

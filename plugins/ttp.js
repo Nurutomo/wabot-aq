@@ -7,7 +7,7 @@ const { MessageType } = require('@adiwajshing/baileys')
 
 let handler  = async (m, { conn, text }) => {
   if (text) {
-    let res = await fetch('https://api.xteam.xyz/ttp?file&text=' + encodeURIComponent(text))
+    let res = await fetch(global.API('xteam', '/ttp', { file: '', text }))
     let img = await res.buffer()
     if (!img) throw img
     let stiker = await sticker(img)

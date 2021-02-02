@@ -26,7 +26,7 @@ global.APIKeys = { // APIKey Here
 }
 
 
-global.API = (name, path = '/', query = {}, options = {}) => fetch((name in global.APIs ? url = global.APIs[name] : name) + path + (query ? '?' + Object.entries(query).map(([key, val]) => encodeURICompoment(key) + (val ? '=' + encodeURIComponent(val) : '')).join('&') : ''), options)
+global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + Object.entries({...query, [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name]}).map(([key, val]) => encodeURICompoment(key) + (val || val === false ? '=' + encodeURIComponent(val) : '')).join('&') : '')
 global.timestamp = {
   start: new Date
 }
@@ -40,9 +40,11 @@ if (!global.DATABASE.data.users) global.DATABASE.data = {
   users: {},
   groups: {},
   chats: {},
+  stats: {},
 }
 if (!global.DATABASE.data.groups) global.DATABASE.data.groups = {}
 if (!global.DATABASE.data.chats) global.DATABASE.data.chats = {}
+if (!global.DATABASE.data.stats) global.DATABASE.data.stats = {}
 if (opts['server']) {
   let express = require('express')
   global.app = express()
@@ -68,13 +70,14 @@ setInterval(async () => {
     lastJSON = JSON.stringify(global.DATABASE.data)
   }
 }, 60 * 1000) // Save every minute
+
+const isNumber = x => typeof x === 'number' && !isNaN(x)
 conn.handler = async function (m) {
   try {
   	simple.smsg(this, m)
     m.exp = 0
     m.limit = false
     try {
-      const isNumber = x => typeof x === 'number' && !isNaN(x)
       let user
       if (user = global.DATABASE._data.users[m.sender]) {
         if (!isNumber(user.exp)) user.exp = 0
@@ -135,6 +138,7 @@ conn.handler = async function (m) {
               false
 
   			if (!isAccept) continue
+        m.plugin = name
         let isMods = isOwner || global.mods.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
         let isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
         let groupMetadata = m.isGroup ? await this.groupMetadata(m.chat) : {}
@@ -221,11 +225,37 @@ conn.handler = async function (m) {
   	}
   } finally {
     //console.log(global.DATABASE._data.users[m.sender])
-    let user
-    if (m && m.sender && (user = global.DATABASE._data.users[m.sender])) {
-      user.exp += m.exp
-      user.limit -= m.limit * 1
-    }
+    let user, stats = global.DATABASE._data.stats
+    if (m) {
+      if (m.sender && (user = global.DATABASE._data.users[m.sender])) {
+        user.exp += m.exp
+        user.limit -= m.limit * 1
+      }
+      
+      let stat
+      if (m.plugin) {
+        let now = + new Date
+        if (m.plugin in stats) {
+          stat = stats[m.plugin]
+          if (!isNumber(stat.total)) stat.total = 1
+          if (!isNumber(stat.success)) stat.success = m.error ? 0 : 1
+          if (!isNumber(stat.last)) stat.last = now
+          if (!isNumber(stat.lastSuccess)) stat.lastSuccess = m.error ? 0 : now
+        } else stat = stats[m.plugin] = {
+          total: 1,
+          success: m.error ? 0 : 1,
+          last: now,
+          lastSuccess: m.error ? 0 : now
+        }
+        stat.total += 1
+        stat.last = now
+        if (!m.error) {
+          stat.success += 1
+          stat.lastSuccess = now
+        }
+      }
+    } 
+    
     try {
       require('./lib/print')(m, this)
     } catch (e) {
