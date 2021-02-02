@@ -26,7 +26,7 @@ global.APIKeys = { // APIKey Here
 }
 
 
-global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + Object.entries({...query, [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name]}).map(([key, val]) => encodeURICompoment(key) + (val || val === false ? '=' + encodeURIComponent(val) : '')).join('&') : '')
+global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + Object.entries({...query, [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name]}).map(([key, val]) => encodeURIComponent(key) + (val || val === false ? '=' + encodeURIComponent(val) : '')).join('&') : '')
 global.timestamp = {
   start: new Date
 }

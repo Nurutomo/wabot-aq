@@ -1,5 +1,7 @@
 node_modules
 *.data.json
 .*.swp
+database.json
+*_database.json
 tmp
 package-lock.json
