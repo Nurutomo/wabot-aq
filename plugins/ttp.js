@@ -56,9 +56,11 @@ function sticker(img, url) {
         spawn('convert', [png, out])
         .on('error', reject)
         .on('close', () => {
-          fs.unlinkSync(png)
-          resolve(fs.readFileSync(out))
-          fs.unlinkSync(out)
+          try {
+            fs.unlinkSync(png)
+            resolve(fs.readFileSync(out))
+            if (fs.existSync(out)) fs.unlinkSync(out)
+          } catch (e) { reject(e) }
         })
       })
     } catch (e) {

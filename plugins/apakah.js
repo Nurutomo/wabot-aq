@@ -7,7 +7,7 @@ let handler = async (m, { conn, text }) => {
 handler.help = ['apakah <teks>?']
 handler.tags = ['kerang']
 handler.customPrefix = /(\?$)/
-handler.command = /^apakah/i
+handler.command = /^apakah$/i
 handler.owner = false
 handler.mods = false
 handler.premium = false

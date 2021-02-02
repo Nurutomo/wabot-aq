@@ -22,7 +22,7 @@ global.APIs = { // API Prefix
 }
 global.APIKeys = { // APIKey Here
   // 'https://website': 'apikey'
-  'https://api.xteam.xyz': 'xteamapi'
+  'https://api.xteam.xyz': 'test'
 }
 
 
@@ -323,12 +323,18 @@ conn.on('message-delete', conn.onDelete)
 conn.on('group-add', conn.onAdd)
 conn.on('group-leave', conn.onLeave)
 conn.on('error', conn.logger.error)
-conn.on('close', async () => {
-  if (conn.state == 'close') {
-    await conn.loadAuthInfo(authFile)
-    await conn.connect()
-    global.timestamp.connect = new Date
-  }
+conn.on('close', () => {
+  setTimeout(async () => {
+    try {
+      if (conn.state === 'close') {
+        await conn.loadAuthInfo(authFile)
+        await conn.connect()
+        global.timestamp.connect = new Date
+      }
+    } catch (e) {
+      conn.logger.error(e)
+    }
+  }, 5000)
 })
 
 global.dfail = (type, m, conn) => {

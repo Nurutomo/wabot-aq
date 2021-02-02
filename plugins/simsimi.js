@@ -5,9 +5,9 @@ let handler = async (m, { text }) => {
   if (json.status) m.reply(json.jawaban)
   else throw json
 }
-handler.help = ['sim', ''].map(v => v + 'simi <teks>')
+handler.help = ['simi', 'simsimi', 'simih'].map(v => v + ' <teks>')
 handler.tags = ['fun']
-handler.command = /^((sim)?simi)$/i
+handler.command = /^((sim)?simi|simih)$/i
 
 module.exports = handler
 
