@@ -2,6 +2,7 @@ let { WAConnection: _WAConnection, WA_MESSAGE_STUB_TYPES } = require('@adiwajshi
 let { generate } = require('qrcode-terminal')
 let qrcode = require('qrcode')
 let simple = require('./lib/simple')
+let logs = require('./lib/logs')
 let yargs = require('yargs/yargs')
 let syntaxerror = require('syntax-error')
 let fetch = require('node-fetch')
@@ -26,10 +27,11 @@ global.APIKeys = { // APIKey Here
 }
 
 
-global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + Object.entries({...query, [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name]}).map(([key, val]) => encodeURIComponent(key) + (val || val === false ? '=' + encodeURIComponent(val) : '')).join('&') : '')
+global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + Object.entries({...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name]} : {})}).map(([key, val]) => encodeURIComponent(key) + (val || val === false ? '=' + encodeURIComponent(val) : '')).join('&') : '')
 global.timestamp = {
   start: new Date
 }
+global.LOGGER = logs()
 const PORT = process.env.PORT || 3000
 let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
 global.opts = Object.freeze({...opts})
@@ -120,6 +122,7 @@ conn.handler = async function (m) {
   	  if ((usedPrefix = (_prefix.exec(m.text) || '')[0])) {
         let noPrefix = m.text.replace(usedPrefix, '')
   		  let [command, ...args] = noPrefix.trim().split` `.filter(v=>v)
+        args = args || []
         let _args = noPrefix.trim().split` `.slice(1)
         let text = _args.join` `
   		  command = (command || '').toLowerCase()

@@ -1,21 +1,25 @@
+let PhoneNumber = require('awesome-phonenumber')
 let handler = async (m, { conn }) => {
   let pp = './src/avatar_contact.png'
+  let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
   try {
-    pp = await conn.getProfilePicture(m.sender)
+    pp = await conn.getProfilePicture(who)
   } catch (e) {
 
   } finally {
-    let name = m.fromMe ? conn.user : conn.contacts[m.sender]
+    let name = conn.getName(who)
+    let about = (await conn.getStatus(who)).status
     let str = `
-Name: ${name.vnmae || name.notify || name.name || ('+' + name.jid.split`@`[0])} (@${m.sender.replace(/@.+/, '')})
-Number: +${m.sender.split`@`[0]}
-Link: https://wa.me/${m.sender.split`@`[0]}
+Name: ${name} (@${who.replace(/@.+/, '')})
+About: ${about}
+Number: ${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}
+Link: https://wa.me/${who.split`@`[0]}
 `.trim()
-    let mentionedJid = [m.sender]
+    let mentionedJid = [who]
     conn.sendFile(m.chat, pp, 'pp.jpg', str, m, false, { contextInfo: { mentionedJid }})
   }
 }
-handler.help = ['profile']
+handler.help = ['profile [@user]']
 handler.tags = ['tools']
 handler.command = /^profile$/i
 module.exports = handler

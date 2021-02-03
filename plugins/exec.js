@@ -13,7 +13,7 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args, grou
       if (--i < 1) return
       console.log(...args)
       return conn.reply(m.chat, util.format(...args), m)
-    }, m, handler, require, conn, CustomArray, {...process, exit: function exit() { return ':P' }}, args, groupMetadata)
+    }, m, handler, require, conn, CustomArray, process, args, groupMetadata)
   } catch (e) {
     let err = await syntaxerror(_text, 'Execution Function', {
       allowReturnOutsideFunction: true,
