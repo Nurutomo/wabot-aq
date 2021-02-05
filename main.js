@@ -10,6 +10,7 @@ let chalk = require('chalk')
 let fs = require('fs')
 let path = require('path')
 let util = require('util')
+let { spawnSync } = require('child_process')
 let WAConnection = simple.WAConnection(_WAConnection)
 
 
@@ -27,7 +28,7 @@ global.APIKeys = { // APIKey Here
 }
 
 
-global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + Object.entries({...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name]} : {})}).map(([key, val]) => encodeURIComponent(key) + (val || val === false ? '=' + encodeURIComponent(val) : '')).join('&') : '')
+global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name]} : {})})) : '')
 global.timestamp = {
   start: new Date
 }
@@ -198,7 +199,7 @@ conn.handler = async function (m) {
           continue // Limit habis
         }
         try {
-          await plugin(m, {
+          await plugin.call(this, m, {
             usedPrefix,
             noPrefix,
             _args,
@@ -360,19 +361,29 @@ if (opts['test']) {
     name: 'test',
     phone: {}
   }
-  conn.sendMessage = (chatId, content, type, opts) => conn.emit('message-new', {
-    messageStubParameters: [],
-    key: {
-      fromMe: true,
-      remoteJid: chatId,
-      id: opts ? '3EB0ABCDEF45' : 'biasa'
-    },
-    message: {
-      [type]: content
-    },
-    messageStubType: 0,
-    timestamp: +new Date
-  })
+  conn.prepareMessageMedia = (buffer, mediaType, options = {}) => {
+    return {
+      [mediaType]: {
+        url: '',
+        mediaKey: '',
+        mimetype: options.mimetype,
+        fileEncSha256: '',
+        fileSha256: '',
+        fileLength: buffer.length,
+        seconds: options.duration,
+        fileName: options.filename || 'file',
+        gifPlayback: options.mimetype == 'image/gif' || undefined,
+        caption: options.caption,
+        ptt: options.ptt
+      }
+    }
+  }
+  conn.sendMessage = async (chatId, content, type, opts = {}) => {
+    let message = await conn.prepareMessageContent(content, type, opts)
+    let waMessage = conn.prepareMessageFromContent(chatId, message, opts)
+    if (type == 'conversation') waMessage.key.id = require('crypto').randomBytes(16).toString('hex').toUpperCase()
+    conn.emit('message-new', waMessage)
+  }
   process.stdin.on('data', chunk => conn.sendMessage('123@s.whatsapp.net', chunk.toString().trimEnd(), 'conversation'))
 } else {
   process.stdin.on('data', chunk => {
@@ -386,15 +397,12 @@ if (opts['test']) {
 process.on('uncaughtException', console.error)
 // let strQuot = /(["'])(?:(?=(\\?))\2.)*?\1/
 
+let pluginFolder = path.join(__dirname, 'plugins')
 let pluginFilter = filename => /\.js$/.test(filename)
-global.plugins = Object.fromEntries(
-  fs.readdirSync(path.join(__dirname, 'plugins'))
-    .filter(pluginFilter)
-    .map(filename => [filename, {}])
-)
-for (let filename in global.plugins) {
+global.plugins = {}
+for (let filename of fs.readdirSync(pluginFolder).filter(pluginFilter)) {
   try {
-    global.plugins[filename] = require('./plugins/' + filename)
+    global.plugins[filename] = require(path.join(pluginFolder, filename))
   } catch (e) {
     conn.logger.error(e)
     delete global.plugins[filename]
@@ -403,17 +411,17 @@ for (let filename in global.plugins) {
 console.log(Object.keys(global.plugins))
 global.reload = (event, filename) => {
   if (pluginFilter(filename)) {
-    let dir = './plugins/' + filename
-    if (require.resolve(dir) in require.cache) {
-      delete require.cache[require.resolve(dir)]
-      if (fs.existsSync(require.resolve(dir))) conn.logger.info(`re - require plugin '${dir}'`)
+    let dir = path.join(pluginFolder, filename)
+    if (dir in require.cache) {
+      delete require.cache[dir]
+      if (fs.existsSync(dir)) conn.logger.info(`re - require plugin '${filename}'`)
       else {
-        conn.logger.warn(`deleted plugin '${dir}'`)
+        conn.logger.warn(`deleted plugin '${filename}'`)
         return delete global.plugins[filename]
       }
-    } else conn.logger.info(`requiring new plugin '${dir}'`)
-    let err = syntaxerror(fs.readFileSync(dir))
-    if (err) conn.logger.error(`syntax error while loading '${dir}'\n${err}`)
+    } else conn.logger.info(`requiring new plugin '${filename}'`)
+    let err = syntaxerror(fs.readFileSync(dir), filename)
+    if (err) conn.logger.error(`syntax error while loading '${filename}'\n${err}`)
     else try {
       global.plugins[filename] = require(dir)
     } catch (e) {
@@ -425,3 +433,21 @@ Object.freeze(global.reload)
 fs.watch(path.join(__dirname, 'plugins'), global.reload)
 
 process.on('exit', () => global.DATABASE.save())
+
+
+
+// Quick Test
+let ffmpeg = spawnSync('ffmpeg')
+let ffmpegWebp = spawnSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-'])
+let convert = spawnSync('convert')
+global.support = {
+  ffmpeg: ffmpeg.status,
+  ffmpegWebp: ffmpeg.status && ffmpegWebp.stderr.length == 0 && ffmpegWebp.stdout.length > 0,
+  convert: convert.status
+}
+Object.freeze(global.support)
+
+if (!global.support.ffmpeg) conn.logger.warn('Please install ffmpeg for sending videos (pkg install ffmpeg)')
+if (!global.support.ffmpegWebp) conn.logger.warn('Stickers may not animated without libwebp on ffmpeg (--emable-ibwebp while compiling ffmpeg)')
+if (!global.support.convert) conn.logger.warn('Stickers may not work without imagemagick if libwebp on ffmpeg doesnt isntalled (pkg install imagemagick)')
+

@@ -22,6 +22,15 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       second: 'numeric'
     })
     let _uptime = process.uptime() * 1000
+    let _muptime
+    if (process.send) {
+      process.send('uptime')
+      _muptime = await new Promise(resolve => {
+        process.once('message', resolve)
+        setTimeout(resolve, 1000)
+      }) * 1000
+    }
+    let muptime = clockString(_muptime)
     let uptime = clockString(_uptime)
     let totalreg = Object.keys(global.DATABASE._data.users).length
     let tags = {
@@ -74,6 +83,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
 │ Waktu: *%time*
 │
 │ Uptime: *%uptime*
+│ Main Uptime: *%muptime*
 │ Database: %totalreg nomor
 │ Github:
 │ %github
@@ -96,7 +106,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     text =  typeof conn.menu == 'string' ? conn.menu : typeof conn.menu == 'object' ? _text : ''
     let replace = {
       '%': '%',
-      p: _p, uptime,
+      p: _p, uptime, muptime,
       npmname: package.name,
       npmdesc: package.description,
       version: package.version,
@@ -132,9 +142,8 @@ const more = String.fromCharCode(8206)
 const readMore = more.repeat(4001)
 
 function clockString(ms) {
-  let h = Math.floor(ms / 3600000)
-  let m = Math.floor(ms / 60000) % 60
-  let s = Math.floor(ms / 1000) % 60
-  console.log({ms,h,m,s})
+  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
+  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
+  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
   return [h, m, s].map(v => v.toString().padStart(2, 0) ).join(':')
 }

@@ -32,6 +32,9 @@ function start(file) {
         p.kill()
         start.apply(this, arguments)
         break
+      case 'uptime':
+        p.send(process.uptime())
+        break
     }
   })
   .on('error', e => {
