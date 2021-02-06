@@ -1,8 +1,8 @@
 let handler = async (m, { conn, text }) => {
-  m.reply('_Sedang membuat..._\n*Mohon tunggu sekitar 1 menit*')
   let q
   try { q = m.quoted.download() }
   catch (e) { q = m.download() }
+  m.reply('_Sedang membuat..._\n*Mohon tunggu sekitar 1 menit*')
   running(await q).then(vid => conn.sendFile(m.chat, vid, 'run.mp4', '*© Nurutomo*\nMade with FFmpeg', m))
 }
 handler.help = ['run']
@@ -16,12 +16,12 @@ let { spawn } = require('child_process')
 let fs = require('fs')
 let path = require('path')
 let tmp = path.join(__dirname, '../tmp/')
-function running(img) {
+function running(img, duration = 10, fps = 60) {
   return new Promise((resolve, reject) => {
     let layers = [
-      'color=s=512x512:d=10:r=60[bg]',
+      `color=s=512x512:d=${duration}:r=${fps}[bg]`,
       '[0:v]scale=-2:512[img]',
-      "[bg][img]overlay=x='(w+(2*h))*((n/60)*(-1/10))+(2*h)'"
+      `[bg][img]overlay=x='(w+h)*((n/${fps})*-1/${duration})+h'`
     ]
 
     let n = + new Date + 'run.jpg'
@@ -32,7 +32,7 @@ function running(img) {
     let args = [
       '-y',
       '-i', i,
-      '-t', '10',
+      '-t', duration.toString(),
       '-filter_complex', layers.join(';'),
       '-pix_fmt', 'yuv420p',
       '-crf', '18',
