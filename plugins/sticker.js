@@ -8,9 +8,9 @@ const { MessageType } = require('@adiwajshing/baileys')
 let handler  = async (m, { conn, args }) => {
   let stiker = false
   try {
-    let q = m.quoted ? { message: { [m.quoted.mtype]: m.quoted }} : m
-    if (/image/.test((m.quoted ? m.quoted : m.msg).mimetype || '')) {
-      let img = await conn.downloadM(q)
+    let q = m.quoted ? m.quoted : m
+    if (/image/.test(q.mimetype || '')) {
+      let img = await q.download()
       if (!img) throw img
       stiker = await sticker2(img)
     } else if (args[0]) stiker = await sticker2(false, args[0])
@@ -42,6 +42,7 @@ function sticker2(img, url) {
     try {
       if (url) {
         let res = await fetch(url)
+        if (res.status !== 200) throw await res.text()
         img = await res.buffer()
       }
       let inp = path.join(tmp, +new Date + '.jpeg')

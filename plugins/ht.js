@@ -35,7 +35,7 @@ function ht(text = '') {
     let yF = `((${pickRandom(['', '-'])}${45 * w / 2048}*${pickRandom(['sin', 'cos'])}(X/${w}*4*PI))+${noise('X', 5, w, 0.8)}+${noise('Y', 2, h, 1)})/1.7+128`
     let fsize = 320 / 2048 * w
     let lh = 1.5
-    let format = ',format=rgb24'
+    let format = ''
     let layers = [
       `[v:0]scale=${s}${format}[im]`,
       textArgs('HARTA', 'black', 'white', fsize, font, '(w-text_w)/2', `(h-text_h)/2-(text_h*${lh})`, w, h) + format + '[top]',

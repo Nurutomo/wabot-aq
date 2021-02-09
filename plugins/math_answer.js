@@ -1,10 +1,10 @@
 global.math = global.math ? global.math : {}
 let handler = async (m, { conn }) => {
   let id = m.chat
-  if (!m.quoted) return
-  if (m.quoted.sender != conn.user.jid) return
-  if (!/^Berapa hasil dari/i.test(m.quoted.text)) return
-  if (!(m.chat in global.math)) return conn.reply(m.chat, 'Soal itu telah berakhir', m)
+  if (!m.quoted) throw
+  if (m.quoted.sender != conn.user.jid) throw
+  if (!/^Berapa hasil dari/i.test(m.quoted.text)) throw
+  if (!(id in global.math)) throw 'Soal itu telah berakhir'
   if (m.quoted.id == global.math[id][0].id) {
   let math = global.math[id][1]
   if (m.text == math.result) {
