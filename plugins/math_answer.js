@@ -1,9 +1,7 @@
 global.math = global.math ? global.math : {}
 let handler = async (m, { conn }) => {
   let id = m.chat
-  if (!m.quoted) throw
-  if (m.quoted.sender != conn.user.jid) throw
-  if (!/^Berapa hasil dari/i.test(m.quoted.text)) throw
+  if (!m.quoted || m.quoted.sender != conn.user.jid || !/^Berapa hasil dari/i.test(m.quoted.text)) throw false
   if (!(id in global.math)) throw 'Soal itu telah berakhir'
   if (m.quoted.id == global.math[id][0].id) {
   let math = global.math[id][1]
