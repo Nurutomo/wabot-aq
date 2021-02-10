@@ -120,7 +120,7 @@ conn.handler = async function (m) {
   	for (let name in global.plugins) {
   	  let plugin = global.plugins[name]
       if (!plugin) continue
-      if (plugin.tags && plugin.tags.includes('admin')) continue
+      if (!opts['restrict']) if (plugin.tags && plugin.tags.includes('admin')) continue
       let _prefix = plugin.customPrefix ? plugin.customPrefix : conn.prefix ? conn.prefix : global.prefix
   	  if ((usedPrefix = (_prefix.exec(m.text) || '')[0])) {
         let noPrefix = m.text.replace(usedPrefix, '')
