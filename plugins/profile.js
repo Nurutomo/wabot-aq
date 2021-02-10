@@ -15,7 +15,7 @@ Name: ${name} (@${who.replace(/@.+/, '')})
 About: ${about}
 Number: ${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}
 Link: https://wa.me/${who.split`@`[0]}
-XP: ${xp}
+XP: ${exp}
 Limit: ${limit}
 Last Claim: ${new Date(lastclaim)}
 `.trim()
