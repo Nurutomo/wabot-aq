@@ -46,6 +46,7 @@
     "syntax-error": "^1.4.0",
     "terminal-image": "^1.2.1",
     "url-regex": "^5.0.0",
-    "yargs": "^16.2.0"
+    "yargs": "^16.2.0",
+    "yt-search": "^2.7.3"
   }
 }

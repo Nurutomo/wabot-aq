@@ -1,6 +1,6 @@
 let handler = async (m, { conn, text }) => {
   if (conn.user.jid === global.conn.user.jid) {
-    let users = [...new Set(conns.map(v => v.user).filter(v => v).map(v => v.jid))]
+    let users = [...new Set([...global.conns.filter(conn => conn.user && conn.state !== 'close').map(conn => conn.user.jid)])]
     for (let id of users) conn.sendMessage(id, text, m.mtype, m.msg.contextInfo ? {
       contextInfo: m.msg.contextInfo
     } : {})
