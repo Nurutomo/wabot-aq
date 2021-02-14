@@ -20,7 +20,7 @@ Simple WhatsApp Bot
 ---------
 
 ### FOR WINDOWS/VPS/RDP USER
-* Download And Install Git [`Click Here`](https://git-scm.com/downloads) <br>
+* Download And Insttall Git [`Click Here`](https://git-scm.com/downloads) <br>
 * Download And Install NodeJS [`Click Here`](https://nodejs.org/en/download) <br>
 * Download And Install FFMPEG [`Click Here`](https://ffmpeg.org/download.html) (don't forget to path) 
 * Download And Install ImageMagick [`Click Here`](https://imagemagick.org/script/download.php) (if nulis want work,  checklist columns 1,2,3,5,6) 
