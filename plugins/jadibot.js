@@ -32,6 +32,7 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
     conn.on('group-add', global.conn.onAdd)
     conn.on('group-leave', global.conn.onLeave)
     conn.on('message-new', global.conn.handler)
+    conn.on('message-delete', global.conn.onDelete)
     conn.regenerateQRIntervalMs = null
     conn.connect().then(async ({user}) => {
       if (auth) return
@@ -43,7 +44,19 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
       conn.close()
       delete global.conns[id]
     }, 60000)
-    conn.on('close', conn.logger.info)
+    conn.on('close', () => {
+      setTimeout(async () => {
+        try {
+          if (conn.state != 'close') return
+          if (conn.user && conn.user.jid)
+            parent.sendMessage(conn.user.jid, `Koneksi terputus...`, MessageType.extendedText)
+          let i = global.conns.indexOf(conn)
+          if (i < 0) return
+          delete global.conns[i]
+          global.conns.splice(i, 1)
+        } catch (e) { conn.logger.error(e) }
+      }, 30000)
+    })
     global.conns.push(conn)
   } else throw 'Tidak bisa membuat bot didalam bot!\n\nhttps://wa.me/' + global.conn.user.jid.split`@`[0] + '?text=.jadibot'
 }

@@ -2,7 +2,7 @@ let { WAConnection: _WAConnection, WA_MESSAGE_STUB_TYPES } = require('@adiwajshi
 let { generate } = require('qrcode-terminal')
 let qrcode = require('qrcode')
 let simple = require('./lib/simple')
-let logs = require('./lib/logs')
+//  let logs = require('./lib/logs')
 let yargs = require('yargs/yargs')
 let syntaxerror = require('syntax-error')
 let fetch = require('node-fetch')
@@ -34,7 +34,7 @@ global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.
 global.timestamp = {
   start: new Date
 }
-global.LOGGER = logs()
+// global.LOGGER = logs()
 const PORT = process.env.PORT || 3000
 let opts = yargs(process.argv.slice(2)).exitProcess(false).parse()
 global.opts = Object.freeze({...opts})
@@ -88,10 +88,20 @@ conn.handler = async function (m) {
         if (!isNumber(user.exp)) user.exp = 0
         if (!isNumber(user.limit)) user.limit = 10
         if (!isNumber(user.lastclaim)) user.lastclaim = 0
+        if (!'registered' in user) user.registered = false
+        if (!user.registered) {
+          if (!'name' in user) user.name = this.getName(m.sender)
+          if (!isNumber(user.age)) user.age = -1
+          if (!isNumber(user.regTime)) user.regTime = -1
+        }
       } else global.DATABASE._data.users[m.sender] = {
         exp: 0,
         limit: 10,
         lastclaim: 0,
+        registered: false,
+        name: conn.getName(m.sender),
+        age: -1,
+        regTime: -1,
       }
       
       let chat
@@ -117,6 +127,7 @@ conn.handler = async function (m) {
     m.exp += 1
     
   	let usedPrefix
+    let user = global.DATABASE._data.users[m.sender]
   	for (let name in global.plugins) {
   	  let plugin = global.plugins[name]
       if (!plugin) continue
@@ -189,6 +200,10 @@ conn.handler = async function (m) {
         }
   			if (plugin.private && m.isGroup) { // Private Chat Only
           fail('private', m, this)
+          continue
+        }
+        if (plugin.register && user.registered == false) { // Butuh daftar?
+          fail('unreg', m, this)
           continue
         }
 
@@ -348,14 +363,15 @@ conn.on('close', () => {
 
 global.dfail = (type, m, conn) => {
   let msg = {
-    rowner: 'Perintag ini hanya dapat digunakan oleh _*OWWNER!1!1!*_',
+    rowner: 'Perintah ini hanya dapat digunakan oleh _*OWWNER!1!1!*_',
     owner: 'Perintah ini hanya dapat digunakan oleh _*Owner Bot*_!',
     mods: 'Perintah ini hanya dapat digunakan oleh _*Moderator*_ !',
     premium: 'Perintah ini hanya untuk member _*Premium*_ !',
     group: 'Perintah ini hanya dapat digunakan di grup!',
     private: 'Perintah ini hanya dapat digunakan di Chat Pribadi!',
     admin: 'Perintah ini hanya untuk *Admin* grup!',
-    botAdmin: 'Jadikan bot sebagai *Admin* untuk menggunakan perintah ini!'
+    botAdmin: 'Jadikan bot sebagai *Admin* untuk menggunakan perintah ini!',
+    unreg: 'Silahkan daftar untuk menggunakan fitur ini dengan cara mengetik:\n\n*#daftar nama.umur*\n\nContoh: *#daftar Manusia.16*'
   }[type]
   if (msg) conn.reply(m.chat, msg, m)
 }

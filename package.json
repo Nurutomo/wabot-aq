@@ -29,13 +29,14 @@
   "bugs": {
     "url": "https://github.com/Nurutomo/wabot-aq/issues"
   },
-  "license": "GPL3",
+  "license": "GPL-3.0",
   "dependencies": {
     "@adiwajshing/baileys": "^3.4.1",
     "awesome-phonenumber": "^2.45.0",
     "brainly-scraper-v2": "^1.1.2",
     "cfonts": "^2.9.1",
     "chalk": "^4.1.0",
+    "cheerio": "^1.0.0-rc.5",
     "express": "^4.17.1",
     "file-type": "^16.1.0",
     "form-data": "^3.0.0",

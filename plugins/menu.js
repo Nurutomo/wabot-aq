@@ -33,6 +33,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     let muptime = clockString(_muptime)
     let uptime = clockString(_uptime)
     let totalreg = Object.keys(global.DATABASE._data.users).length
+    let rtotalreg = Object.values(global.DATABASE._data.users).filter(user => user.registered == true).length
     let tags = {
       'main': 'Main',
       'xp': 'Exp & Limit',
@@ -73,7 +74,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     }
     conn.menu = conn.menu ? conn.menu : {}
     let before = conn.menu.before || `
-╭─「 ${conn.getName(conn.user.jid)} 」
+╭─「 ${conn.user.name} 」
 │ Hai, %name!
 │
 │ *%exp XP*
@@ -82,9 +83,8 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
 │ Tanggal: *%week %weton, %date*
 │ Waktu: *%time*
 │
-│ Uptime: *%uptime*
-│ Main Uptime: *%muptime*
-│ Database: %totalreg nomor
+│ Uptime: *%uptime* (*%muptime*)
+│ Database: %rtotalreg of %totalreg
 │ Github:
 │ %github
 ╰────
@@ -111,7 +111,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       npmdesc: package.description,
       version: package.version,
       github: package.homepage ? package.homepage.url || package.homepage : '[unknown github url]',
-      exp, limit, name, weton, week, date, time, totalreg,
+      exp, limit, name, weton, week, date, time, totalreg, rtotalreg,
       readmore: readMore
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).join`|`})`, 'g'), (_, name) => replace[name])
