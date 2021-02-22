@@ -1,5 +1,5 @@
 # wabot-aq
-Simple WhatsApp Bot
+BOT WA MANTAB 👍👍
 
 ### FOR TERMUX USER
 ```bash
