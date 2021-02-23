@@ -8,12 +8,15 @@ let handler  = async (m, { conn, usedPrefix, command, text, noPrefix, args, grou
   let old = m.exp * 1 
   try {
     let i = 15
-    let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', 'args', 'groupMetadata', _text)
+    let f = {
+      exports: {}
+    }
+    let exec = new (async () => {}).constructor('print', 'm', 'handler', 'require', 'conn', 'Array', 'process', 'args', 'groupMetadata', 'module', 'exports', _text)
     _return = await exec.call(conn, (...args) => {
       if (--i < 1) return
       console.log(...args)
       return conn.reply(m.chat, util.format(...args), m)
-    }, m, handler, require, conn, CustomArray, process, args, groupMetadata)
+    }, m, handler, require, conn, CustomArray, process, args, groupMetadata, f, f.exports)
   } catch (e) {
     let err = await syntaxerror(_text, 'Execution Function', {
       allowReturnOutsideFunction: true,

@@ -127,7 +127,7 @@ conn.handler = async function (m) {
     m.exp += 1
     
   	let usedPrefix
-    let user = global.DATABASE._data.users[m.sender]
+    let _user = global.DATABASE._data.users[m.sender]
   	for (let name in global.plugins) {
   	  let plugin = global.plugins[name]
       if (!plugin) continue
@@ -202,7 +202,7 @@ conn.handler = async function (m) {
           fail('private', m, this)
           continue
         }
-        if (plugin.register && user.registered == false) { // Butuh daftar?
+        if (plugin.register && _user.registered == false) { // Butuh daftar?
           fail('unreg', m, this)
           continue
         }
@@ -239,6 +239,7 @@ conn.handler = async function (m) {
           console.log(e)
           if (e) m.reply(util.format(e))
         } finally {
+          // m.reply(util.format(_user)) 
           if (m.limit) m.reply(+ m.limit + ' Limit terpakai')
         }
   			break
