@@ -9,6 +9,6 @@ let handler = async (m, { conn, text }) => {
 handler.help = ['mention <teks>']
 handler.tags = ['tools']
 
-handler.command = /^mentiin$/i
+handler.command = /^mention$/i
 
 module.exports = handler
