@@ -1,7 +1,7 @@
 let handler  = async (m, { conn, text }) => {
   let chats = conn.chats.array.filter(v => !v.read_only && v.message).map(v => v.jid)
   let content = await conn.cMod(m.chat, m, /bc|broadcast/i.test(text) ? text : text + '\n' + readMore)
-  for (let id of chats) conn.copyNForward(m.chat, comtent)
+  for (let id of chats) conn.copyNForward(id, comtent)
   conn.reply(m.chat, `_Mengirim pesan broadcast ke ${chats.length} chat_`, m)
 }
 handler.help = ['broadcast','bc'].map(v => v + ' <teks>')

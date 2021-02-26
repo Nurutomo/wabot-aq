@@ -2,7 +2,7 @@ let handler = async (m, { conn, text }) => {
   if (conn.user.jid === global.conn.user.jid) {
     let users = [...new Set([...global.conns.filter(conn => conn.user && conn.state !== 'close').map(conn => conn.user.jid)])])
     let content = await conn.cMod(m.chat, m, /bc|broadcast/i.test(text) ? text : text + '\n' + readMore)
-    for (let id of chats) conn.copyNForward(m.chat, comtent)
+    for (let id of chats) conn.copyNForward(id, comtent)
     conn.reply(m.chat, `_Berhasil mengirim broadcast ke ${users.length} nomor yang jadi bot_`, m)
   } else conn.reply(m.chat, 'Fitur ini hanya untuk host bot',  m)
 }
