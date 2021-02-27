@@ -3,7 +3,7 @@ let handler = async (m, { conn, args }) => {
   let sortedLim = Object.entries(global.DATABASE.data.users).sort((a, b) => b[1].limit - a[1].limit)
   let usersExp = sortedExp.map(v => v[0])
   let usersLim = sortedLim.map(v => v[0])
-  let len = args[0] && args[0].length > 0 ? Math.min(1000, Math.max(parseInt(args[0]), 5)) : Math.min(20, sortedExp.length)
+  let len = args[0] && args[0].length > 0 ? Math.min(100, Math.max(parseInt(args[0]), 5)) : Math.min(20, sortedExp.length)
   let text = `
 • *XP Leaderboard Top ${len}* •
 Kamu: *${usersExp.indexOf(m.sender) + 1}* dari *${usersExp.length}*
