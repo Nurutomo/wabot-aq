@@ -4,20 +4,14 @@ made with love, by ariffb
 http://wa.me/6283128734012
 */
 let handler = async (m, { conn, args, usedPrefix }) => {
-    if (args[0] === 'open') {
+    if (args[0] === 'open' || 'buka') {
         conn.reply(m.chat, `*Grup berhasil dibuka!*`, m)
         conn.groupSettingChange(m.chat, GroupSettingChange.messageSend, false)
-    } else if (args[0] === 'close') {
-        conn.reply(m.chat, `*Grup berhasil ditutup!*`, m)
-        conn.groupSettingChange(m.chat, GroupSettingChange.messageSend, true)
-    } else if (args[0] === 'buka') {
-        conn.reply(m.chat, `*Grup berhasil dibuka!*`, m)
-        conn.groupSettingChange(m.chat, GroupSettingChange.messageSend, false)
-    } else if (args[0] === 'tutup') {
+    } else if (args[0] === 'close' || 'tutup') {
         conn.reply(m.chat, `*Grup berhasil ditutup!*`, m)
         conn.groupSettingChange(m.chat, GroupSettingChange.messageSend, true)
     } else {
-        throw `*Contoh : ${usedPrefix}group open*`
+        throw `*Contoh : ${usedPrefix}grup buka*`
     }
 }
 
