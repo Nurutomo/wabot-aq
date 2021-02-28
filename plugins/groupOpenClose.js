@@ -7,20 +7,24 @@ by Ariffb nya boleh diganti
 Astrobot - http://wa.me/6285157336614?text=hai+bot
 */
 let handler = async (m, { conn, args, usedPrefix }) => {
-    if (args[0] === 'open' || 'buka') {
-        conn.reply(m.chat, `*Grup berhasil dibuka!*`, m)
+    if (args[0] === 'open') {
         conn.groupSettingChange(m.chat, GroupSettingChange.messageSend, false)
-        conn.fakeReply(m.chat, `*Grup berhasil dibuka!*`, '0@s.whatsapp.net', `by Ariffb`, m.chat ? m.chat : false)
-    } else if (args[0] === 'close' || 'tutup') {
-        conn.reply(m.chat, `*Grup berhasil ditutup!*`, m)
+        conn.fakeReply(m.chat, `*Grup berhasil dibuka!*`, '0@s.whatsapp.net', `*© Astrobot*`, m.chat)
+    } else if (args[0] === 'close') {
         conn.groupSettingChange(m.chat, GroupSettingChange.messageSend, true)
-        conn.fakeReply(m.chat, `*Grup berhasil ditutup!*`, '0@s.whatsapp.net', `by Ariffb`, m.chat ? m.chat : false)
+        conn.fakeReply(m.chat, `*Grup berhasil ditutup!*`, '0@s.whatsapp.net', `*© Astrobot*`, m.chat)
+    } else if (args[0] === 'buka') {
+        conn.groupSettingChange(m.chat, GroupSettingChange.messageSend, false)
+        conn.fakeReply(m.chat, `*Grup berhasil dibuka!*`, '0@s.whatsapp.net', `*© Astrobot*`, m.chat)
+    } else if (args[0] === 'tutup') {
+        conn.groupSettingChange(m.chat, GroupSettingChange.messageSend, true)
+        conn.fakeReply(m.chat, `*Grup berhasil ditutup!*`, '0@s.whatsapp.net', `*© Astrobot*`, m.chat)
     } else {
-        throw `*Contoh : ${usedPrefix}grup buka*`
+        conn.fakeReply(m.chat, `*Contoh : ${usedPrefix}grup tutup*`, '0@s.whatsapp.net', `*© Astrobot*`, m)
     }
 }
 
-handler.help = ['group <open|close>']
+handler.help = ['group <open/close>']
 handler.tags = ['group']
 handler.command = /^(group|grup)$/i
 handler.owner = false
