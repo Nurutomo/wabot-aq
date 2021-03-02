@@ -18,7 +18,7 @@ let handler = async (m, { conn, text }) => {
     users[m.sender].limit -= limit
     users[who].limit += poin
 
-    m.reply(`(${-poin} Limit) + (${-pjk} A-poin (Pajak 2%)) = ( ${-limit} Limit)`)
+    m.reply(`(${-poin} Limit) + (${-pjk} Limit (Pajak 2%)) = ( ${-limit} Limit)`)
     conn.fakeReply(m.chat, `+${poin} Limit`, who, m.text)
 }
 handler.help = ['paylimit @user <amount>']
