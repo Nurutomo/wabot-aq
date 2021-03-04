@@ -1,6 +1,6 @@
 {
   "name": "wabot-aq",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Customizable WhatsApp Bot",
   "depecrated": false,
   "main": "index.js",
@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/Nurutomo/wabot-aq/issues"
   },
-  "license": "GPL-3.0",
+  "license": "GPLv3",
   "dependencies": {
     "@adiwajshing/baileys": "^3.4.1",
     "awesome-phonenumber": "^2.45.0",

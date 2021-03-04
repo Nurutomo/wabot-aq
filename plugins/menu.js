@@ -83,7 +83,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
 │ Tanggal: *%week %weton, %date*
 │ Waktu: *%time*
 │
-│ Uptime: *%uptime* (*%muptime*)
+│ Uptime: *%uptime (%muptime)*
 │ Database: %rtotalreg of %totalreg
 │ Github:
 │ %github

@@ -5,3 +5,5 @@ database.json
 *_database.json
 tmp
 package-lock.json
+credentials.json
+token.json

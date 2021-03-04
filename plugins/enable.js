@@ -18,9 +18,12 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
       }
       global.opts['self'] = !isEnable
       break
+    case 'antilink':
+      chat.antiLink = isEnable
+      break
     default:
       return m.reply(`
-List option: welcome | delete | public
+List option: welcome | delete | public | antilink
 
 Contoh:
 ${usedPrefix}enable welcome
