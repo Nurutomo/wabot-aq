@@ -13,7 +13,7 @@ Anda berhenti AFK
     let user = global.DATABASE.data.users[jid]
     if (!user) continue
     let afkTime = user.afk
-    if (afkTime < 0) continue
+    if (!afkTime || afkTime < 0) continue
     let reason = user.afkReason || 'AFK'
     m.reply(`
 Jangan tag dia, dia lagi ${reason}

@@ -78,16 +78,16 @@ module.exports = {
         const str2Regex = str => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
         let _prefix = plugin.customPrefix ? plugin.customPrefix : conn.prefix ? conn.prefix : global.prefix
   		  let match = (_prefix instanceof RegExp ? // RegExp Mode?
-          [[m.text.match(_prefix), _prefix]] :
+          [[_prefix.exec(m.text), _prefix]] :
           Array.isArray(_prefix) ? // Array?
             _prefix.map(p => {
               let re = p instanceof RegExp ? // RegExp in Array?
                 p :
                 new RegExp(str2Regex(p))
-              return [m.text.match(re), re]
+              return [re.exec(m.text), re]
             }) :
              typeof _prefix === 'string' ? // String?
-              [[m.text.match(new RegExp(str2Regex(_prefix))),new RegExp(str2Regex(_prefix))]] :
+              [[new RegExp(str2Regex(_prefix)).exec(m.text),new RegExp(str2Regex(_prefix))]] :
               [[[], new RegExp]]
         ).find(p => p[1])
         if (typeof plugin.before == 'function') if (await plugin.before.call(this, m, {
