@@ -1,4 +1,5 @@
 let limit = 30
+let fetch = require('node-fetch')
 const { servers, ytv } = require('../lib/y2mate')
 let handler = async (m, { conn, args, isPrems, isOwner }) => {
   if (!args || !args[0]) throw 'Uhm... urlnya mana?'
@@ -10,10 +11,13 @@ let handler = async (m, { conn, args, isPrems, isOwner }) => {
 *Filesize:* ${filesizeF}
 *${isLimit ? 'Pakai ': ''}Link:* ${dl_link}
 `.trim(), m)
+  let _thumb = {}
+  try { _thumb = { thumbnail: await (await fetch(thumb)).buffer() } }
+  catch (e) { }
   if (!isLimit) conn.sendFile(m.chat, dl_link, title + '.mp4', `
 *Title:* ${title}
 *Filesize:* ${filesizeF}
-`.trim(), m)
+`.trim(), m, false, _thumb || {})
 }
 handler.help = ['mp4','v',''].map(v => 'yt' + v + ' <url> [server: id4, en60]')
 handler.tags = ['downloader']

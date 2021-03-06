@@ -9,7 +9,7 @@ let handler = async (m, { conn, args: [effect], text: txt }) => {
   text2 = text2.join(split)
   let url = global.API('xteam', '/textpro/' + effect, { text, text2 }, 'APIKEY')
   try {
-    conn.sendFile(m.chat, url, 'textpro.jpg', `*TEXTPRO*\n*Effect:* ${effect}`, m)
+    await conn.sendFile(m.chat, url, 'textpro.jpg', `*TEXTPRO*\n*Effect:* ${effect}`, m)
   } catch (e) {
     m.reply(url)
     throw e

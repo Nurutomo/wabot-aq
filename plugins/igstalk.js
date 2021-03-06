@@ -20,16 +20,15 @@ let handler = async (m, { conn, args }) => {
     hd_profile_pic_url_info,
     is_private
   } = json.result.user
-  m.reply(JSON.stringify(json.result.user, null, 1))
   let pp = hd_profile_pic_url_info.url || profile_pic_url
   let caption = `
-${fullname} *(@${username})* ${is_verified ? '✓' : ''}
-${is_private ? 'Post Hidden by User' : (media_count + ' Post(s)')}
+${full_name} *(@${username})* ${is_verified ? '✓' : ''}
+https://instagram.com/${username}
+${is_private ? 'Post Hidden by User' : ('*' + media_count + '* Post(s)')}
 Following *${following_count}* User(s)
 *${follower_count}* Followers
 *Bio:*
-${biography}
-${external_url ? '*External URL:* ' + external_url : ''}
+${biography}${external_url ? '\n*External URL:* ' + external_url : ''}
 `.trim()
   if (pp) conn.sendFile(m.chat, pp, 'ppig.jpg', caption, m)
   else m.reply(caption)
