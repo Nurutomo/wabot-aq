@@ -12,6 +12,7 @@ Anda berhenti AFK
   for (let jid of jids) {
     let user = global.DATABASE.data.users[jid]
     if (!user) continue
+    let name = m.fromMe ? conn.user : conn.contacts[m.sender]
     let afkTime = user.afk
     if (!afkTime || afkTime < 0) continue
     let reason = user.afkReason || 'AFK'
