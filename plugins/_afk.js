@@ -18,6 +18,9 @@ Anda berhenti AFK
     m.reply(`
 Jangan tag dia, dia lagi ${reason}
 Selama ${clockString(new Date - afkTime)}
+
+Follow NOW:
+@Nurutomo
 `.trim())
   }
   return true
