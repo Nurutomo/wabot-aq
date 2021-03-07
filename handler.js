@@ -22,6 +22,7 @@ module.exports = {
           }
           if (!isNumber(user.afk)) user.afk = -1
           if (!'afkReason' in user) user.afkReason = ''
+          if (!'banned' in user) user.banned = false
         } else global.DATABASE._data.users[m.sender] = {
           exp: 0,
           limit: 10,
@@ -31,7 +32,8 @@ module.exports = {
           age: -1,
           regTime: -1,
           afk: -1,
-          afkReason: ''
+          afkReason: '',
+          banned: false
         }
     
         let chat
@@ -114,9 +116,10 @@ module.exports = {
 
     			if (!isAccept) continue
           m.plugin = name
-          if (m.chat in global.DATABASE._data.chats) {
+          if (m.chat in global.DATABASE._data.chats || m.sender in global.DATABASE._data.users) {
             let chat = global.DATABASE._data.chats[m.chat]
-            if (name != 'unbanchat.js' && chat && chat.isBanned) return // Except this
+            let user = global.DATABASE._data.users[m.sender]
+            if (name != 'unbanchat.js' && chat && chat.isBanned && name != 'unban.js' && user && user.banned) return // Except this
           }
           if (plugin.rowner && !isROwner) { // Real Owner
             fail('rowner', m, this)
