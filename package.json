@@ -40,7 +40,7 @@
     "express": "^4.17.1",
     "file-type": "^16.1.0",
     "form-data": "^3.0.0",
-    "google-it": "^1.6.1",
+    "google-it": "^1.6.2",
     "jsdom": "^16.4.0",
     "node-fetch": "^2.6.1",
     "node-gtts": "^2.0.2",
