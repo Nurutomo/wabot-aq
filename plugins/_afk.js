@@ -19,7 +19,7 @@ Anda berhenti AFK
     m.reply(`
 Ssst orangnya lagi AFK
 
-*Username :* ${name.vnmae || name.notify || name.name || ('+' + name.jid.split`@`[0])}
+*Username :* conn.getName(m.sender)
 *Alasan :* ${reason}
 Selama ${clockString(new Date - afkTime)}
 
