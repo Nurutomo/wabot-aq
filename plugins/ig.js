@@ -4,7 +4,10 @@ let handler = async (m, { conn, args }) => {
   let res = await fetch(global.API('xteam', '/dl/ig', {
     url: args[0]
   }, 'APIKEY'))
-  if (res.status !== 200) throw await res.text()
+  if (res.status !== 200) {
+    res.text()
+    throw res.status
+  }
   let json = await res.json()
   if (!json.result) throw json
   let { name, username, likes, caption, data } = json.result
