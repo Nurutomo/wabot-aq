@@ -119,7 +119,8 @@ module.exports = {
           if (m.chat in global.DATABASE._data.chats || m.sender in global.DATABASE._data.users) {
             let chat = global.DATABASE._data.chats[m.chat]
             let user = global.DATABASE._data.users[m.sender]
-            if (name != 'unbanchat.js' && chat && chat.isBanned && name != 'unbanuser.js' && user && user.banned) return // Except this
+            if (name != 'unbanchat.js' && chat && chat.isBanned) return // Except this
+            if (name != 'unbanuser.js' && user && user.banned) return
           }
           if (plugin.rowner && !isROwner) { // Real Owner
             fail('rowner', m, this)
