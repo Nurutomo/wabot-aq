@@ -7,3 +7,4 @@ tmp
 package-lock.json
 credentials.json
 token.json
+config.json
