@@ -55,7 +55,7 @@ let handler  = async (m, { conn, args }) => {
   })
 }
 handler.help = ['n'].map(v => v + 'ulis <teks>')
-handler.tags = ['tools']
+handler.tags = ['nulis']
 handler.command = /^nulis$/i
 handler.owner = false
 handler.mods = false
