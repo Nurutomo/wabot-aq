@@ -35,5 +35,35 @@ Simple WhatsApp Bot
 ```
 --------------
 
+# Arguments `node . [--options] [<session name>]`
+
+## `--self`
+Activate self mode (Ignores other)
+
+## `--prefix <prefixes>`
+ - `prefixes` are seperated by each character
+Set prefix
+
+## `--server`
+Used for [heroku](https://heroku.com/) or scan through website
+
+## `--big-qr`
+If small qr unicode doesn't support
+
+## `--restrict`
+Enables restricted plugins (which can lead your number to be **banned** if used too often)
+ - Group Administration `add, kick`
+
+## `--img`
+Enable image inspector through terminal
+
+## `--nyimak`
+No bot, just print received messages and add users to database
+
+## `--test`
+**Development** Testing Mode
+
+--------------
+
 ##### Powered By : [`XTEAM`](https://api.xteam.xyz) 
 ##### Author / Creator : [`Nurutomo`](https://GitHub.com/Nurutomo) 
