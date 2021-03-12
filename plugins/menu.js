@@ -43,6 +43,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       'admin': 'Admin',
       'group': 'Group',
       'internet': 'Internet',
+      'nulis': 'MagerNulis & Logo',
       'downloader': 'Downloader',
       'tools': 'Tools',
       'fun': 'Fun',
