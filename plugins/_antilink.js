@@ -7,7 +7,7 @@ handler.before = m => {
   let isGroupLink = linkRegex.exec(m.text)
 
   if (chat.antiLink && isGroupLink) m.reply('Hapus!!\nAtau kamu kena kick BOT?')
-await conn.groupRemove(m.chat, [users])
+await conn.groupRemove(m.chat, [users])if (global.opts['restrict'])
   return true
 }
 
