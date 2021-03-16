@@ -12,7 +12,7 @@ let handler = async (m, { conn, args: [effect], text: txt }) => {
     await conn.sendFile(m.chat, url, 'textpro.jpg', `*TEXTPRO*\n*Effect:* ${effect}`, m)
   } catch (e) {
     m.reply(url)
-    throw e
+    
   }
 }
 handler.help = ['textpro'].map(v => v + ' <effect> <text>|[text2]')
