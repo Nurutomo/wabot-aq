@@ -2,7 +2,7 @@ let handler = async (m, { conn, args }) => {
   if (!args[0]) throw 'Uhm...url nya mana?'
   let res = await fetch(global.API('xteam', '/dl/fb', {
     url: args[0]
-  }, 'APIKEY')
+  }, 'APIKEY'))
   if (res.status !== 200) {
     res.text()
     throw res.status
