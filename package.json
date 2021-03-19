@@ -32,16 +32,16 @@
   "license": "GPLv3",
   "dependencies": {
     "@adiwajshing/baileys": "^3.4.1",
-    "awesome-phonenumber": "^2.45.0",
+    "awesome-phonenumber": "^2.47.0",
     "brainly-scraper-v2": "^1.1.2",
     "cfonts": "^2.9.1",
     "chalk": "^4.1.0",
     "cheerio": "^1.0.0-rc.5",
     "express": "^4.17.1",
-    "file-type": "^16.1.0",
-    "form-data": "^3.0.0",
+    "file-type": "^16.3.0",
+    "form-data": "^3.0.1",
     "google-it": "^1.6.2",
-    "jsdom": "^16.4.0",
+    "jsdom": "^16.5.1",
     "node-fetch": "^2.6.1",
     "node-gtts": "^2.0.2",
     "qrcode": "^1.4.4",
@@ -50,6 +50,6 @@
     "translate-google-api": "^1.0.4",
     "url-regex": "^5.0.0",
     "yargs": "^16.2.0",
-    "yt-search": "^2.7.3"
+    "yt-search": "^2.7.4"
   }
 }
