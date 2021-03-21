@@ -3,10 +3,11 @@ const { sticker } = require('../lib/sticker')
 let handler  = async (m, { conn, args }) => {
   let stiker = false
   try {
-    let q = m.quoted ? m.quoted : m
-    if (/image/.test(q.mimetype || '')) {
+    let q = m.quoted && !args ? m.quoted : m
+    let mime = (q.msg || q).mimetype || ''
+    if (/image|video/.test(mime)) {
       let img = await q.download()
-      if (!img) throw img
+      if (!img) throw 'Foto/Video tidak ditemukan'
       stiker = await sticker(img)
     } else if (args[0]) stiker = await sticker(false, args[0])
   } finally {
@@ -15,19 +16,9 @@ let handler  = async (m, { conn, args }) => {
     })
   }
 }
-handler.help = ['stiker (caption|reply media)', 'stiker <url>']
+handler.help = ['stiker (caption|reply media)', 'stiker <url>', 'stikergif (caption|reply media)', 'stikergif <url>']
 handler.tags = ['sticker']
-handler.command = /^stic?ker$/i
-handler.owner = false
-handler.mods = false
-handler.premium = false
-handler.group = false
-handler.private = false
-
-handler.admin = false
-handler.botAdmin = false
-
-handler.fail = null
+handler.command = /^s(tic?ker)?(gif)?$/i
 
 module.exports = handler
 
