@@ -75,7 +75,7 @@ lolpentakill
 
 }
 handler.help = ['photooxy <effect|teks>']
-handler.tags = ['sticker']
+handler.tags = ['tools']
 handler.command = /^(photooxy)$/i
 handler.owner = false
 handler.mods = false
