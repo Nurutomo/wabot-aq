@@ -5,6 +5,7 @@ let handler = async (m, { conn, args }) => {
     url: args[0]
   }, 'APIKEY'))
   let json = await res.json()
+  if (!json.result) throw json
   conn.sendFile(m.chat, json.result.url, 'tiktok.mp4', `
 _*Username:*_ @${json.result.username}
 `.trim(), m, false, {
