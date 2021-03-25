@@ -158,7 +158,7 @@ for (let filename of fs.readdirSync(pluginFolder).filter(pluginFilter)) {
   }
 }
 console.log(Object.keys(global.plugins))
-global.reload = (event, filename) => {
+global.reload = (_event, filename) => {
   if (pluginFilter(filename)) {
     let dir = path.join(pluginFolder, filename)
     if (dir in require.cache) {

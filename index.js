@@ -15,6 +15,10 @@ CFonts.say(`'${package.name}' By @${package.author.name || package.author}`, {
   gradient: ['red', 'magenta']
 })
 
+/**
+ * Start a js file
+ * @param {String} file `path/to/file`
+ */
 function start(file) {
   let args = [path.join(__dirname, file), ...process.argv.slice(2)]
   CFonts.say([process.argv[0], ...args].join(' '), {
