@@ -10,7 +10,7 @@ Simple WhatsApp Bot
 > pkg install nodejs -y
 > pkg install ffmpeg -y
 > pkg install imagemagick -y
-> git clone https://github.com/Nurutomo/wabot-aq
+> git clone https://github.com/Arya274/wabot-aq
 > cd wabot-aq
 > npm install
 ```
@@ -25,7 +25,7 @@ Simple WhatsApp Bot
 * Download And Install ImageMagick [`Click Here`](https://imagemagick.org/script/download.php) (if nulis want work,  checklist columns 1,2,3,5,6)
 
 ```bash
-> git clone https://github.com/Nurutomo/wabot-aq
+> git clone https://github.com/Arya274/wabot-aq
 > cd wabot-aq
 > npm install
 ```
@@ -82,3 +82,5 @@ No bot, just print received messages and add users to database
 #### Powered By : [`XTEAM`](https://api.xteam.xyz)
 
 #### Author / Creator : [`Nurutomo`](https://GitHub.com/Nurutomo)
+
+## Watermark By: [`DrawlNag`](https://youtube.com/c/DrawlNag)
