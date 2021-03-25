@@ -12,9 +12,9 @@ module.exports = {
         let user
         if (user = global.DATABASE._data.users[m.sender]) {
           if (!isNumber(user.exp)) user.exp = 0
-          if (!isNumber(user.limit)) user.limit = 10
+          if (!isNumber(user.limit)) user.limit = 15
           if (!isNumber(user.lastclaim)) user.lastclaim = 0
-          if (!'registered' in user) user.registered = false
+          if (!'registered' in user) user.registered = true
           if (!user.registered) {
             if (!'name' in user) user.name = this.getName(m.sender)
             if (!isNumber(user.age)) user.age = -1
@@ -27,9 +27,9 @@ module.exports = {
           if (!'autolevelup' in user) user.autolevelup = false
         } else global.DATABASE._data.users[m.sender] = {
           exp: 0,
-          limit: 10,
+          limit: 15,
           lastclaim: 0,
-          registered: false,
+          registered: true,
           name: this.getName(m.sender),
           age: -1,
           regTime: -1,
@@ -168,7 +168,7 @@ module.exports = {
 
           m.isCommand = true
           let xp = 'exp' in plugin ? parseInt(plugin.exp) : 17 // XP Earning per command
-          if (xp > 200) m.reply('Ngecit -_-') // Hehehe
+          if (xp > 200) m.reply('Astaghfirullah, Kamu ngecitya?') // Hehehe
           else m.exp += xp
           if (!isPrems && plugin.limit && global.DATABASE._data.users[m.sender].limit < plugin.limit * 1) {
             this.reply(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, m)
@@ -309,7 +309,7 @@ Untuk mematikan fitur ini, ketik
 
 global.dfail = (type, m, conn) => {
   let msg = {
-    rowner: 'Perintah ini hanya dapat digunakan oleh _*OWWNER!1!1!*_',
+    rowner: 'Perintah ini hanya dapat digunakan oleh _*OWNER DRAWL NAG*_!',
     owner: 'Perintah ini hanya dapat digunakan oleh _*Owner Bot*_!',
     mods: 'Perintah ini hanya dapat digunakan oleh _*Moderator*_ !',
     premium: 'Perintah ini hanya untuk member _*Premium*_ !',
@@ -317,7 +317,7 @@ global.dfail = (type, m, conn) => {
     private: 'Perintah ini hanya dapat digunakan di Chat Pribadi!',
     admin: 'Perintah ini hanya untuk *Admin* grup!',
     botAdmin: 'Jadikan bot sebagai *Admin* untuk menggunakan perintah ini!',
-    unreg: 'Silahkan daftar untuk menggunakan fitur ini dengan cara mengetik:\n\n*#daftar nama.umur*\n\nContoh: *#daftar Manusia.16*'
+    unreg: '*Maaf kak, kamu belum Terdaftar!*\nSilahkan daftar untuk menggunakan fitur ini dengan cara mengetik:\n\n*#daftar nama|umur*\n\nContoh: *#daftar Arya|16*'
   }[type]
   if (msg) return m.reply(msg)
 }
