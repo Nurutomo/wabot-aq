@@ -10,10 +10,12 @@ global.APIKeys = { // APIKey Here
   // 'https://website': 'apikey'
   'https://api.xteam.xyz': 'd90a9e986e18778b'
 }
+
+// Sticker WM
 global.packname = 'I hope you\'re fine'
 global.author = 'Nurutomo'
 
-
+global.multiplier = 69 // The higher, The harder levelup
 
 let fs = require('fs')
 let chalk = require('chalk')

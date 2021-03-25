@@ -1,10 +1,11 @@
 let fs = require ('fs')
 let path = require('path')
+let levelling = require('../lib/levelling')
 let handler  = async (m, { conn, usedPrefix: _p }) => {
   try {
     let package = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')))
-    let exp = global.DATABASE.data.users[m.sender].exp
-    let limit = global.DATABASE.data.users[m.sender].limit
+    let { exp, limit, level } = global.DATABASE.data.users[m.sender]
+    let { min, xp, max } = levelling.xpRange(level, global.multiplier)
     let name = conn.getName(m.sender)
     let d = new Date
     let locale = 'id'
@@ -42,6 +43,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       'quotes': 'Quotes',
       'admin': 'Admin',
       'group': 'Group',
+      'premium': 'Premium',
       'internet': 'Internet',
       'nulis': 'MagerNulis & Logo',
       'downloader': 'Downloader',
@@ -78,9 +80,10 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
 ╭─「 ${conn.user.name} 」
 │ Hai, %name!
 │
-│ *%exp XP*
 │ Tersisa *%limit Limit*
-│
+│ Level *%level (%exp / %maxexp)* [%xp4levelup lagi untuk levelup]
+│ %totalexp XP in Total
+│ 
 │ Tanggal: *%week %weton, %date*
 │ Waktu: *%time*
 │
@@ -111,11 +114,15 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       npmname: package.name,
       npmdesc: package.description,
       version: package.version,
+      exp: exp - min,
+      maxexp: xp,
+      totalexp: exp,
+      xp4levelup: max - exp,
       github: package.homepage ? package.homepage.url || package.homepage : '[unknown github url]',
-      exp, limit, name, weton, week, date, time, totalreg, rtotalreg,
+      level, limit, name, weton, week, date, time, totalreg, rtotalreg,
       readmore: readMore
     }
-    text = text.replace(new RegExp(`%(${Object.keys(replace).join`|`})`, 'g'), (_, name) => replace[name])
+    text = text.replace(new RegExp(`%(${Object.keys(replace).join`|`})`, 'g'), (_, name) => ''+replace[name])
     conn.reply(m.chat, text.trim(), m)
   } catch (e) {
     conn.reply(m.chat, 'Maaf, menu sedang error', m)

@@ -39,7 +39,10 @@ let info = `
 Universal:
 %% (%)
 %p (Prefix)
-%exp (Exp)
+%exp (Current Exp)
+$maxexp (Exp To Level Up)
+%totalexp (Total Exp)
+%xp4levelup (Exp yang dibutuhkan untuk levelup)
 %limit (Limit)
 %name (Nama)
 %weton (Weton Hari ini)
@@ -47,6 +50,7 @@ Universal:
 %date (Tanggal)
 %time (Jam)
 %uptime (Uptime Bot)
+%rtotalreg (Jumlah User yang daftar di database)
 %totalreg (Jumlah User yang ada di database)
 %npmname
 %npmdesc

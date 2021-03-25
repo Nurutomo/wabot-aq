@@ -23,6 +23,8 @@ module.exports = {
           if (!isNumber(user.afk)) user.afk = -1
           if (!'afkReason' in user) user.afkReason = ''
           if (!'banned' in user) user.banned = false
+          if (!isNumber(user.level)) user.level = 0
+          if (!'autolevelup' in user) user.autolevelup = false
         } else global.DATABASE._data.users[m.sender] = {
           exp: 0,
           limit: 10,
@@ -33,7 +35,9 @@ module.exports = {
           regTime: -1,
           afk: -1,
           afkReason: '',
-          banned: false
+          banned: false,
+          level: 0,
+          autolevelup: false,
         }
     
         let chat
@@ -59,7 +63,7 @@ module.exports = {
       if (!m.fromMe && opts['self']) return
       if (typeof m.text !== 'string') m.text = ''
       if (m.isBaileys) return
-      m.exp += 1
+      m.exp += Math.ceil(Math.random() * 10)
   
     	let usedPrefix
       let _user = global.DATABASE.data && global.DATABASE.data.users && global.DATABASE.data.users[m.sender]
@@ -94,7 +98,7 @@ module.exports = {
               [[[], new RegExp]]
         ).find(p => p[1])
         if (typeof plugin.before == 'function') if (await plugin.before.call(this, m, {
-          match, _user, groupMetadata
+          match, user, groupMetadata
         })) continue
     	  if ((usedPrefix = (match[0] || '')[0])) {
           let noPrefix = m.text.replace(usedPrefix, '')
@@ -122,6 +126,10 @@ module.exports = {
             let user = global.DATABASE._data.users[m.sender]
             if (name != 'unbanchat.js' && chat && chat.isBanned) return // Except this
             if (name != 'unbanuser.js' && user && user.banned) return
+          }
+          if (plugin.rowner && plugin.owner && !(isROwner || isOwner)) { // Both Owner
+            fail('owner', m, this)
+            continue
           }
           if (plugin.rowner && !isROwner) { // Real Owner
             fail('rowner', m, this)
@@ -159,8 +167,8 @@ module.exports = {
           }
 
           m.isCommand = true
-          let xp = 'exp' in plugin ? parseInt(plugin.exp) : 9 // XP Earning per command
-          if (xp > 99) m.reply('Ngecit -_-') // Hehehe
+          let xp = 'exp' in plugin ? parseInt(plugin.exp) : 17 // XP Earning per command
+          if (xp > 200) m.reply('Ngecit -_-') // Hehehe
           else m.exp += xp
           if (!isPrems && plugin.limit && global.DATABASE._data.users[m.sender].limit < plugin.limit * 1) {
             this.reply(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, m)
@@ -178,6 +186,8 @@ module.exports = {
               conn: this,
               participants,
               groupMetadata,
+              user,
+              bot,
               isROwner,
               isOwner,
               isAdmin,

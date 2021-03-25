@@ -1,6 +1,7 @@
 let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => {
   let isEnable = /true|enable|(turn)?on/i.test(command)
   let chat = global.DATABASE._data.chats[m.chat]
+  let user = global.DATABASE._data.users[m.sender]
   let type = (args[0] || '').toLowerCase()
   let isAll = false
   switch (type) {
@@ -21,9 +22,12 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
     case 'antilink':
       chat.antiLink = isEnable
       break
+    case 'autolevelup':
+      user.autolevelup = isEnable
+      break
     default:
       return m.reply(`
-List option: welcome | delete | public | antilink
+List option: welcome | delete | public | antilink | autolevelup
 
 Contoh:
 ${usedPrefix}enable welcome
