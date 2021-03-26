@@ -4,12 +4,16 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
   let user = global.DATABASE._data.users[m.sender]
   let type = (args[0] || '').toLowerCase()
   let isAll = false
+  let isUser = false
   switch (type) {
     case 'welcome':
       chat.welcome = isEnable
       break
     case 'delete':
       chat.delete = isEnable
+      break
+    case 'antidelete':
+      chat.delete = !isEnable
       break
     case 'public':
       isAll = true
@@ -23,6 +27,7 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
       chat.antiLink = isEnable
       break
     case 'autolevelup':
+      isUser = true
       user.autolevelup = isEnable
       break
     default:
@@ -35,7 +40,7 @@ ${usedPrefix}disable welcome
 `.trim())
   }
   m.reply(`
-*${type}* berhasil di *${isEnable ? 'nyala' : 'mati'}kan* untuk ${isAll ? 'bot ini' : 'chat ini'}
+*${type}* berhasil di *${isEnable ? 'nyala' : 'mati'}kan* ${isAll ? 'untuk bot ini' : isUser ? '' : 'untuk chat ini'}
 `.trim())
 }
 handler.help = ['en', 'dis'].map(v => v + 'able <option>')
