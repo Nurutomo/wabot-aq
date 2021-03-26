@@ -3,7 +3,10 @@ let simple = require('./lib/simple')
 
 const isNumber = x => typeof x === 'number' && !isNaN(x)
 module.exports = {
-  async handler(m) {
+  async handler(chatUpdate) {
+    if (!chatUpdate.hasNewMessage) return
+    if (!chatUpdate.messages && !chatUpdate.count) return
+    let m = chatUpdate.messages.all()[0]
     try {
     	simple.smsg(this, m)
       m.exp = 0
@@ -98,7 +101,7 @@ module.exports = {
               [[[], new RegExp]]
         ).find(p => p[1])
         if (typeof plugin.before == 'function') if (await plugin.before.call(this, m, {
-          match, user, groupMetadata
+          match, user, groupMetadata, chatUpdate
         })) continue
     	  if ((usedPrefix = (match[0] || '')[0])) {
           let noPrefix = m.text.replace(usedPrefix, '')
@@ -192,7 +195,8 @@ module.exports = {
               isOwner,
               isAdmin,
               isBotAdmin,
-              isPrems
+              isPrems,
+              chatUpdate,
             })
             if (!isPrems) m.limit = m.limit || plugin.limit || false
           } catch (e) {
