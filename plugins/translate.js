@@ -1,23 +1,23 @@
+// ariffb - http:/wa.me/6283128734012
 const translate = require('translate-google-api')
-
-// made with love, by Ariffb
-// wa.me/6283128734012
-let handler = async (m, { conn, text, usedPrefix }) => {
-    if (!text) throw `contoh: \n\n${usedPrefix}tr id|thankyou\n\nBahasa yang didukung: https://cloud.google.com/translate/docs/languages`
+let handler = async (m, { text, usedPrefix }) => {
+    goblok = `contoh: \n${usedPrefix}tr kode bahasa|teks\n${usedPrefix}tr id|thankyou\n\nBahasa yang didukung: https://cloud.google.com/translate/docs/language`
+    if (!text) throw goblok
 
     let [to, trans] = text.split`|`
 
-    if (!to) return conn.reply(m.chat, `Silahkan masukan parameter to\n contoh: \n\n${usedPrefix}tr id|thankyou`, m)
-    if (!trans) return conn.reply(m.chat, `Silahkan masukan parameter text\n contoh: \n\n${usedPrefix}tr id|thankyou`, m)
+    if (!to) throw `Silahkan masukan kode bahasa\ncontoh: \n\n${usedPrefix}tr id|thankyou\n\nBahasa yang didukung: https://cloud.google.com/translate/docs/language`
+    if (!trans) throw `Silahkan masukan kalimat yang ingin diterjemahkan\ncontoh: \n\n${usedPrefix}tr id|thankyou`
 
     try {
         const result = await translate(`${trans}`, {
             tld: "cn",
             to: `${to}`,
         })
-        m.reply(m.chat, `${text}\n\nTerjemahan: ` + result[0])
+        m.reply(`Pesan: ${trans}\n\nTerjemahan: ${result[0]}`)
+        console.log(result[0])
     } catch (e) {
-        m.reply('_Error!_')
+        throw goblok
     }
 
 }
