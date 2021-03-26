@@ -77,6 +77,18 @@ No bot, just print received messages and add users to database
 
 **Development** Testing Mode
 
+### `--trace`
+
+```js
+conn.logger.level = 'trace'
+```
+
+### `--debug`
+
+```js
+conn.logger.level = 'debug'
+```
+
 ---------
 
 #### Powered By : [`XTEAM`](https://api.xteam.xyz)
