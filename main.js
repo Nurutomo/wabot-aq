@@ -1,12 +1,13 @@
 require('./config.js')
 let { WAConnection: _WAConnection } = require('@adiwajshing/baileys')
 let { generate } = require('qrcode-terminal')
-let { spawnSync } = require('child_process')
 let syntaxerror = require('syntax-error')
 let simple = require('./lib/simple')
 //  let logs = require('./lib/logs')
+let { promisify } = require('util')
 let yargs = require('yargs/yargs')
 let Readline = require('readline')
+let cp = require('child_process')
 let qrcode = require('qrcode')
 let path = require('path')
 let fs = require('fs')
@@ -196,9 +197,12 @@ process.on('exit', () => global.DATABASE.save())
 
 // Quick Test
 async function _quickTest() {
-  let ffmpeg = spawn('ffmpeg')
-  let ffmpegWebp = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-'])
-  let convert = spawn('convert')
+  let spawn = promisify(cp.spawn).bind(cp)
+  let [ffmpeg, ffmpegWebp, convert] = await Promise.all([
+    spawn('ffmpeg', [], {}),
+    spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-'], {}),
+    spawn('convert', [], {})
+  ]).catch(conn.logger.error)
   global.support = {
     ffmpeg: ffmpeg.status,
     ffmpegWebp: ffmpeg.status && ffmpegWebp.stderr.length == 0 && ffmpegWebp.stdout.length > 0,
@@ -211,4 +215,6 @@ async function _quickTest() {
   if (!global.support.convert) conn.logger.warn('Stickers may not work without imagemagick if libwebp on ffmpeg doesnt isntalled (pkg install imagemagick)')
 }
 
-_quickTest()
+/*_quickTest()
+  .then(() => conn.logger.info('Quick Test Done'))
+  .catch(console.error)*/
