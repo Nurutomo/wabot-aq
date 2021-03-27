@@ -37,6 +37,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     let rtotalreg = Object.values(global.DATABASE._data.users).filter(user => user.registered == true).length
     let tags = {
       'main': 'Main',
+      'game': 'Game',
       'xp': 'Exp & Limit',
       'sticker': 'Sticker',
       'kerang': 'Kerang Ajaib',
