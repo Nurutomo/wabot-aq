@@ -22,4 +22,3 @@ handler.tags = ['sticker']
 handler.command = /^s(tic?ker)?(gif)?(wm)?$/i
 
 module.exports = handler
-
