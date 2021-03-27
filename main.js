@@ -196,9 +196,9 @@ process.on('exit', () => global.DATABASE.save())
 
 // Quick Test
 async function _quickTest() {
-  let ffmpeg = spawn('ffmpeg')
-  let ffmpegWebp = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-'])
-  let convert = spawn('convert')
+  let ffmpeg = spawnSync('ffmpeg')
+  let ffmpegWebp = spawnSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-'])
+  let convert = spawnSync('convert')
   global.support = {
     ffmpeg: ffmpeg.status,
     ffmpegWebp: ffmpeg.status && ffmpegWebp.stderr.length == 0 && ffmpegWebp.stdout.length > 0,
