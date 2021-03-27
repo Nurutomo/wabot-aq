@@ -28,7 +28,7 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
     conn.bye = global.conn.bye
     conn.on('group-add', global.conn.onAdd)
     conn.on('group-leave', global.conn.onLeave)
-    conn.on('message-new', global.conn.handler)
+    conn.on('chat-update', global.conn.handler)
     conn.on('message-delete', global.conn.onDelete)
     conn.regenerateQRIntervalMs = null
     conn.connect().then(async ({user}) => {
