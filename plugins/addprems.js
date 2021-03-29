@@ -1,15 +1,20 @@
-const { MessageType } = require('@adiwajshing/baileys')
+// SC By Arya
+// Recode By RC047 :V
 
-let handler = async(m, { conn, text }) => {
+const { MessageType } = require('@adiwajshing/baileys')
+const fs = require('fs')
+
+let handler = async(m, { conn, text, participants, isPrems }) => {
 let who
-  if (m.isGroup) who = m.mentionedJid[0]
+  if (m.isGroup) who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
   else who = m.chat
-  if (!who) throw 'Tag salah satu lah,dan masukkan nomor untuk di verivikasi !'
-  // if (participants.map(v=>v.jid).includes(global.conn.user.jid)) {
-    global.DATABASE._data.chats[m.chat].premium = true
-  var nomor = m.sender
-    m.reply(`*Done berhasil added User✅*\n\n*Nomor : wa.me/${nomor.split("@s.whatsapp.net")[0]}\n*Expired:* 30Days\n*Thanks For Added Premium !*`)
-  // } else m.reply('Ada nomor host disini...')
+  if (!who) throw 'Tag orang yang akan dijadikan premium!'
+ // if (participants.map(v=>v.jid).includes(global.conn.user.jid)) {
+  let user = `${who.split("@s.whatsapp.net")[0]}`
+  let up = global.prems.push(user)
+  fs.writeFileSync('./config.js',JSON.stringify(up))
+    m.reply(`*Berhasil Add Premium✅*\n\nNomor : wa.me/${who.split("@s.whatsapp.net")[0]}\nExpired : 30 Hari\n\nTerimakasih telah beli Premium!`)
+ // } else m.reply('Ada nomor host disini...')
 }
 handler.help = ['addprems <nomor>']
 handler.tags = ['owner']
