@@ -6,7 +6,7 @@ let who
   else who = m.chat
   if (!who) throw 'Tag salah satu lah,dan masukkan nomor untuk di verivikasi !'
   // if (participants.map(v=>v.jid).includes(global.conn.user.jid)) {
-    global.DATABASE._data.chats[m.chat].premium = true
+    global.DATABASE._data.chats[m.chat].isPrems = true
   var nomor = m.sender
     m.reply(`*Done berhasil added User✅*\n\n*Nomor : wa.me/${nomor.split("@s.whatsapp.net")[0]}\n*Expired:* 30Days\n*Thanks For Added Premium !*`)
   // } else m.reply('Ada nomor host disini...')
