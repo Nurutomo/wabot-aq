@@ -4,7 +4,7 @@ let handler = (m, { text }) => {
   user.afkReason = text
   m.reply(`
 ${conn.getName(m.sender)} is now AFK${text ? ': ' + text : ''}
-`)
+`.trim())
 }
 handler.help = ['afk [alasan]']
 handler.tags = ['main']
