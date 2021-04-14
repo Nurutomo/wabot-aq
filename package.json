@@ -45,6 +45,7 @@
     "node-fetch": "^2.6.1",
     "node-gtts": "^2.0.2",
     "qrcode": "^1.4.4",
+    "sharp": "^0.28.1",
     "syntax-error": "^1.4.0",
     "terminal-image": "^1.2.1",
     "url-regex": "^5.0.0",
