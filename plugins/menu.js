@@ -79,8 +79,8 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     conn.menu = conn.menu ? conn.menu : {}
     let before = conn.menu.before || `
 ╭─「 ${conn.user.name} 」
-│ Hai, %name!
-│
+│ හෙලෝ , %name!
+│බොට් by supun
 │ Tersisa *%limit Limit*
 │ Level *%level (%exp / %maxexp)* [%xp4levelup lagi untuk levelup]
 │ %totalexp XP in Total
@@ -90,7 +90,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
 │
 │ Uptime: *%uptime (%muptime)*
 │ Database: %rtotalreg of %totalreg
-│ Github:
+│ Github:https://github.com/Supun608/wabot-aq
 │ %github
 ╰────
 %readmore`
