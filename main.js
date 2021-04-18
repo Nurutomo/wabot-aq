@@ -65,8 +65,8 @@ if (!opts['test']) setInterval(() => {
 
 if (opts['test']) {
   conn.user = {
-    jid: '2219191@s.whatsapp.net',
-    name: 'test',
+    jid: '+91 6282670349@s.whatsapp.net',
+    name: 'JOCKER BOT',
     phone: {}
   }
   conn.chats
