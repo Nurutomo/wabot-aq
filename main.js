@@ -31,9 +31,11 @@ if (!global.DATABASE.data.users) global.DATABASE.data = {
   users: {},
   chats: {},
   stats: {},
+  msgs: {},
 }
 if (!global.DATABASE.data.chats) global.DATABASE.data.chats = {}
 if (!global.DATABASE.data.stats) global.DATABASE.data.stats = {}
+if (!global.DATABASE.data.stats) global.DATABASE.data.msgs = {}
 if (opts['server']) {
   let express = require('express')
   global.app = express()

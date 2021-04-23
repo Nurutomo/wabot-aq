@@ -1,4 +1,4 @@
-let handler = (m, { text }) => {
+let handler = async (m, { text }) => {
   let user = global.DATABASE.data.users[m.sender]
   user.afk = + new Date
   user.afkReason = text

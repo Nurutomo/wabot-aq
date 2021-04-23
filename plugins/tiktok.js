@@ -4,13 +4,10 @@ let handler = async (m, { conn, args }) => {
   let res = await fetch(global.API('xteam', '/dl/tiktok', {
     url: args[0]
   }, 'APIKEY'))
+  if (res.status !== 200) throw await res.text()
   let json = await res.json()
   if (!json.result) throw json
-  conn.sendFile(m.chat, json.result.url, 'tiktok.mp4', `
-_*Username:*_ @${json.result.username}
-`.trim(), m, false, {
-    thumbnail
-  })
+  conn.sendFile(m.chat, json.result, 'tiktok.mp4', '', m)
 }
 handler.help = ['tiktok'].map(v => v + ' <url>')
 handler.tags = ['downloader']

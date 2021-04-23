@@ -17,6 +17,11 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       month: 'long',
       year: 'numeric'
     })
+    let dateIslamic = Intl.DateTimeFormat(locale + '-TN-u-ca-islamic', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(d)
     let time = d.toLocaleTimeString(locale, {
       hour: 'numeric',
       minute: 'numeric',
@@ -86,6 +91,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
 │ %totalexp XP in Total
 │ 
 │ Tanggal: *%week %weton, %date*
+│ Tanggal Islam: *%dateIslamic*
 │ Waktu: *%time*
 │
 │ Uptime: *%uptime (%muptime)*
@@ -120,10 +126,10 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       totalexp: exp,
       xp4levelup: max - exp,
       github: package.homepage ? package.homepage.url || package.homepage : '[unknown github url]',
-      level, limit, name, weton, week, date, time, totalreg, rtotalreg,
+      level, limit, name, weton, week, date, dateIslamic, time, totalreg, rtotalreg,
       readmore: readMore
     }
-    text = text.replace(new RegExp(`%(${Object.keys(replace).join`|`})`, 'g'), (_, name) => ''+replace[name])
+    text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => ''+replace[name])
     conn.reply(m.chat, text.trim(), m)
   } catch (e) {
     conn.reply(m.chat, 'Maaf, menu sedang error', m)

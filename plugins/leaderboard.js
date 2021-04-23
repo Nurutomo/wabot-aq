@@ -2,9 +2,9 @@ let handler = async (m, { conn, args, participants }) => {
   let users = Object.entries(global.DATABASE.data.users).map(([key, value]) => {
     return {...value, jid: key}
   })
-  let sortedExp = users.map(toNumber('exp')).sort(sort('exp', true))
-  let sortedLim = users.map(toNumber('limit')).sort(sort('limit', true))
-  let sortedLevel = users.map(toNumber('level')).sort(sort('level', true))
+  let sortedExp = users.map(toNumber('exp')).sort(sort('exp'))
+  let sortedLim = users.map(toNumber('limit')).sort(sort('limit'))
+  let sortedLevel = users.map(toNumber('level')).sort(sort('level'))
   let usersExp = sortedExp.map(enumGetKey)
   let usersLim = sortedLim.map(enumGetKey)
   let usersLevel = sortedLevel.map(enumGetKey)
@@ -49,9 +49,9 @@ handler.exp = 0
 
 module.exports = handler
 
-function sort(property, ascending = false) {
-  if (property) return (...args) => args[!ascending & 1][property] - args[ascending & 1][property]
-  else return (...args) => args[!ascending & 1] - args[ascending & 1]
+function sort(property, ascending = true) {
+  if (property) return (...args) => args[ascending & 1][property] - args[!ascending & 1][property]
+  else return (...args) => args[ascending & 1] - args[!ascending & 1]
 }
 
 function toNumber(property, _default = 0) {

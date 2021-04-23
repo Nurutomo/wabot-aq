@@ -13,7 +13,14 @@ let handler = async (m, { conn, text }) => {
 	if (m.mtype == MessageType.extendedText) cm.message[m.mtype].text = txt
   else if (m.mtype == MessageType.image || m.mtype == MessageType.video) cm.message[m.mtype].caption = txt
 
-  conn.emit('message-new', cm)
+  conn.emit('chat-update', {
+    jid: who,
+    messages: {
+      all() {
+        return [cm]
+      }
+    }
+  })
 }
 handler.command = /^sudo$/
 handler.rowner = true
