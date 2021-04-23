@@ -55,6 +55,7 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
       'downloader': 'Downloader',
       'tools': 'Tools',
       'fun': 'Fun',
+      'database': 'Database',
       'jadibot': 'Jadi Bot',
       'owner': 'Owner',
       'host': 'Host',
