@@ -6,7 +6,7 @@ let handler = async (m, { conn, command, usedPrefix, text }) => {
     let _m = await conn.serializeM(msgs[text])
     await _m.copyNForward(m.chat, true)
 }
-handler.help = ['vn', 'msg', 'video', 'audio', 'img', 'sticker'].map(v => 'del' + v + ' <text>')
+handler.help = ['vn', 'msg', 'video', 'audio', 'img', 'sticker'].map(v => 'get' + v + ' <text>')
 handler.tags = ['database']
 handler.command = /^get(vn|msg|video|audio|img|sticker)$/
 
