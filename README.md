@@ -1,6 +1,12 @@
 # BotNuru
 Thank for the script ya nurutomo:v
 
+# KALO ADA ERROR / REQUEST FITUR
+```bash
+PULL REQUEST
+OR ISSUES
+```
+
 ### FOR TERMUX USER
 ```bash
 > pkg update && pkg upgrade
