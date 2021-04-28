@@ -1,5 +1,5 @@
-# wabot-aq
-Simple WhatsApp Bot
+# BotNuru
+Thank for the script ya nurutomo:v
 
 ### FOR TERMUX USER
 ```bash
