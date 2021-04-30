@@ -9,6 +9,9 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
     case 'welcome':
       chat.welcome = isEnable
       break
+    case 'detect':
+      chat.detect = isEnable
+      break
     case 'delete':
       chat.delete = isEnable
       break
