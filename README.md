@@ -1,12 +1,6 @@
 # BotNuru
 Thank for the script ya nurutomo:v
 
-# KALO ADA ERROR / REQUEST FITUR
-```bash
-PULL REQUEST
-OR ISSUES
-```
-
 ### FOR TERMUX USER
 ```bash
 > pkg update && pkg upgrade
@@ -17,7 +11,10 @@ OR ISSUES
 ```
 ###### Run
 ```bash
-> node . [<session name>] (session name is optional)
+> bash run.sh
+atau > node . 
+
+Btw scan qr
 ```
 
 ---------
@@ -35,8 +32,9 @@ OR ISSUES
 ###### Run
 ```bash
 > node index.js
+Btw Scan qr
 ```
 --------------
 
 ##### Powered By : [`XTEAM`](https://api.xteam.xyz) 
-##### Author / Creator : [`Nurutomo`](https://GitHub.com/Nurutomo) 
+##### Bot : [`Nomor Bot`](wa.me/60199782326) 
