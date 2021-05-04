@@ -26,8 +26,7 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
     })
     conn.welcome = global.conn.welcome
     conn.bye = global.conn.bye
-    conn.on('group-add', global.conn.onAdd)
-    conn.on('group-leave', global.conn.onLeave)
+    conn.on('group-participants-update', global.conn.onParticipantsUpdate)
     conn.on('chat-update', global.conn.handler)
     conn.on('message-delete', global.conn.onDelete)
     conn.regenerateQRIntervalMs = null
@@ -58,12 +57,12 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
     global.conns.push(conn)
   } else throw 'Tidak bisa membuat bot didalam bot!\n\nhttps://wa.me/' + global.conn.user.jid.split`@`[0] + '?text=.jadibot'
 }
-handler.help = ['jadibot']
-handler.tags = ['jadibot']
+handler.help = ['jadibot*\ ']
+handler.tags = ['premium']
 handler.command = /^jadibot$/i
 handler.owner = false
 handler.mods = false
-handler.premium = false
+handler.premium = true
 handler.group = false
 handler.private = false
 
@@ -71,7 +70,6 @@ handler.admin = false
 handler.botAdmin = false
 
 handler.fail = null
-handler.limit = true
+handler.limit = false
 
 module.exports = handler
-
