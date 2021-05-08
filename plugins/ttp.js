@@ -4,9 +4,10 @@ const { MessageType } = require('@adiwajshing/baileys')
 let handler = async (m, { conn, text }) => {
   if (!text) throw 'Tidak ada teks?'
   let stiker = await sticker(null, global.API('xteam', '/ttp', { file: '', text }), global.packname, global.author)
-  conn.sendMessage(m.chat, stiker, MessageType.sticker, {
+  if (stiker) return conn.sendMessage(m.chat, stiker, MessageType.sticker, {
     quoted: m
   })
+  throw stiker.toString()
 }
 handler.help = ['ttp <teks>']
 handler.tags = ['sticker']

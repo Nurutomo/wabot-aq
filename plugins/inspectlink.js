@@ -10,12 +10,17 @@ let handler = async (m, { conn, text }) => {
   let caption = `
 -- [Group Link Inspector] --
 ${res.id}
-Judul: ${res.subject}
-Dibuat pada: ${formatDate(res.creation * 1000)}
-Judul diubah oleh @${res.subjectOwner.split`@`[0]} pada ${formatDate(res.subjectTime * 1000)}
-Deskripsi diubah oleh @${res.descOwner.split`@`[0]} pada ${formatDate(res.descTime * 1000)}
-Deskripsi:
-${res.desc}
+*Judul:* ${res.subject}
+*Dibuat pada* ${formatDate(res.creation * 1000)}
+*Judul diubah* oleh @${res.subjectOwner.split`@`[0]} pada *${formatDate(res.subjectTime * 1000)}*${res.descOwner ? `
+*Deskripsi diubah* oleh @${res.descOwner.split`@`[0]} pada *${formatDate(res.descTime * 1000)}*` : ''}
+*Jumlah Member:* ${res.size}
+*Member yang diketahui join*: ${res.participants ? '\n' + res.participants.map((user, i) => ++i + '. @' + user.id.split`@`[0]).join('\n').trim() : 'Tidak ada'}
+${res.desc ? `*Deskripsi:*
+${res.desc}` : '*Tidak ada Deskripsi*'}
+
+*JSON Version*
+\`\`\`${JSON.stringify(res, null, 1)}\`\`\`
 `.trim()
   m.reply(caption, false, {
     contextInfo: {

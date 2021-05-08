@@ -1,7 +1,7 @@
 let handler  = async (m, { conn, text }) => {
-  let groups = conn.chats.all().filter(v => v.jid.endsWith('g.us') && !v.read_only && v.message).map(v => v.jid)
+  let groups = conn.chats.all().filter(v => v.jid.endsWith('g.us') && !v.read_only && v.message && !v.announce).map(v => v.jid)
   let content = await conn.cMod(m.chat, m, /bc|broadcast/i.test(text) ? text : text + '\n' + readMore + '「 All Group Broadcast 」')
-  for (let id of groups) conn.copyNForward(id, content)
+  for (let id of groups) conn.copyNForward(id, content, true)
   conn.reply(m.chat, `_Mengirim pesan broadcast ke ${groups.length} grup_`, m)
 }
 handler.help = ['broadcastgroup','bcgc'].map(v => v + ' <teks>')
