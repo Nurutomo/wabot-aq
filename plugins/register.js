@@ -26,6 +26,7 @@ handler.help = ['daftar', 'reg', 'register'].map(v => v + ' <nama>.<umur>')
 handler.tags = ['exp']
 
 handler.command = /^(daftar|reg(ister)?)$/i
+handler.register = true
 
 module.exports = handler
 
