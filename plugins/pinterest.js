@@ -30,11 +30,11 @@ conn.sendFile(m.chat,rand,'',caption,m)
 
 }
 
-handler.help = ['pinterest <query>']
+handler.help = ['image <query>','pinterest <query>']
 
 handler.tags = ['internet']
 
-handler.command = /^(pinterest)$/i
+handler.command = /^(image|pinterest)$/i
 
 handler.owner = false
 
