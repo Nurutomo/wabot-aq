@@ -76,6 +76,7 @@ module.exports = {
       if (m.isBaileys) return
       m.exp += Math.ceil(Math.random() * 10)
 
+      await conn.chatRead(m.chat)
       let usedPrefix
       let _user = global.DATABASE.data && global.DATABASE.data.users && global.DATABASE.data.users[m.sender]
 
@@ -172,7 +173,7 @@ module.exports = {
             fail('private', m, this)
             continue
           }
-          if (plugin.register == true && _user.registered == false) { // Butuh daftar?
+          if (plugin.register == undefined && _user.registered == false) { // Butuh daftar?
             fail('unreg', m, this)
             continue
           }
