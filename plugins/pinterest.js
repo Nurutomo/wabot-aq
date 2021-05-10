@@ -16,7 +16,7 @@ let son = await su.json()
 
 let rand = son[Math.floor(Math.random() * son.length)]
 
-conn.sendFile(m.chat,rand,'',caption,m)
+conn.sendFile(m.chat,rand,'pin.jpg',caption,m)
 
     .catch(
 
