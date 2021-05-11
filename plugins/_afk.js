@@ -3,20 +3,22 @@ handler.before = m => {
   let user = global.DATABASE.data.users[m.sender]
   if (user.afk > -1) {
     m.reply(`
-Anda berhenti AFK
+Kamu berhenti AFK${user.afkReason ? ' setelah ' + user.afkReason : ''}
+Selama ${clockString(new Date - user.afk)}
 `.trim())
     user.afk = -1
     user.afkReason = ''
   }
-  let jids = [...new Set(m.mentionedJid || []), ...(m.quoted ? [m.quoted.sender] : [])]
+  let jids = [...new Set([...(m.mentionedJid || []), ...(m.quoted ? [m.quoted.sender] : [])])]
   for (let jid of jids) {
     let user = global.DATABASE.data.users[jid]
     if (!user) continue
     let afkTime = user.afk
     if (!afkTime || afkTime < 0) continue
-    let reason = user.afkReason || 'AFK'
+    let reason = user.afkReason || ''
     m.reply(`
-Jangan tag dia, dia lagi ${reason}
+Jangan tag dia!
+Dia sedang AFK ${reason ? 'dengan alasan ' + reason : 'tanpa alasan'}
 Selama ${clockString(new Date - afkTime)}
 `.trim())
   }
