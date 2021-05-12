@@ -5,7 +5,7 @@ let handler = async (m) => {
   if (!mime) throw 'No media found'
   let media = await q.download()
   let url = await uploadImage(media)
-  await conn.sendFile(m.chat, global.API('xteam', '/videomaker/shaunthesheep', { url }, 'APIKEY'), 'shaunthesheep.mp4', 'Wkwkwk', m)
+  await conn.sendFile(m.chat, global.API('xteam', '/videomaker/shaunthesheep', { url }, 'APIKEY'), 'shaunthesheep.mp4', 'jangan sedih yaa...', m)
 }
 handler.help = ['shaunthesheep']
 handler.tags = ['videomaker']
