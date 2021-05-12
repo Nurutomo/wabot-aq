@@ -2,7 +2,7 @@ let { Presence } = require('@adiwajshing/baileys')
 let handler = async (m, { conn }) => {
 	conn.updatePresence(m.chat, Presence.composing) 
 	let res = await conn.groupMetadata(m.chat)
-	let pp = './src/avatar_contact.png'
+	let pp = './src/dark.png'
   try {
 	pp = await conn.getProfilePicture(m.chat)
 		} catch (e) {
@@ -21,6 +21,7 @@ let handler = async (m, { conn }) => {
 *Made on*: ${formatDate(res.creation * 1000)}
 *Description:*
 ${res.desc}
+*Total member:* ${res.participants.length}
 
   -> Banned : ${data(isBanned)}
   -> Anti-Link : ${data(antiLink)}
