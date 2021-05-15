@@ -92,6 +92,7 @@ module.exports = {
       for (let name in global.plugins) {
         let plugin = global.plugins[name]
         if (!plugin) continue
+        if (plugin.disabled) continue
         if (!opts['restrict']) if (plugin.tags && plugin.tags.includes('admin')) continue
         const str2Regex = str => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
         let _prefix = plugin.customPrefix ? plugin.customPrefix : conn.prefix ? conn.prefix : global.prefix
@@ -109,7 +110,18 @@ module.exports = {
               [[[], new RegExp]]
         ).find(p => p[1])
         if (typeof plugin.before == 'function') if (await plugin.before.call(this, m, {
-          match, user, groupMetadata, chatUpdate
+          match,
+          conn: this,
+          participants,
+          groupMetadata,
+          user,
+          bot,
+          isROwner,
+          isOwner,
+          isAdmin,
+          isBotAdmin,
+          isPrems,
+          chatUpdate,
         })) continue
         if ((usedPrefix = (match[0] || '')[0])) {
           let noPrefix = m.text.replace(usedPrefix, '')

@@ -177,6 +177,8 @@ global.reload = (_event, filename) => {
       global.plugins[filename] = require(dir)
     } catch (e) {
       conn.logger.error(e)
+    } finally {
+      global.plugins = Object.fromEntries(Object.entries(global.plugins).sort(([a], [b]) => a.localeCompare(b)))
     }
   }
 }
