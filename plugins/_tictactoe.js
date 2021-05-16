@@ -6,9 +6,8 @@ handler.before = function (m) {
     let isWin = !1
     let isTie = !1
     let isSurrender = !1
-    let conn = this
-    conn.game = conn.game ? conn.game : {}
-    let room = Object.values(conn.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender) && room.state == 'PLAYING')
+    this.game = this.game ? this.game : {}
+    let room = Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender) && room.state == 'PLAYING')
     if (room) {
         // m.reply(`[DEBUG]\n${parseInt(m.text)}`)
         if (!/^([1-9]|(me)?nyerah|surr?ender)$/i.test(m.text)) return
@@ -64,17 +63,17 @@ ${isTie ? 'Game berakhir' : ''}
             room[room.game._currentTurn ? 'o' : 'x'] = m.chat
         if (room.x !== room.o) m.reply(str, room.x, {
             contextInfo: {
-                mentionedJid: conn.parseMention(str)
+                mentionedJid: this.parseMention(str)
             }
         })
         m.reply(str, room.o, {
             contextInfo: {
-                mentionedJid: conn.parseMention(str)
+                mentionedJid: this.parseMention(str)
             }
         })
         if (isTie || isWin) {
             if (debugMode) m.reply('[DEBUG]\n' + require('util').format(room))
-            delete conn.game[room.id]
+            delete this.game[room.id]
         }
     }
 }
