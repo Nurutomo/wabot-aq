@@ -12,7 +12,7 @@ let handler = async (m, { conn, args }) => {
   let json = await res.json()
   if (!json.result) throw json
   let { name, author, description, uploadDate, duration, url, isFamilyFriendly, genre, keywords, contentSize, videoQuality, commentCount } = json.result
-  let { name: authorname, url: authorlink } = author
+  let { name: authorname, url: authorlink } = author || {}
   let dateConfig = {
     hour: 'numeric',
     minute: 'numeric',
@@ -30,7 +30,7 @@ Diposting pada ${new Date(uploadDate).toLocaleDateString('id', dateConfig)}
 Size: ${contentSize || unknown}
 Durasi: ${clockString(+ new Date(duration))}
 Genre: ${genre || none}
-Kualitas: ${quality ? quality : unknown}
+Kualitas: ${videoQuality ? videoQuality : unknown}
 
 ${description}
 

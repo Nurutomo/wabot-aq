@@ -1,4 +1,4 @@
-let handler  = async (m, { conn, args, usedPrefix }) => {
+let handler = async (m, { conn, args, usedPrefix }) => {
   conn.math = conn.math ? conn.math : {}
   if (args.length < 1) throw `
 Mode: ${Object.keys(modes).join(' | ')}
