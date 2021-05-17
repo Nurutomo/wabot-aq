@@ -1,9 +1,9 @@
 const TicTacToe = require("../lib/tictactoe")
 
-let handler = async (m, { conn }) => {
+let handler = async (m, { conn, usedPrefix, command, text }) => {
     conn.game = conn.game ? conn.game : {}
     if (Object.values(conn.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))) throw 'Kamu masih didalam game'
-    let room = Object.values(conn.game).find(room => room.state == 'WAITING')
+    let room = Object.values(conn.game).find(room => room.state === 'WAITING' && (text ? room.name === text : true))
     // m.reply('[WIP Feature]')
     if (room) {
         m.reply('Partner ditemukan!')
@@ -32,6 +32,7 @@ ${arr.slice(3, 6).join('')}
 ${arr.slice(6).join('')}
 
 Menunggu @${room.game.currentTurn.split('@')[0]}
+Ketik *nyerah* untuk nyerah
 `.trim()
         if (room.x !== room.o) m.reply(str, room.x, {
             contextInfo: {
@@ -44,7 +45,6 @@ Menunggu @${room.game.currentTurn.split('@')[0]}
             }
         })
     } else {
-        m.reply('Menunggu partner...')
         room = {
             id: 'tictactoe-' + (+new Date),
             x: m.chat,
@@ -52,9 +52,15 @@ Menunggu @${room.game.currentTurn.split('@')[0]}
             game: new TicTacToe(m.sender, 'o'),
             state: 'WAITING'
         }
+        if (text) room.name = text
+        m.reply('Menunggu partner' + (text ? `mengetik command dibawah ini
+${usedPrefix}${command} ${text}` : ''))
         conn.game[room.id] = room
     }
 }
-handler.command = /^tictactoe$/
+
+handler.help = ['tictactoe', 'ttt'].map(v => v + ' [custom room name]')
+handler.tags = ['']
+handler.command = /^(tictactoe|t{3})$/
 
 module.exports = handler

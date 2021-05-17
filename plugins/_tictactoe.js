@@ -55,12 +55,11 @@ ${arr.slice(0, 3).join('')}
 ${arr.slice(3, 6).join('')}
 ${arr.slice(6).join('')}
 
-${isWin || isTie ? '' : `Menunggu @${room.game.currentTurn.split('@')[0]}`}
-${isWin ? `@${(isSurrender ? room.game.currentTurn : room.game.winner).split('@')[0]} Menang!` : ''}
-${isTie ? 'Game berakhir' : ''}
+${isWin ? `@${(isSurrender ? room.game.currentTurn : room.game.winner).split('@')[0]} Menang!` : isTie ? 'Game berakhir' : `Menunggu @${room.game.currentTurn.split('@')[0]}`}
+Ketik *nyerah* untuk nyerah
 `.trim()
-        if ((room.game._currentTurn ? room.o : room.x) !== m.chat)
-            room[room.game._currentTurn ? 'o' : 'x'] = m.chat
+        if ((room.game._currentTurn ^ isSurrender ? room.x : room.o) !== m.chat)
+            room[room.game._currentTurn ^ isSurrender ? 'x' : 'o'] = m.chat
         if (room.x !== room.o) m.reply(str, room.x, {
             contextInfo: {
                 mentionedJid: this.parseMention(str)
