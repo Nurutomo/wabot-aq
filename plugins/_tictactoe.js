@@ -10,10 +10,10 @@ handler.before = function (m) {
     let room = Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender) && room.state == 'PLAYING')
     if (room) {
         // m.reply(`[DEBUG]\n${parseInt(m.text)}`)
-        if (!/^([1-9]|(me)?nyerah|surr?ender)$/i.test(m.text)) return
+        if (!/^([1-9]|(me)?nyerah|surr?ender)$/i.test(m.text)) return !0
         isSurrender = !/^[1-9]$/.test(m.text)
         if (m.sender !== room.game.currentTurn) { // nek wayahku
-            if (!isSurrender) return
+            if (!isSurrender) return !0
         }
         if (debugMode) m.reply('[DEBUG]\n' + require('util').format({
             isSurrender,
@@ -26,7 +26,7 @@ handler.before = function (m) {
                 '-1': 'Posisi Invalid',
                 0: 'Posisi Invalid',
             }[ok])
-            return
+            return !0
         }
         if (m.sender === room.game.winner) isWin = true
         else if (room.game.board === 511) isTie = true
@@ -75,6 +75,7 @@ Ketik *nyerah* untuk nyerah
             delete this.game[room.id]
         }
     }
+    return !0
 }
 
 module.exports = handler
