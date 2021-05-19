@@ -73,6 +73,13 @@ module.exports = {
       if (opts['nyimak']) return
       if (!m.fromMe && opts['self']) return
       if (typeof m.text !== 'string') m.text = ''
+      for (let name in global.plugins) {
+        let plugin = global.plugins[name]
+        if (!plugin) continue
+        if (plugin.disabled) continue
+        if (!plugin.all) continue
+        await plugin.all.call(this, m)
+      }
       if (m.isBaileys) return
       m.exp += Math.ceil(Math.random() * 10)
 
