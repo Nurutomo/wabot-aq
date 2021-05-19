@@ -17,6 +17,6 @@ let handler = async (m, { conn, args }) => {
     }
 handler.help = ['setbotpp']
 handler.command = /^(setbotpp)$/i
-handler.rowner = true
+handler.owner = true
 
 module.exports = handler
