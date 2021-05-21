@@ -9,6 +9,9 @@ handler.before = async function (m, { match }) {
         let other = [room.a, room.b].find(user => user !== m.sender)
         m.copyNForward(other, true, m.quoted && m.quoted.fromMe ? {
             contextInfo: {
+                ...m.msg.contextInfo,
+                forwardingScore: 1,
+                isForwarded: true,
                 participant: other
             }
         } : {})
