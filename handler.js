@@ -14,8 +14,9 @@ module.exports = {
       m.exp = 0
       m.limit = false
       try {
-        let user
-        if (user = global.DATABASE._data.users[m.sender]) {
+        let user = global.DATABASE._data.users[m.sender]
+        if (typeof user !== 'object') global.DATABASE._data.users[m.sender] = {}
+        if (user) {
           if (!isNumber(user.exp)) user.exp = 0
           if (!isNumber(user.limit)) user.limit = 10
           if (!isNumber(user.lastclaim)) user.lastclaim = 0
@@ -45,8 +46,9 @@ module.exports = {
           autolevelup: false,
         }
 
-        let chat
-        if (chat = global.DATABASE._data.chats[m.chat]) {
+        let chat = global.DATABASE._data.chats[m.chat]
+        if (typeof chat !== 'object') global.DATABASE._data.chats[m.chat] = {}
+        if (chat) {
           if (!'isBanned' in chat) chat.isBanned = false
           if (!'welcome' in chat) chat.welcome = false
           if (!'detect' in chat) chat.detect = false
@@ -68,11 +70,18 @@ module.exports = {
           antiLink: false,
         }
       } catch (e) {
-        console.log(e, global.DATABASE.data)
+        console.error(e)
       }
       if (opts['nyimak']) return
       if (!m.fromMe && opts['self']) return
       if (typeof m.text !== 'string') m.text = ''
+      for (let name in global.plugins) {
+        let plugin = global.plugins[name]
+        if (!plugin) continue
+        if (plugin.disabled) continue
+        if (!plugin.all) continue
+        await plugin.all.call(this, m)
+      }
       if (m.isBaileys) return
       m.exp += Math.ceil(Math.random() * 10)
 
@@ -277,7 +286,7 @@ module.exports = {
     }
   },
   async participantsUpdate({ jid, participants, action }) {
-    let chat = global.DATABASE._data.chats[jid]
+    let chat = global.DATABASE._data.chats[jid] || {}
     let text = ''
     switch (action) {
       case 'add':

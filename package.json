@@ -1,6 +1,6 @@
 {
   "name": "wabot-aq",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Customizable WhatsApp Bot",
   "depecrated": false,
   "main": "index.js",
@@ -42,6 +42,7 @@
     "file-type": "^16.3.0",
     "form-data": "^3.0.1",
     "google-it": "^1.6.2",
+    "human-readable": "^0.2.1",
     "jsdom": "^16.5.1",
     "node-fetch": "^2.6.1",
     "node-gtts": "^2.0.2",
