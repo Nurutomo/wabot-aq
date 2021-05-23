@@ -5,7 +5,6 @@ const { MessageType } = require('@adiwajshing/baileys')
 let handler = async (m, { conn, args, usedPrefix }) => {
     if (args.length == 0) return conn.reply(m.chat, `To use *${usedPrefix}stickmaker*\nPlease type: *${usedPrefix}stickmaker* [Query]\nExample: *${usedPrefix}stickmaker jail*\n\n*List Query:*\n_> gay_\n_> glass_\n_> wasted_\n_> jail_`, m)
     if (args[0] == 'jail' || args[0] == 'gay' || args[0] == 'glass' || args[0] == 'wasted')
-  await m.reply(global.wait)
 try {
   let q = m.quoted ? m.quoted : m
   let mime = (q.msg || q).mimetype || ''
@@ -14,7 +13,7 @@ try {
   let img = await q.download()
   let url = await uploadImage(img)
   let stick = `https://some-random-api.ml/canvas/` + args[0] + `?avatar=${url}`
-  let stiker = await sticker(null, stick, 'Dark', 'Bot')
+  let stiker = await sticker(null, stick, 'DarkBot', 'Anshul')
   conn.sendMessage(m.chat, stiker, MessageType.sticker, {
     quoted: m
   })
