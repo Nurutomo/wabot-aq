@@ -4,7 +4,7 @@ let handler = async(m, { conn, text }) => {
 
 if (!text) return conn.reply(m.chat, 'Harap masukan query!', m)
 
-let url =`https://api.fdci.se/rep.php?gambar=${text}`;
+let url =`https://fdciabdul.tech/api/pinterest/?keyword=${text}`;
 
 let caption = `Search result
 
