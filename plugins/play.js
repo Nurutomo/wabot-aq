@@ -9,12 +9,15 @@ let handler = async (m, { conn, command, text, isPrems, isOwner }) => {
   if (!vid) throw 'Video/Audio Tidak ditemukan'
   let isVideo = /2$/.test(command)
   let yt = false
-  for (let server of servers) {
+  let usedServer = servers[0]
+  for (let i in servers) {
+    let server = servers[i]
     try {
       yt = await (isVideo ? ytv : yta)(vid.url, server)
+      usedServer = server
       break
     } catch (e) {
-      m.reply(`Server ${server} error!`)
+      m.reply(`Server ${server} error!${servers.length >= i + 1 ? '' : '\nmencoba server lain...'}`)
     }
   }
   if (yt === false) throw 'Semua server tidak bisa :/'
@@ -25,14 +28,16 @@ let handler = async (m, { conn, command, text, isPrems, isOwner }) => {
 *Filesize:* ${filesizeF}
 *Source:* ${vid.url}
 *${isLimit ? 'Pakai ': ''}Link:* ${dl_link}
+*Server y2mate:* ${usedServer}
 `.trim(), m)
-  let _thumb = {}
-  try { if (isVideo) _thumb = { thumbnail: await (await fetch(thumb)).buffer() } }
-  catch (e) { }
-  if (!isLimit) conn.sendFile(m.chat, dl_link, title + '.mp' + (3 + /2$/.test(command)), `
+let _thumb = {}
+try { if (isVideo) _thumb = { thumbnail: await (await fetch(thumb)).buffer() } }
+catch (e) { }
+if (!isLimit) conn.sendFile(m.chat, dl_link, title + '.mp' + (3 + /2$/.test(command)), `
 *Title:* ${title}
 *Filesize:* ${filesizeF}
 *Source:* ${vid.url}
+*Server y2mate:* ${usedServer}
 `.trim(), m, false, _thumb || {})
 }
 handler.help = ['play', 'play2'].map(v => v + ' <pencarian>')
