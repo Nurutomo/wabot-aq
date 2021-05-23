@@ -2,21 +2,21 @@
 // Jangan Hapus link githubnya bang :)
 
 const fetch = require('node-fetch')
-const FormData = require('form-data')
-const { MessageType, Mimetype } = require("@adiwajshing/baileys")
-
-let handler = async (m, { conn, usedPrefix}) => {
+let handler = async (m, { conn, usedPrefix }) => {
   let q = m.quoted ? m.quoted : m
   let mime = (q.msg || q).mimetype || ''
   if (!mime) throw `Reply Foto/Kirim Foto Dengan Caption ${usedPrefix}wait`
   if (!/image\/(jpe?g|png)/.test(mime)) throw `Mime ${mime} tidak support`
   let img = await q.download()
   await m.reply('Searching Anime Titles...')
-  let anime = `data:image/jpeg;base64,${img.toString('base64')}`
-  let response = await fetch("https://trace.moe/api/search", {
-                 method: "POST",
-                 body: JSON.stringify({ image: anime }),
-                 headers: { "Content-Type": "application/json" }})
+  let anime = `data:${mime};base64,${img.toString('base64')}`
+  let response = await fetch('https://trace.moe/api/search', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ image: anime }),
+  })
   if (!response.ok) throw 'Gambar tidak ditemukan!'
   let result = await response.json()
   let { is_adult, title, title_chinese, title_romaji, episode, season, similarity, filename, at, tokenthumb, anilist_id } = result.docs[0]
