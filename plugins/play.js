@@ -8,7 +8,17 @@ let handler = async (m, { conn, command, text, isPrems, isOwner }) => {
   let vid = results.all.find(video => video.seconds < 3600)
   if (!vid) throw 'Video/Audio Tidak ditemukan'
   let isVideo = /2$/.test(command)
-  let { dl_link, thumb, title, filesize, filesizeF} = await (isVideo ? ytv : yta)(vid.url, 'id4')
+  let yt = false
+  for (let server of servers) {
+    try {
+      yt = await (isVideo ? ytv : yta)(vid.url, server)
+      break
+    } catch (e) {
+      m.reply(`Server ${server} error!`)
+    }
+  }
+  if (yt === false) throw 'Semua server tidak bisa :/'
+  let { dl_link, thumb, title, filesize, filesizeF } = yt
   let isLimit = (isPrems || isOwner ? 99 : limit) * 1024 < filesize
   conn.sendFile(m.chat, thumb, 'thumbnail.jpg', `
 *Title:* ${title}
