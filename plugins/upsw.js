@@ -14,7 +14,7 @@ const colors = [
 
 let handler = async (m, { conn, text }) => {
     let _m = Promise.resolve({ key: { id: '' }})
-    if (!m.quoted && !text) throw 'reply pesan atau sebagai argumen'
+    if (!m.quoted && !text) throw 'reply message or as an argument'
     if (m.quoted && m.quoted.mtype !== 'conversation' && !text) _m = m.quoted.forward('status@broadcast')
     if (m.quoted && m.quoted.mtype === 'conversation' && !text) _m = conn.sendMessage('status@broadcast', {
         text: m.quoted.text,
