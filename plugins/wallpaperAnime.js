@@ -6,11 +6,11 @@ let handler = async (m, { conn }) => {
         let res = await fetch(global.API('xteam', '/randomimage/wpmobile', {}, 'APIKEY'))
         let img = await res.buffer()
         conn.sendMessage(m.chat, img, MessageType.image, {
-            quoted: m, caption: '*© Astrobot*'
+            quoted: m, caption: '*© NKbot*'
         })
     } catch (e) {
         console.log(e)
-        throw '_*Owner belum membayar tagihan fitur ini*_'
+        throw '_*The owner has not paid this feature bill*_'
     }
 }
 handler.help = ['wallpaperanime']
