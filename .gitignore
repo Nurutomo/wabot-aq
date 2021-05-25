@@ -7,3 +7,4 @@ tmp
 credentials.json
 token.json
 config.js
+.env
