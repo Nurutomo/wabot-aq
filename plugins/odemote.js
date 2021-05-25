@@ -1,6 +1,7 @@
-let handler = async (m, { conn, args }) => {
+let handler = async (m, { conn }) => {
   let users = m.mentionedJid
-  conn.groupDemoteAdmin(m.chat, users)
+  if (!users.length) m.reply("tag membernya!")
+  else conn.groupDemoteAdmin(m.chat, users)
 }
 handler.help = ['demote','member','v'].map(v => 'o' + v + ' @user')
 handler.tags = ['owner']
