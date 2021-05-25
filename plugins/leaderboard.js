@@ -19,7 +19,7 @@ ${sortedExp.slice(0, len).map(({ jid, exp }, i) => `${i + 1}. ${participants.som
 • *Limit Leaderboard Top ${len}* •
 Kamu: *${usersLim.indexOf(m.sender) + 1}* dari *${usersLim.length}*
 
-${sortedLim.slice(0, len).map(({ jid, limit }, i) => `${i + 1}. ${participants.some(p => jid === p.jid) ? `(${conn.getName(jid)}) wa.me/` : '@'}${jid.split`@`[0]} *${limit} Exp*`).join`\n`}
+${sortedLim.slice(0, len).map(({ jid, limit }, i) => `${i + 1}. ${participants.some(p => jid === p.jid) ? `(${conn.getName(jid)}) wa.me/` : '@'}${jid.split`@`[0]} *${limit} Limit*`).join`\n`}
 
 • *Level Leaderboard Top ${len}* •
 Kamu: *${usersLevel.indexOf(m.sender) + 1}* dari *${usersLevel.length}*
