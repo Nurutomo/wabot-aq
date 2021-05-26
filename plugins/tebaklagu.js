@@ -6,26 +6,26 @@ let handler = async (m, { conn, usedPrefix }) => {
     conn.tebaklagu = conn.tebaklagu ? conn.tebaklagu : {}
     let id = m.chat
     if (id in conn.tebaklagu) {
-        conn.reply(m.chat, 'Masih ada soal belum terjawab di chat ini', conn.tebaklagu[id][0])
+        conn.reply(m.chat, 'There are still unanswered questions in this chat', conn.tebaklagu[id][0])
         throw false
     }
-    // ubah isi 'id' kalo mau ganti playlist spotifynya
+    // Change the contents of the 'id' if you want to change the Spotify playlist
     let res = await fetch(global.API('xteam', '/game/tebaklagu/', { id: '3AaKHE9ZMMEdyRadsg8rcy' }, 'APIKEY'))
     if (res.status !== 200) throw await res.text()
     let result = await res.json()
     let json = result.result
     // if (!json.status) throw json
     let caption = `
-TEBAK JUDUL LAGU
+GUESS THE SONG TITLE
 Timeout *${(timeout / 1000).toFixed(2)} detik*
 Ketik *${usedPrefix}cek* untuk bantuan
 Bonus: ${poin} XP
-*Balas pesan ini untuk menjawab!*`.trim()
+*Reply to this message to answer!*`.trim()
     conn.tebaklagu[id] = [
         await m.reply(caption),
         json, poin,
         setTimeout(() => {
-            if (conn.tebaklagu[id]) conn.reply(m.chat, `Waktu habis!\nJawabannya adalah *${json.judul}*`, conn.tebaklagu[id][0])
+            if (conn.tebaklagu[id]) conn.reply(m.chat, `Time's up!\nThe answer is *${json.judul}*`, conn.tebaklagu[id][0])
             delete conn.tebaklagu[id]
         }, timeout)
     ]
