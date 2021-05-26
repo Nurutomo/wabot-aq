@@ -239,7 +239,6 @@ module.exports = {
             // Error occured
             m.error = e
             console.error(e)
-            if (value) 
             if (e) {
               let text = util.format(e)
               for (let key of Object.values(global.APIKeys))

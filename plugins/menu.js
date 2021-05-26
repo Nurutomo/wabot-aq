@@ -45,7 +45,7 @@ const defaultMenu = {
 ╰────
 %readmore`.trimStart(),
   header: '╭─「 %category 」',
-  body  : '│ • %cmd%islimit%isPremium',
+  body  : '│ • %cmd %islimit %isPremium',
   footer: '╰────\n',
   after : `
 *%npmname@^%version*
@@ -101,18 +101,12 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     let help = Object.values(global.plugins).map(plugin => {
       return {
         help: plugin.help,
-        tags: plugin.tags,
+        tags: Array.isArray(plugin.tags) ? plugin.tags : [plugin.tags],
         prefix: 'customPrefix' in plugin,
-        limit: plugin.limit
+        limit: plugin.limit,
+        enabled: !plugin.disabled,
       }
     })
-    let groups = {}
-    for (let tag in tags) {
-      groups[tag] = []
-      for (let menu of help)
-        if (menu.tags && menu.tags.includes(tag))
-          if (menu.help) groups[tag].push(menu)
-    }
     conn.menu = conn.menu ? conn.menu : {}
     let before = conn.menu.before || defaultMenu.before
     let header = conn.menu.header || defaultMenu.header
@@ -120,16 +114,17 @@ let handler  = async (m, { conn, usedPrefix: _p }) => {
     let footer = conn.menu.footer || defaultMenu.footer
     let after  = conn.menu.after  || (conn.user.jid == global.conn.user.jid ? '' : `Powered by https://wa.me/${global.conn.user.jid.split`@`[0]}`) + defaultMenu.after
     let _text  = before + '\n'
-    for (let tag in groups) {
+    for (let tag in tags) {
+      let group = []
+      for (let menu of help)
+        if (menu.tags && menu.tags.includes(tag) && menu.help) group.push(menu)
       _text += header.replace(/%category/g, tags[tag]) + '\n'
-      for (let menu of groups[tag]) {
+      for (let menu of group) {
         for (let help of menu.help)
-          _text += body.replace(/%cmd/g, menu.prefix ? help : '%p' + help).replace(/%islimit/g, () => {
-            let str = ''
-            if (menu.limit) str += ' (Limit)'
-            if (menu.premium) str += ' (Premium)'
-            return str + '\n'
-          })
+          _text += body.replace(/%cmd/g, menu.prefix ? help : '%p' + help)
+            .replace(/%islimit/g, menu.limit ? '(Limit)' : '')
+            .replace(/%isPremium/g, menu.limit ? '(Premium)' : '')
+            .trim() + '\n'
       }
       _text += footer + '\n'
     }
