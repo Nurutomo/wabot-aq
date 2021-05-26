@@ -80,7 +80,12 @@ module.exports = {
         if (!plugin) continue
         if (plugin.disabled) continue
         if (!plugin.all) continue
-        await plugin.all.call(this, m)
+        if (typeof plugin.all !== 'function') continue
+        try {
+          await plugin.all.call(this, m, chatUpdate)
+        } catch (e) {
+          console.error(e)
+        }
       }
       if (m.isBaileys) return
       m.exp += Math.ceil(Math.random() * 10)
@@ -92,8 +97,8 @@ module.exports = {
       let isOwner = isROwner || m.fromMe
       let isMods = isOwner || global.mods.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
       let isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
-      let groupMetadata = m.isGroup ? await this.groupMetadata(m.chat) : {}
-      let participants = m.isGroup ? groupMetadata.participants : []
+      let groupMetadata = m.isGroup ? this.chats.get(m.chat).metadata || await this.groupMetadata(m.chat) : {} || {}
+      let participants = m.isGroup ? groupMetadata.participants : [] || []
       let user = m.isGroup ? participants.find(u => u.jid == m.sender) : {} // User Data
       let bot = m.isGroup ? participants.find(u => u.jid == this.user.jid) : {} // Your Data
       let isAdmin = user.isAdmin || user.isSuperAdmin || false // Is User Admin?
@@ -118,7 +123,7 @@ module.exports = {
               [[new RegExp(str2Regex(_prefix)).exec(m.text), new RegExp(str2Regex(_prefix))]] :
               [[[], new RegExp]]
         ).find(p => p[1])
-        if (typeof plugin.before == 'function') if (await plugin.before.call(this, m, {
+        if (typeof plugin.before === 'function') if (await plugin.before.call(this, m, {
           match,
           conn: this,
           participants,
@@ -132,6 +137,7 @@ module.exports = {
           isPrems,
           chatUpdate,
         })) continue
+        if (typeof plugin !== 'function') continue
         if ((usedPrefix = (match[0] || '')[0])) {
           let noPrefix = m.text.replace(usedPrefix, '')
           let [command, ...args] = noPrefix.trim().split` `.filter(v => v)
@@ -206,32 +212,34 @@ module.exports = {
             this.reply(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, m)
             continue // Limit habis
           }
+          let extra = {
+            match,
+            usedPrefix,
+            noPrefix,
+            _args,
+            args,
+            command,
+            text,
+            conn: this,
+            participants,
+            groupMetadata,
+            user,
+            bot,
+            isROwner,
+            isOwner,
+            isAdmin,
+            isBotAdmin,
+            isPrems,
+            chatUpdate,
+          }
           try {
-            await plugin.call(this, m, {
-              match,
-              usedPrefix,
-              noPrefix,
-              _args,
-              args,
-              command,
-              text,
-              conn: this,
-              participants,
-              groupMetadata,
-              user,
-              bot,
-              isROwner,
-              isOwner,
-              isAdmin,
-              isBotAdmin,
-              isPrems,
-              chatUpdate,
-            })
+            await plugin.call(this, m, extra)
             if (!isPrems) m.limit = m.limit || plugin.limit || false
           } catch (e) {
             // Error occured
             m.error = e
             console.error(e)
+            if (value) 
             if (e) {
               let text = util.format(e)
               for (let key of Object.values(global.APIKeys))
@@ -239,7 +247,14 @@ module.exports = {
               m.reply(text)
             }
           } finally {
-            // m.reply(util.format(_user)) 
+            // m.reply(util.format(_user))
+            if (typeof plugin.after === 'function') {
+              try {
+                await plugin.after.call(this, m, extra)
+              } catch (e) {
+                console.error(e)
+              }
+            }
             if (m.limit) m.reply(+ m.limit + ' Limit terpakai')
           }
           break
