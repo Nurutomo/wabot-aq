@@ -28,7 +28,7 @@ let tags = {
 const defaultMenu = {
   before: `
 ╭─「 %me 」
-│ Hai, %name!
+│ Hi, %name!
 │
 │ Tersisa *%limit Limit*
 │ Level *%level (%exp / %maxexp)* [%xp4levelup lagi untuk levelup]
@@ -36,12 +36,12 @@ const defaultMenu = {
 │ 
 │ Tanggal: *%week %weton, %date*
 │ Tanggal Islam: *%dateIslamic*
-│ Waktu: *%time*
+│ Time: *%time*
 │
 │ Uptime: *%uptime (%muptime)*
 │ Database: %rtotalreg of %totalreg
-│ Github:
-│ %github
+│ Whatsapp:
+│ wa.me/917829302695
 ╰────
 %readmore`.trimStart(),
   header: '╭─「 %category 」',
