@@ -12,7 +12,7 @@ global.APIKeys = { // APIKey Here
 }
 
 // Sticker WM
-global.packname = 'I hope you\'re fine'
+global.packname = 'instagram'
 global.author = 'N_K_NARU_007'
 
 global.multiplier = 69 // The higher, The harder levelup
