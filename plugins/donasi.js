@@ -1,14 +1,14 @@
 let handler = async m => m.reply(`
-╭─「 Donasi • Pulsa 」
-│ • Indosat Ooredoo [081515860089]
-│ • Telkomsel [081334177340]
+╭─「 Donation 」
+│ • Gpay, phonepe, [7829302695]
+│ • amazon, airtel, [7829302695]
 ╰────
 
-╭─「 Donasi • Non Pulsa 」
-│ • Gopay, OVO, Dana [081515860089]
-│ • https://saweria.co/Nurutomo
+╭─「 Donation 」
+│ • upi [7829302695@ybl]
+│ • https://paypal.me/nknaru
 ╰────
-`.trim()) // Tambah sendiri kalo mau
+`.trim()) // Add it yourself if you want
 handler.help = ['donasi']
 handler.tags = ['info']
 handler.command = /^dona(te|si)$/i
