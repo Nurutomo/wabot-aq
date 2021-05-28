@@ -1,4 +1,4 @@
-pkg install nodejs -y
-pkg install ffmpeg -y
-pkg install imagemagick -y
+sudo apt-get install nodejs -y
+sudo apt-get install ffmpeg -y
+sudo apt-get install imagemagick -y
 npm install
