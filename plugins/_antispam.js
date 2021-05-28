@@ -2,29 +2,21 @@ let handler = m => m
 
 handler.all = async function (m) {
     this.spam = this.spam ? this.spam : {}
-    if (!(m.sender in this.spam)) {
-        let spaming = {
-        jid: await m.sender, 
-        spam: 0,
-        lastspam: 0
-            
-        }
-        this.spam[spaming.jid] = spaming
-    } else try {
-        this.spam[m.sender].spam += 1
-        if (new Date - this.spam[m.sender].lastspam > 4000) {
-            if (this.spam[m.sender].spam > 6) {
-                this.spam[m.sender].spam = 0
-                this.spam[m.sender].lastspam = new Date * 1
+    if (m.sender in this.spam) {
+        this.spam[m.sender].count++
+        if (m.messageTimestamp.toNumber() - this.spam[m.sender].lastspam > 10) {
+            if (this.spam[m.sender].count > 10) {
                 //global.DATABASE._data.users[m.sender].banned = true
                 m.reply('*Jangan Spam!!*')
-            } else {
-                this.spam[m.sender].spam = 0
-                this.spam[m.sender].lastspam = new Date * 1
             }
+            this.spam[m.sender].count = 0
+            this.spam[m.sender].lastspam = m.messageTimestamp.toNumber()
         }
-    } catch (e) {
-        console.log(e)
+    }
+    else this.spam[m.sender] = {
+        jid: m.sender,
+        count: 0,
+        lastspam: 0
     }
 }
 
