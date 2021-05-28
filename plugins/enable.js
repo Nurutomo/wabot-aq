@@ -18,6 +18,9 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
     case 'antidelete':
       chat.delete = !isEnable
       break
+    case 'autodelvn':
+      chat.autodelvn = isEnable
+      break
     case 'public':
       isAll = true
       if (!isROwner) {
