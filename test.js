@@ -10,7 +10,10 @@ for (let folder of folders)
 for (let file of files) {
   if (file == path.join(__dirname, __filename)) continue
   console.error('Checking', file)
-  spawn('node', ['-c', file])
-  .on('exit', () => assert.ok(file) & console.log('Done', file))
-  .stderr.on('data', chunk => assert.fail(chunk.toString()))
+  spawn(process.argv0, ['-c', file])
+  .on('close', () => {
+    assert.ok(file)
+    console.log('Done', file)
+  })
+  .stderr.on('data', chunk => assert.ok(chunk.length < 1, file + '\n\n' + chunk))
 }

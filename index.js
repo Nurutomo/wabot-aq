@@ -15,11 +15,14 @@ CFonts.say(`'${package.name}' By @${package.author.name || package.author}`, {
   gradient: ['red', 'magenta']
 })
 
+var isRunning = false
 /**
  * Start a js file
  * @param {String} file `path/to/file`
  */
 function start(file) {
+  if (isRunning) return
+  isRunning = true
   let args = [path.join(__dirname, file), ...process.argv.slice(2)]
   CFonts.say([process.argv[0], ...args].join(' '), {
     font: 'console',
@@ -34,6 +37,7 @@ function start(file) {
     switch (data) {
       case 'reset':
         p.kill()
+        isRunning = false
         start.apply(this, arguments)
         break
       case 'uptime':
@@ -42,6 +46,7 @@ function start(file) {
     }
   })
   p.on('exit', code => {
+    isRunning = false
     console.error('Exited with code:', code)
     if (code === 0) return
     fs.watchFile(args[0], () => {

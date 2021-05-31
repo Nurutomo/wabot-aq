@@ -1,20 +1,36 @@
-let handler = async (m, { conn }) => {
-  return false
+async function handler(m, { conn, text, args }) {
+  m.reply('@' + m.sender.split('@')[0], false, {
+    contextInfo: {
+      mentionedJid: [m.sender]
+    }
+  })
 }
-handler.help = [''].map(v => v + ' <>')
-handler.tags = ['']
-handler.command = /^(.{65536})$/i
-handler.owner = false
-handler.mods = false
-handler.premium = false
-handler.group = false
-handler.private = false
 
-handler.admin = false
-handler.botAdmin = false
+// this is chat-update
+// handler.all = function (m, chatUpdate) {
+//  
+// }
 
-handler.fail = null
-handler.exp = 0
+// this is executed before normal handler
+// handler.before = function (m) {
+//  
+// }
+
+// handler.help = [''].map(v => v + ' <>')
+// handler.tags = ['']
+handler.command = ['tagme']
+// handler.owner = false
+// handler.mods = false
+// handler.premium = false
+// handler.group = false
+// handler.private = false
+
+// handler.admin = false
+// handler.botAdmin = false
+
+// handler.fail = null
+// handler.exp = 0
+
+handler.disabled = true
 
 module.exports = handler
-
