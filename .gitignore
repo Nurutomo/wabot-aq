@@ -1,9 +1,27 @@
+# Node.js Modules
 node_modules
+
+# important session
 *.data.json
+
+# vim state
 .*.swp
+
+# Databases
 database.json
 *_database.json
+
 tmp
+
+# Okay
+config.js
+
+# Google Drive Credentials?
 credentials.json
 token.json
-config.js
+
+
+# source code inspecting purposes
+waweb
+# planned
+web-client
