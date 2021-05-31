@@ -15,5 +15,5 @@ for (let file of files) {
     assert.ok(file)
     console.log('Done', file)
   })
-  .stderr.on('data', chunk => assert.ok(chunk.length < 1))
+  .stderr.on('data', chunk => assert.ok(chunk.length < 1, file + '\n\n' + chunk))
 }
