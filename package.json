@@ -32,8 +32,6 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "node": "0.12.0",
-    "npm": "2.5.0"
     "@adiwajshing/baileys": "github:adiwajshing/baileys",
     "awesome-phonenumber": "^2.47.0",
     "brainly-scraper-v2": "^1.1.2",
