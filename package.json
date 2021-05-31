@@ -1,5 +1,5 @@
 {
-  "name": "wabot-aq",
+  "name": "KEN KANEKI KUN",
   "version": "2.1.0",
   "description": "Customizable WhatsApp Bot",
   "depecrated": false,
@@ -19,16 +19,16 @@
     "whatsapp",
     "js-whatsapp"
   ],
-  "homepage": "https://github.com/Nurutomo/wabot-aq",
+  "homepage": "https://github.com/XAVIER-ui/wabot-aq",
   "author": {
-    "name": "Nurutomo"
+    "name": "XAVIER"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Nurutomo/wabot-aq.git"
+    "url": "git+https://github.com/XAVIER-ui/wabot-aq.git"
   },
   "bugs": {
-    "url": "https://github.com/Nurutomo/wabot-aq/issues"
+    "url": "https://github.com/XAVIER-ui/wabot-aq/issues"
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
