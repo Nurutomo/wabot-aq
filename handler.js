@@ -11,6 +11,15 @@ module.exports = {
     let m = chatUpdate.messages.all()[0]
     try {
       simple.smsg(this, m)
+      switch (m.mtype) {
+        case MessageType.image:
+        case MessageType.video:
+        case MessageType.audio:
+        case MessageType.document:
+        case MessageType.sticker:
+          if (!m.msg.url) await this.updateMediaMessage(m)
+          break
+      }
       m.exp = 0
       m.limit = false
       try {
