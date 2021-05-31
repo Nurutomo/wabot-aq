@@ -10,7 +10,7 @@ let handler = async (m, { conn, command, args }) => {
     }).catch(console.log)
     await conn.modifyChat(id, 'mute', -Math.floor(new Date / 1e3) * 1e3 - 1e3).catch(console.log)
   }
-  conn.reply(m.chat, chats.length + ' chat ' + args[0] + ' telah dib' + (isDelete ? 'ersihkan' : 'isukan selamanya'), m)
+  conn.reply(m.chat, chats.length + ` chat ${args[0] ? args[0] : ''} telah dib` + (isDelete ? 'ersihkan' : 'isukan selamanya'), m)
 }
 handler.help = ['deletechat', 'deletechat chat', 'deletechat group', 'mutechat', 'mutechat chat', 'mutechat group']
 handler.tags = ['owner']
