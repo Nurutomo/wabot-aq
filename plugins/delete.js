@@ -1,12 +1,12 @@
 let handler = function (m) {
   if (!m.quoted) throw false
-  let { fromMe, id, isBaileys } = m.quoted
+  let { chat, fromMe, id, isBaileys } = m.quoted
   if (!fromMe) throw false
   if (!isBaileys) throw 'Pesan tersebut bukan dikirim oleh bot!'
-  this.deleteMessage(m.chat, {
+  this.deleteMessage(chat, {
     fromMe,
     id,
-    remoteJid: m.chat
+    remoteJid: chat
   })
 }
 handler.help = ['del', 'delete']
