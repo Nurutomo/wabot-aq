@@ -1,6 +1,6 @@
 let util = require('util')
 let simple = require('./lib/simple')
-let { MessageType } = require('@adiwajshing/baileys')
+let { MessageType, Presence } = require('@adiwajshing/baileys')
 
 const isNumber = x => typeof x === 'number' && !isNaN(x)
 module.exports = {
@@ -11,11 +11,21 @@ module.exports = {
     let m = chatUpdate.messages.all()[0]
     try {
       simple.smsg(this, m)
+      switch (m.mtype) {
+        case MessageType.image:
+        case MessageType.video:
+        case MessageType.audio:
+        case MessageType.document:
+        case MessageType.sticker:
+          if (!m.msg.url) await this.updateMediaMessage(m)
+          break
+      }
       m.exp = 0
       m.limit = false
       try {
-        let user
-        if (user = global.DATABASE._data.users[m.sender]) {
+        let user = global.DATABASE._data.users[m.sender]
+        if (typeof user !== 'object') global.DATABASE._data.users[m.sender] = {}
+        if (user) {
           if (!isNumber(user.exp)) user.exp = 0
           if (!isNumber(user.limit)) user.limit = 10
           if (!isNumber(user.lastclaim)) user.lastclaim = 0
@@ -45,8 +55,9 @@ module.exports = {
           autolevelup: false,
         }
 
-        let chat
-        if (chat = global.DATABASE._data.chats[m.chat]) {
+        let chat = global.DATABASE._data.chats[m.chat]
+        if (typeof chat !== 'object') global.DATABASE._data.chats[m.chat] = {}
+        if (chat) {
           if (!'isBanned' in chat) chat.isBanned = false
           if (!'welcome' in chat) chat.welcome = false
           if (!'detect' in chat) chat.detect = false
@@ -68,14 +79,27 @@ module.exports = {
           antiLink: false,
         }
       } catch (e) {
-        console.log(e, global.DATABASE.data)
+        console.error(e)
       }
       if (opts['nyimak']) return
       if (!m.fromMe && opts['self']) return
       if (typeof m.text !== 'string') m.text = ''
+      for (let name in global.plugins) {
+        let plugin = global.plugins[name]
+        if (!plugin) continue
+        if (plugin.disabled) continue
+        if (!plugin.all) continue
+        if (typeof plugin.all !== 'function') continue
+        try {
+          await plugin.all.call(this, m, chatUpdate)
+        } catch (e) {
+          console.error(e)
+        }
+      }
       if (m.isBaileys) return
       m.exp += Math.ceil(Math.random() * 10)
 
+ 
       let usedPrefix
       let _user = global.DATABASE.data && global.DATABASE.data.users && global.DATABASE.data.users[m.sender]
 
@@ -83,8 +107,8 @@ module.exports = {
       let isOwner = isROwner || m.fromMe
       let isMods = isOwner || global.mods.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
       let isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
-      let groupMetadata = m.isGroup ? await this.groupMetadata(m.chat) : {}
-      let participants = m.isGroup ? groupMetadata.participants : []
+      let groupMetadata = m.isGroup ? this.chats.get(m.chat).metadata || await this.groupMetadata(m.chat) : {} || {}
+      let participants = m.isGroup ? groupMetadata.participants : [] || []
       let user = m.isGroup ? participants.find(u => u.jid == m.sender) : {} // User Data
       let bot = m.isGroup ? participants.find(u => u.jid == this.user.jid) : {} // Your Data
       let isAdmin = user.isAdmin || user.isSuperAdmin || false // Is User Admin?
@@ -92,6 +116,7 @@ module.exports = {
       for (let name in global.plugins) {
         let plugin = global.plugins[name]
         if (!plugin) continue
+        if (plugin.disabled) continue
         if (!opts['restrict']) if (plugin.tags && plugin.tags.includes('admin')) continue
         const str2Regex = str => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
         let _prefix = plugin.customPrefix ? plugin.customPrefix : conn.prefix ? conn.prefix : global.prefix
@@ -108,9 +133,21 @@ module.exports = {
               [[new RegExp(str2Regex(_prefix)).exec(m.text), new RegExp(str2Regex(_prefix))]] :
               [[[], new RegExp]]
         ).find(p => p[1])
-        if (typeof plugin.before == 'function') if (await plugin.before.call(this, m, {
-          match, user, groupMetadata, chatUpdate
+        if (typeof plugin.before === 'function') if (await plugin.before.call(this, m, {
+          match,
+          conn: this,
+          participants,
+          groupMetadata,
+          user,
+          bot,
+          isROwner,
+          isOwner,
+          isAdmin,
+          isBotAdmin,
+          isPrems,
+          chatUpdate,
         })) continue
+        if (typeof plugin !== 'function') continue
         if ((usedPrefix = (match[0] || '')[0])) {
           let noPrefix = m.text.replace(usedPrefix, '')
           let [command, ...args] = noPrefix.trim().split` `.filter(v => v)
@@ -172,7 +209,7 @@ module.exports = {
             fail('private', m, this)
             continue
           }
-          if (plugin.register == true && _user.registered == false) { // Butuh daftar?
+          if (plugin.register == undefined && _user.registered == false) { // Butuh daftar?
             fail('unreg', m, this)
             continue
           }
@@ -182,35 +219,36 @@ module.exports = {
           if (xp > 200) m.reply('Ngecit -_-') // Hehehe
           else m.exp += xp
           if (!isPrems && plugin.limit && global.DATABASE._data.users[m.sender].limit < plugin.limit * 1) {
-            this.reply(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, m)
+            this.reply(m.chat, `your limit is up, please buy via *${usedPrefix}buy*`, m)
             continue // Limit habis
           }
+          let extra = {
+            match,
+            usedPrefix,
+            noPrefix,
+            _args,
+            args,
+            command,
+            text,
+            conn: this,
+            participants,
+            groupMetadata,
+            user,
+            bot,
+            isROwner,
+            isOwner,
+            isAdmin,
+            isBotAdmin,
+            isPrems,
+            chatUpdate,
+          }
           try {
-            await plugin.call(this, m, {
-              match,
-              usedPrefix,
-              noPrefix,
-              _args,
-              args,
-              command,
-              text,
-              conn: this,
-              participants,
-              groupMetadata,
-              user,
-              bot,
-              isROwner,
-              isOwner,
-              isAdmin,
-              isBotAdmin,
-              isPrems,
-              chatUpdate,
-            })
+            await plugin.call(this, m, extra)
             if (!isPrems) m.limit = m.limit || plugin.limit || false
           } catch (e) {
             // Error occured
             m.error = e
-            console.log(e)
+            console.error(e)
             if (e) {
               let text = util.format(e)
               for (let key of Object.values(global.APIKeys))
@@ -218,8 +256,15 @@ module.exports = {
               m.reply(text)
             }
           } finally {
-            // m.reply(util.format(_user)) 
-            if (m.limit) m.reply(+ m.limit + ' Limit terpakai')
+            // m.reply(util.format(_user))
+            if (typeof plugin.after === 'function') {
+              try {
+                await plugin.after.call(this, m, extra)
+              } catch (e) {
+                console.error(e)
+              }
+            } 
+            if (m.limit) m.reply(+ m.limit + ' Limit used')
           }
           break
         }
@@ -239,18 +284,18 @@ module.exports = {
           if (m.plugin in stats) {
             stat = stats[m.plugin]
             if (!isNumber(stat.total)) stat.total = 1
-            if (!isNumber(stat.success)) stat.success = m.error ? 0 : 1
+            if (!isNumber(stat.success)) stat.success = m.error != null ? 0 : 1
             if (!isNumber(stat.last)) stat.last = now
-            if (!isNumber(stat.lastSuccess)) stat.lastSuccess = m.error ? 0 : now
+            if (!isNumber(stat.lastSuccess)) stat.lastSuccess = m.error != null ? 0 : now
           } else stat = stats[m.plugin] = {
             total: 1,
-            success: m.error ? 0 : 1,
+            success: m.error != null ? 0 : 1,
             last: now,
-            lastSuccess: m.error ? 0 : now
+            lastSuccess: m.error != null ? 0 : now
           }
           stat.total += 1
           stat.last = now
-          if (!m.error) {
+          if (m.error == null) {
             stat.success += 1
             stat.lastSuccess = now
           }
@@ -263,9 +308,16 @@ module.exports = {
         console.log(m, m.quoted, e)
       }
     }
+    try {
+    await this.chatRead(m.chat) // automate read chat
+    await this.updatePresence(m.chat, Presence.available) // automate online
+    } catch (e) {
+ console.error(e)
+}
+
   },
   async participantsUpdate({ jid, participants, action }) {
-    let chat = global.DATABASE._data.chats[jid]
+    let chat = global.DATABASE._data.chats[jid] || {}
     let text = ''
     switch (action) {
       case 'add':
@@ -277,7 +329,7 @@ module.exports = {
               pp = await this.getProfilePicture(user)
             } catch (e) {
             } finally {
-              text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Welcome, @user!').replace('@subject', this.getName(m.key.remoteJid)) :
+              text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'Welcome, @user!').replace('@subject', this.getName(jid)) :
                 (chat.sBye || this.bye || conn.bye || 'Bye, @user!')).replace('@user', '@' + user.split('@')[0])
               this.sendFile(jid, pp, 'pp.jpg', text, null, false, {
                 contextInfo: {
@@ -306,9 +358,9 @@ module.exports = {
     let chat = global.DATABASE._data.chats[m.key.remoteJid]
     if (chat.delete) return
     await this.reply(m.key.remoteJid, `
-Terdeteksi @${m.participant.split`@`[0]} telah menghapus pesan
+Detected @${m.participant.split`@`[0]} has deleted the message
 
-Untuk mematikan fitur ini, ketik
+To turn off this feature, type
 *.enable delete*
 `.trim(), m.message, {
       contextInfo: {
@@ -321,15 +373,15 @@ Untuk mematikan fitur ini, ketik
 
 global.dfail = (type, m, conn) => {
   let msg = {
-    rowner: 'Perintah ini hanya dapat digunakan oleh _*OWWNER!1!1!*_',
-    owner: 'Perintah ini hanya dapat digunakan oleh _*Owner Bot*_!',
-    mods: 'Perintah ini hanya dapat digunakan oleh _*Moderator*_ !',
-    premium: 'Perintah ini hanya untuk member _*Premium*_ !',
-    group: 'Perintah ini hanya dapat digunakan di grup!',
-    private: 'Perintah ini hanya dapat digunakan di Chat Pribadi!',
-    admin: 'Perintah ini hanya untuk *Admin* grup!',
-    botAdmin: 'Jadikan bot sebagai *Admin* untuk menggunakan perintah ini!',
-    unreg: 'Silahkan daftar untuk menggunakan fitur ini dengan cara mengetik:\n\n*#daftar nama.umur*\n\nContoh: *#daftar Manusia.16*'
+    rowner: 'This command can only be used by _*OWNER!*_',
+    owner: 'This command can only be used by _*Owner Bot*_!',
+    mods: 'This command can only be used by _*Moderator*_ !',
+    premium: 'This command is for purchase only _*Premium*_ !',
+    group: 'This command can only be used in groups!',
+    private: 'This command can only be used in private chat!',
+    admin: 'This command is for *Admin* group!',
+    botAdmin: 'Make a bot as *Admin* To use this command!!',
+    unreg: 'Please register to use this feature by typing:\n\n*#register name.age*\n\nExample: *#register name.16*'
   }[type]
   if (msg) return m.reply(msg)
 }
