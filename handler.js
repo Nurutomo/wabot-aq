@@ -99,7 +99,6 @@ module.exports = {
       if (m.isBaileys) return
       m.exp += Math.ceil(Math.random() * 10)
 
- 
       let usedPrefix
       let _user = global.DATABASE.data && global.DATABASE.data.users && global.DATABASE.data.users[m.sender]
 
@@ -209,7 +208,7 @@ module.exports = {
             fail('private', m, this)
             continue
           }
-          if (plugin.register == undefined && _user.registered == false) { // Butuh daftar?
+          if (plugin.register == true && _user.registered == false) { // Butuh daftar?
             fail('unreg', m, this)
             continue
           }
@@ -219,7 +218,7 @@ module.exports = {
           if (xp > 200) m.reply('Ngecit -_-') // Hehehe
           else m.exp += xp
           if (!isPrems && plugin.limit && global.DATABASE._data.users[m.sender].limit < plugin.limit * 1) {
-            this.reply(m.chat, `your limit is up, please buy via *${usedPrefix}buy*`, m)
+            this.reply(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, m)
             continue // Limit habis
           }
           let extra = {
@@ -263,8 +262,8 @@ module.exports = {
               } catch (e) {
                 console.error(e)
               }
-            } 
-            if (m.limit) m.reply(+ m.limit + ' Limit used')
+            }
+            if (m.limit) m.reply(+ m.limit + ' Limit terpakai')
           }
           break
         }
@@ -358,9 +357,9 @@ module.exports = {
     let chat = global.DATABASE._data.chats[m.key.remoteJid]
     if (chat.delete) return
     await this.reply(m.key.remoteJid, `
-Detected @${m.participant.split`@`[0]} has deleted the message
+Terdeteksi @${m.participant.split`@`[0]} telah menghapus pesan
 
-To turn off this feature, type
+Untuk mematikan fitur ini, ketik
 *.enable delete*
 `.trim(), m.message, {
       contextInfo: {
@@ -373,15 +372,15 @@ To turn off this feature, type
 
 global.dfail = (type, m, conn) => {
   let msg = {
-    rowner: 'This command can only be used by _*OWNER!*_',
-    owner: 'This command can only be used by _*Owner Bot*_!',
-    mods: 'This command can only be used by _*Moderator*_ !',
-    premium: 'This command is for purchase only _*Premium*_ !',
-    group: 'This command can only be used in groups!',
-    private: 'This command can only be used in private chat!',
-    admin: 'This command is for *Admin* group!',
-    botAdmin: 'Make a bot as *Admin* To use this command!!',
-    unreg: 'Please register to use this feature by typing:\n\n*#register name.age*\n\nExample: *#register name.16*'
+    rowner: 'Perintah ini hanya dapat digunakan oleh _*OWWNER!1!1!*_',
+    owner: 'Perintah ini hanya dapat digunakan oleh _*Owner Bot*_!',
+    mods: 'Perintah ini hanya dapat digunakan oleh _*Moderator*_ !',
+    premium: 'Perintah ini hanya untuk member _*Premium*_ !',
+    group: 'Perintah ini hanya dapat digunakan di grup!',
+    private: 'Perintah ini hanya dapat digunakan di Chat Pribadi!',
+    admin: 'Perintah ini hanya untuk *Admin* grup!',
+    botAdmin: 'Jadikan bot sebagai *Admin* untuk menggunakan perintah ini!',
+    unreg: 'Silahkan daftar untuk menggunakan fitur ini dengan cara mengetik:\n\n*#daftar nama.umur*\n\nContoh: *#daftar Manusia.16*'
   }[type]
   if (msg) return m.reply(msg)
 }
