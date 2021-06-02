@@ -1,5 +1,8 @@
 let handler = async (m, { conn, command, args }) => {
-  let chats = args.length > 0 && /group|gc/i.test(args[0]) ? conn.chats.array.filter(v => v.jid.endsWith('g.us') && !v.pin).map(v => v.jid) : [m.chat]
+  let chats
+  if (/group|gc/i.test(args[0])) chats = conn.chats.array.filter(v => v.jid.endsWith('g.us') && !v.pin).map(v => v.jid)
+  else if (/chat|private/i.test(args[0])) chats = conn.chats.array.filter(v => v.jid.endsWith('.net') && !v.pin).map(v => v.jid)
+  else chats = [m.chat]
   let isDelete = /^(clear|delete)/i.test(command)
   for (let id of chats) {
     if (isDelete) await conn.modifyChat(id, 'delete', {
@@ -7,9 +10,9 @@ let handler = async (m, { conn, command, args }) => {
     }).catch(console.log)
     await conn.modifyChat(id, 'mute', -Math.floor(new Date / 1e3) * 1e3 - 1e3).catch(console.log)
   }
-  conn.reply(m.chat, chats.length + ' chat grup telah dib' + (isDelete ? 'ersihkan' : 'isukan selamanya'), m)
+  conn.reply(m.chat, chats.length + ` chat ${args[0] ? args[0] : ''} telah dib` + (isDelete ? 'ersihkan' : 'isukan selamanya'), m)
 }
-handler.help = ['deletechat', 'deletechat group', 'mutechat', 'mutechat group']
+handler.help = ['deletechat', 'deletechat chat', 'deletechat group', 'mutechat', 'mutechat chat', 'mutechat group']
 handler.tags = ['owner']
 handler.command = /^(clear|delete|mute)chat$/i
 handler.owner = true
