@@ -3,6 +3,7 @@
 // Modified by Nurutomo (Update Xteam :v)
 
 const { sticker } = require('../lib/sticker')
+const fetch = require('node-fetch')
 const defaultType = 'whatsapp'
 let handler = async (m, { usedPrefix, conn, args, text }) => {
   let [tipe, emoji] = text.includes('|') ? text.split('|') : args
