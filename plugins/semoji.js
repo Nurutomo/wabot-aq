@@ -25,7 +25,7 @@ let handler = async (m, { usedPrefix, conn, args, text }) => {
   let json = await res.json()
   if (!json.status) throw json
   if (!(tipe in json.result)) tipe = defaultType
-  let stiker = await sticker(null, json.result[tipe].img, global.packname, global.author, emoji)
+  let stiker = await sticker(null, json.result[tipe].img, global.packname, global.author, [emoji])
   //   m.reply(`
   // Tipe: ${tipe}
   // Emoji: ${emoji}
