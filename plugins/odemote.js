@@ -8,7 +8,7 @@ handler.tags = ['admin']
 
 handler.command = /^(demote|member|↓)$/i
 
-handker.owner = true
+handler.owner = true
 handler.group = true
 
 handler.admin = true
