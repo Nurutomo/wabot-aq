@@ -62,13 +62,12 @@ if (opts['test']) {
     name: 'test',
     phone: {}
   }
-  conn.chats
   conn.prepareMessageMedia = (buffer, mediaType, options = {}) => {
     return {
       [mediaType]: {
         url: '',
         mediaKey: '',
-        mimetype: options.mimetype,
+        mimetype: options.mimetype || '',
         fileEncSha256: '',
         fileSha256: '',
         fileLength: buffer.length,
@@ -83,10 +82,12 @@ if (opts['test']) {
 
   conn.sendMessage = async (chatId, content, type, opts = {}) => {
     let message = await conn.prepareMessageContent(content, type, opts)
-    let waMessage = conn.prepareMessageFromContent(chatId, message, opts)
+    let waMessage = await conn.prepareMessageFromContent(chatId, message, opts)
     if (type == 'conversation') waMessage.key.id = require('crypto').randomBytes(16).toString('hex').toUpperCase()
     conn.emit('chat-update', {
       jid: conn.user.jid,
+      hasNewMessage: true,
+      count: 1,
       messages: {
         all() {
           return [waMessage]
@@ -191,24 +192,43 @@ process.on('exit', () => global.DATABASE.save())
 
 // Quick Test
 async function _quickTest() {
-  let spawn = promisify(cp.spawn).bind(cp)
-  let [ffmpeg, ffmpegWebp, convert] = await Promise.all([
-    spawn('ffmpeg', [], {}),
-    spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-'], {}),
-    spawn('convert', [], {})
-  ]).catch(conn.logger.error)
-  global.support = {
-    ffmpeg: ffmpeg.status,
-    ffmpegWebp: ffmpeg.status && ffmpegWebp.stderr.length == 0 && ffmpegWebp.stdout.length > 0,
-    convert: convert.status
+  let test = await Promise.all([
+    cp.spawn('ffmpeg'),
+    cp.spawn('ffprobe'),
+    cp.spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-filter_complex', 'color', '-frames:v', '1', '-f', 'webp', '-']),
+    cp.spawn('convert'),
+    cp.spawn('magick'),
+    cp.spawn('gm'),
+  ].map(p => {
+    return Promise.race([
+      new Promise(resolve => {
+        p.on('close', code => {
+          resolve(code !== 127)
+        })
+      }),
+      new Promise(resolve => {
+        p.on('error', _ => resolve(false))
+      })
+    ])
+  }))
+  let [ffmpeg, ffprobe, ffmpegWebp, convert, magick, gm] = test
+  console.log(test)
+  let s = global.support = {
+    ffmpeg,
+    ffprobe,
+    ffmpegWebp,
+    convert,
+    magick,
+    gm
   }
+  require('./lib/sticker').support = s
   Object.freeze(global.support)
 
-  if (!global.support.ffmpeg) conn.logger.warn('Please install ffmpeg for sending videos (pkg install ffmpeg)')
-  if (!global.support.ffmpegWebp) conn.logger.warn('Stickers may not animated without libwebp on ffmpeg (--enable-ibwebp while compiling ffmpeg)')
-  if (!global.support.convert) conn.logger.warn('Stickers may not work without imagemagick if libwebp on ffmpeg doesnt isntalled (pkg install imagemagick)')
+  if (!s.ffmpeg) conn.logger.warn('Please install ffmpeg for sending videos (pkg install ffmpeg)')
+  if (s.ffmpeg && !s.ffmpegWebp) conn.logger.warn('Stickers may not animated without libwebp on ffmpeg (--enable-ibwebp while compiling ffmpeg)')
+  if (!s.convert && !s.magick && !s.gm) conn.logger.warn('Stickers may not work without imagemagick if libwebp on ffmpeg doesnt isntalled (pkg install imagemagick)')
 }
 
-/*_quickTest()
+_quickTest()
   .then(() => conn.logger.info('Quick Test Done'))
-  .catch(console.error)*/
+  .catch(console.error)

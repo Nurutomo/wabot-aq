@@ -5,14 +5,18 @@ let { spawn } = require('child_process')
 // Font By MFarelS:V
 let fontPath = 'src/font/Zahraaa.ttf'
 let handler  = async (m, { conn, args }) => {
-  let inputPath ='src/kertas/magernulis1.jpg'
-  let outputPath = 'tmp/hasil.jpg'
+  if (!global.support.convert &&
+      !global.support.magick &&
+      !global.support.gm) return handler.disabled = true // Disable if doesnt support
+  let inputPath = 'src/kertas/magernulis1.jpg'
   let d = new Date
   let tgl = d.toLocaleDateString('id-Id')
   let hari = d.toLocaleDateString('id-Id', { weekday: 'long' })
   let teks = args.join` `
   // conn.reply(m.chat, util.format({fontPath, inputPath, outputPath, tgl, hari, teks}), m)
-  spawn('convert', [
+  let bufs = []
+  const [_spawnprocess, ..._spawnargs] = [...(global.support.gm ? ['gm'] : global.support.magick ? ['magick'] : []),
+    'convert',
     inputPath,
     '-font',
     fontPath, 
@@ -53,12 +57,14 @@ let handler  = async (m, { conn, args }) => {
     '-annotate',
     '+344+142',
     teks,
-    outputPath
-  ])
-  .on('error', e => conn.reply(m.chat, util.format(e), m))
-  .on('exit', () => {
-    conn.sendFile(m.chat, outputPath, 'nulis.jpg', 'Hati² ketahuan:v', m)
-  })
+    'jpg:-'
+  ]
+  spawn(_spawnprocess, _spawnargs)
+    .on('error', e => conn.reply(m.chat, util.format(e), m))
+    .on('close', () => {
+      conn.sendFile(m.chat, Buffer.concat(bufs), 'nulis.jpg', 'Hati² ketahuan:v', m)
+    })
+    .stdout.on('data', chunk => bufs.push(chunk))
 }
 handler.help = ['n'].map(v => v + 'ulis2 <teks>')
 handler.tags = ['tools']
