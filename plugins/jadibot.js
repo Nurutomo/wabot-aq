@@ -27,9 +27,12 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
     conn.bye = global.conn.bye + ''
     conn.spromote = global.conn.spromote + ''
     conn.sdemote = global.conn.sdemote + ''
-    conn.on('chat-update', global.conn.handler)
-    conn.on('message-delete', global.conn.onDelete)
-    conn.on('group-participants-update', global.conn.onParticipantsUpdate)
+    conn.handler = global.conn.handler.bind(conn)
+    conn.onDelete = global.conn.onDelete.bind(conn)
+    conn.onParticipantsUpdate = global.conn.onParticipantsUpdate.bind(conn)
+    conn.on('chat-update', conn.handler)
+    conn.on('message-delete', conn.onDelete)
+    conn.on('group-participants-update', conn.onParticipantsUpdate)
     conn.regenerateQRIntervalMs = null
     conn.connect().then(async ({user}) => {
       parent.reply(m.chat, 'Berhasil tersambung dengan WhatsApp - mu.\n*NOTE: Ini cuma numpang*\n' + JSON.stringify(user, null, 2), m)
