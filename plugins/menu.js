@@ -37,11 +37,20 @@ const defaultMenu = {
 │ Tanggal: *%week %weton, %date*
 │ Tanggal Islam: *%dateIslamic*
 │ Waktu: *%time*
+╰────
+╭─「 Support Us 」
 │
-│ Uptime: *%uptime (%muptime)*
-│ Database: %rtotalreg of %totalreg
-│ Github:
-│ %github
+│ Hosting & Domain Provider :
+│ https://anymhost.id
+│
+│ Official Website :
+│ https://onedetermination.com
+│
+│ Zone Mirror Defacement :
+│ https://defacer.pro
+│
+│ Youtube Channel :
+│ https://youtube.com/AnymPedia
 ╰────
 %readmore`.trimStart(),
   header: '╭─「 %category 」',
