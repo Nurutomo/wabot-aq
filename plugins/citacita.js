@@ -14,16 +14,10 @@ conn.sendFile(m.chat, cita, 'cita.mp3', null, m, true, {
 
 handler.customPrefix = /^cita cita|citacita|cita$/i
 handler.command = new RegExp
-handler.owner = false
-handler.mods = false
-handler.premium = false
-handler.group = false
-handler.private = false
 
-handler.admin = false
-handler.botAdmin = false
 
-handler.fail = null
-handler.exp = 20
+
+
+
 
 module.exports = handler
