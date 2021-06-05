@@ -6,7 +6,7 @@ module.exports = {
         let id = 'family100_' + m.chat
         if (!(id in this.game)) return !0
         let room = this.game[id]
-        let text = m.text.toLowerCase().replace(/[^\w\s]+/, '')
+        let text = m.text.toLowerCase().replace(/[^\w\s\-]+/, '')
         let isSurrender = /^((me)?nyerah|surr?ender)$/i.test(m.text)
         if (!isSurrender) {
             let index = room.jawaban.indexOf(text)
