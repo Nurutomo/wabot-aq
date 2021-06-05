@@ -1,52 +1,27 @@
-let handler = async (m, { args, usedPrefix, command }) => {
-    if (!args[0] || !args[1] || !args[2]) throw `contoh:\n${usedPrefix + command} 25 02 2002`
+let handler = (m, { usedPrefix, command, text }) => {
+    if (!text) throw `contoh:\n${usedPrefix + command} 2002 02 25`
 
-    const lahirnya = args[0] + ' - ' + args[1] + ' - ' + args[2]
-    const zodiakz = await getzodiak(args[1], args[0])
-    var d = new Date()
-    const tahun = d.getFullYear()
-    const bulan = d.getMonth() + 1
-    const tanggal = d.getDate()
-    const tahunbesok = tahun + 1
-    const ultahnya = args[0] + ' - ' + args[1] + ' - ' + tahun
-    if (args[1] > bulan) {
-        var usianya = tahun - args[2] + 1
-        var ultahnye = args[0] + ' - ' + args[1] + ' - ' + tahunbesok
-    } else {
-        var usianya = tahun - args[2]
-        var ultahnye = args[0] + ' - ' + args[1] + ' - ' + tahun
-    }
-    if (args[1] == bulan) {
-        if (args[0] > tanggal) {
-            var usiamuda = usianya + 1
-            var ultahmuda = args[0] + ' - ' + args[1] + ' - ' + tahunbesok
-        } else {
-            var usiamuda = usianya
-            var ultahmuda = args[0] + ' - ' + args[1] + ' - ' + tahun
-        }
-    } else {
-        var usiamuda = usianya
-        var ultahmuda = args[0] + ' - ' + args[1] + ' - ' + tahun
-    }
-    if (args[0] == tanggal) {
-        if (args[1] == bulan) {
-            var cekusia = `Selamat ulang tahun yang ke-${usiamuda} 🥳`
-            var cekultah = ultahmuda
-        } else {
-            var cekusia = usiamuda
-            var cekultah = ultahmuda
-        }
-    } else {
-        var cekusia = usiamuda
-        var cekultah = ultahmuda
-    }
-    const cabit = `Lahir : ${lahirnya}
-Ultah Mendatang : ${cekultah}
+    const date = new Date(text)
+    const d = new Date()
+    const [tahun, bulan, tanggal] = [d.getFullYear(), d.getMonth() + 1, d.getDate()]
+    const birth = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+    
+    const zodiac = getZodiac(birth[1], birth[2])
+    const ageD = new Date(d - date)
+    const age = ageD.getFullYear() - new Date(1970, 0, 1).getFullYear()
+
+    const birthday = [tahun + (birth[1] < bulan), ...birth.slice(1)]
+    const cekusia = bulan === birth[1] && tanggal === birth[2] ? `Selamat ulang tahun yang ke-${age} 🥳` : age
+
+    const teks = `
+Lahir : ${birth.join('-')}
+Ultah Mendatang : ${birthday.join('-')}
 Usia : ${cekusia}
-Zodiak : ${zodiakz}`
-    m.reply(cabit)
+Zodiak : ${zodiac}
+`.trim()
+    m.reply(teks)
 }
-handler.help = ['zodiac *25 02 2002*']
+handler.help = ['zodiac *2002 02 25*']
 handler.tags = ['tools']
 
 handler.command = /^zodia[kc]$/i
@@ -67,9 +42,9 @@ const zodiak = [
     ["Scorpio", new Date(1970, 9, 23)],
     ["Sagittarius", new Date(1970, 10, 22)],
     ["Capricorn", new Date(1970, 11, 22)]
-]
+].reverse()
 
-function getzodiak(month, day) {
+function getZodiac(month, day) {
     let d = new Date(1970, month - 1, day)
     return zodiak.find(([_,_d]) => d >= _d)[0]
 }
