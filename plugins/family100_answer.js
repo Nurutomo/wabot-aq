@@ -32,6 +32,8 @@ ${isSurrender ? '' : `+${room.winScore} XP tiap jawaban benar`}
             contextInfo: {
                 mentionedJid: this.parseMention(caption)
             }
+        }).then(msg => {
+            return this.game[id].msg = msg
         })
         if (isWin || isSurrender) delete this.game[id]
         return !0
