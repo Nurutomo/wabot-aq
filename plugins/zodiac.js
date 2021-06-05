@@ -48,26 +48,28 @@ Zodiak : ${zodiakz}`
 }
 handler.help = ['zodiac *25 02 2002*']
 handler.tags = ['tools']
-handler.command = /^zodia(k|c)$/i
+
+handler.command = /^zodia[kc]$/i
+
 module.exports = handler
 
+const zodiak = [
+    ["Capricorn", new Date(1970, 0, 1)],
+    ["Aquarius", new Date(1970, 0, 20)],
+    ["Pisces", new Date(1970, 1, 19)],
+    ["Aries", new Date(1970, 2, 21)],
+    ["Taurus", new Date(1970, 3, 21)],
+    ["Gemini", new Date(1970, 4, 21)],
+    ["Cancer", new Date(1970, 5, 22)],
+    ["Leo", new Date(1970, 6, 23)],
+    ["Virgo", new Date(1970, 7, 23)],
+    ["Libra", new Date(1970, 8, 23)],
+    ["Scorpio", new Date(1970, 9, 23)],
+    ["Sagittarius", new Date(1970, 10, 22)],
+    ["Capricorn", new Date(1970, 11, 22)]
+]
+
 function getzodiak(month, day) {
-    var d = new Date(1999, month - 1, day, 0, 0, 0);
-    var arr = [];
-    arr.push(["Capricorn", new Date(1999, 0, 1, 0, 0, 0)])
-    arr.push(["Aquarius", new Date(1999, 0, 20, 0, 0, 0)])
-    arr.push(["Pisces", new Date(1999, 1, 19, 0, 0, 0)])
-    arr.push(["Aries", new Date(1999, 2, 21, 0, 0, 0)])
-    arr.push(["Taurus", new Date(1999, 3, 21, 0, 0, 0)])
-    arr.push(["Gemini", new Date(1999, 4, 21, 0, 0, 0)])
-    arr.push(["Cancer", new Date(1999, 5, 22, 0, 0, 0)])
-    arr.push(["Leo", new Date(1999, 6, 23, 0, 0, 0)])
-    arr.push(["Virgo", new Date(1999, 7, 23, 0, 0, 0)])
-    arr.push(["Libra", new Date(1999, 8, 23, 0, 0, 0)])
-    arr.push(["Scorpio", new Date(1999, 9, 23, 0, 0, 0)])
-    arr.push(["Sagittarius", new Date(1999, 10, 22, 0, 0, 0)])
-    arr.push(["Capricorn", new Date(1999, 11, 22, 0, 0, 0)])
-    for (var i = arr.length - 1; i >= 0; i--) {
-        if (d >= arr[i][1]) return arr[i][0];
-    }
+    let d = new Date(1970, month - 1, day)
+    return zodiak.find(([_,_d]) => d >= _d)[0]
 }
