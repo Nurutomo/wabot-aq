@@ -6,7 +6,7 @@ let handler = async (m, { conn, usedPrefix }) => {
     var i = 1
     for (let jid in chats) {
         if (chats[jid].isBanned) {
-            text += `│ ${i}. ${conn.getName(jid) == undefined ? 'Unknown' : conn.getName(jid)}\n│ ${jid}`
+            text += `│ ${i}. ${conn.getName(jid) == undefined ? 'Unknown' : conn.getName(jid)}\n│ ${jid}\n`
             i += 1
         }
     }
