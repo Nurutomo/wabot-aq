@@ -15,6 +15,8 @@ let handler = async (m, { conn, usedPrefix }) => {
 │ ${i + 1}. ${conn.getName(jid) == undefined ? 'Unknown' : conn.getName(jid)}
 │ ${jid}
 `.trim()).join('\n') : ''}
+└────
+`.trim())
 }
 handler.help = ['bannedlist']
 handler.tags = ['info']
