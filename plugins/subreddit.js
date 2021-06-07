@@ -1,8 +1,8 @@
 let fetch = require("node-fetch")
 
 const defaultSubreddit = 'meme'
-let handler = async(m, { conn, text }) => {
-  let res = await fetch(global.API('https://meme-api.herokuapp.com', '/gimme/' + encodeURI(text || defaultSubreddit), {})
+let handler = async (m, { conn, text }) => {
+  let res = await fetch(global.API('https://meme-api.herokuapp.com', '/gimme/' + encodeURI(text || defaultSubreddit), {}))
   if (!res.ok) throw await res.text()
   let json = await res.json()
   if (!json.url) throw 'Media tidak ditemukan!'
