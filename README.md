@@ -97,4 +97,4 @@ conn.logger.level = 'debug'
 
 #### Most Active Contributor : [`ariffb25`](https://github.com/ariffb25)
 
-NOTE: This Project will not maintained until `25 June 2021`, that means no update. Feel free to anyone to continue this project :)
+NOTE: This project will not maintained after `25 June 2021`, that means no update. Feel free to anyone to continue this project :)
