@@ -96,3 +96,5 @@ conn.logger.level = 'debug'
 #### Author / Creator : [`Nurutomo`](https://github.com/Nurutomo)
 
 #### Most Active Contributor : [`ariffb25`](https://github.com/ariffb25)
+
+NOTE: This Project will not maintained until `25 June 2021`, that means no update. Feel free to anyone to continue this project :)
