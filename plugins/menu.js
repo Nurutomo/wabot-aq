@@ -57,7 +57,7 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
     let package = JSON.parse(await fs.promises.readFile(path.join(__dirname, '../package.json')).catch(_ => '{}'))
     let { exp, limit, level } = global.DATABASE.data.users[m.sender]
     let { min, xp, max } = levelling.xpRange(level, global.multiplier)
-    let name = conn.getName(m.sender)
+    let name = `@${m.sender.split`@`[0]}`
     let d = new Date(new Date + 3600000)
     let locale = 'id'
     // d.getTimeZoneOffset()
