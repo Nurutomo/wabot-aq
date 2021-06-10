@@ -36,6 +36,6 @@ ${id}`)
     }
 }
 handler.help = ['hadis']
-handler.tags = ['quran']
+handler.tags = ['quran', 'tools']
 handler.command = /^(hadist?)$/i
 module.exports = handler
