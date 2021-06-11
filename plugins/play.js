@@ -4,6 +4,7 @@ let fetch = require('node-fetch')
 const { servers, yta, ytv } = require('../lib/y2mate')
 let handler = async (m, { conn, command, text, isPrems, isOwner }) => {
   if (!text) throw 'Cari apa?'
+  let chat = global.DATABASE._data.chats[m.chat]
   let results = await yts(text)
   let vid = results.all.find(video => video.seconds < 3600)
   if (!vid) throw 'Video/Audio Tidak ditemukan'
@@ -38,7 +39,10 @@ if (!isLimit) conn.sendFile(m.chat, dl_link, title + '.mp' + (3 + /2$/.test(comm
 *Filesize:* ${filesizeF}
 *Source:* ${vid.url}
 *Server y2mate:* ${usedServer}
-`.trim(), m, false, _thumb || {})
+`.trim(), m, false,  {
+  ..._thumb,
+  asDocument: chat.useDocument
+})
 }
 handler.help = ['play', 'play2'].map(v => v + ' <pencarian>')
 handler.tags = ['downloader']

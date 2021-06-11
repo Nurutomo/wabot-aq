@@ -21,6 +21,9 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
     case 'autodelvn':
       chat.autodelvn = isEnable
       break
+    case 'document':
+      chat.useDocument = isEnable
+      break
     case 'public':
       isAll = true
       if (!isROwner) {
@@ -38,7 +41,7 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
       break
     default:
       return m.reply(`
-List option: welcome | delete | public | antilink | autolevelup | detect
+List option: welcome | delete | public | antilink | autolevelup | detect | document
 
 Contoh:
 ${usedPrefix}enable welcome
