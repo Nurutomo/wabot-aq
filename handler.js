@@ -93,6 +93,7 @@ module.exports = {
         try {
           await plugin.all.call(this, m, chatUpdate)
         } catch (e) {
+          if (typeof e === 'string') continue
           console.error(e)
         }
       }
