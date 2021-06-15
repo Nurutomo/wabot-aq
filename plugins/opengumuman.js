@@ -1,8 +1,21 @@
-let { MessageType } = require('@adiwajshing/baileys')
-
-let handler = async (m, { conn, text }) => {
-  let users = (await conn.groupMetadata(m.chat)).participants.map(u => u.jid)
-  conn.sendMessage(m.chat, text, MessageType.extendedText, { contextInfo: { mentionedJid: users } })
+let handler = async (m, { conn, text, participants }) => {
+  let users = participants.map(u => u.jid)
+  let q = m.quoted ? m.quoted : m
+  let c = m.quoted ? m.quoted : m.msg
+  let msg = conn.cMod(
+    m.chat,
+    conn.prepareMessageFromContent(
+      m.chat,
+      { [q.mtype]: c.toJSON() },
+      {
+        contextInfo: {
+          mentionedJid: users
+        }
+      }
+    ),
+    text || q.text
+  )
+  await conn.relayWAMessage(msg)
 }
 handler.help = ['pengumuman','hidetag'].map(v => 'o' + v + ' [teks]')
 handler.tags = ['owner']

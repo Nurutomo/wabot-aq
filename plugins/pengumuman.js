@@ -1,10 +1,24 @@
-let { MessageType } = require('@adiwajshing/baileys')
-
 let handler = async (m, { conn, text, participants }) => {
   let users = participants.map(u => u.jid)
-  conn.reply(m.chat, text, m, { contextInfo: { mentionedJid: users } })
+  let q = m.quoted ? m.quoted : m
+  let c = m.quoted ? m.quoted : m.msg
+  let msg = conn.cMod(
+    m.chat,
+    conn.prepareMessageFromContent(
+      m.chat,
+      { [q.mtype]: c.toJSON() },
+      {
+        contextInfo: {
+          mentionedJid: users
+        },
+        quoted: m
+      }
+    ),
+    text || q.text
+  )
+  await conn.relayWAMessage(msg)
 }
-handler.help = ['pengumuman','announce','hidetag'].map(v => v + ' [teks]')
+handler.help = ['pengumuman', 'announce', 'hidetag'].map(v => v + ' [teks]')
 handler.tags = ['group']
 handler.command = /^(pengumuman|announce|hiddentag|hidetag)$/i
 handler.owner = false
