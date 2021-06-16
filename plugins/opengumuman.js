@@ -6,7 +6,7 @@ let handler = async (m, { conn, text, participants }) => {
     m.chat,
     conn.prepareMessageFromContent(
       m.chat,
-      { [q.mtype]: c.toJSON() },
+      { [q.mtype]: c.toJSON ? c.toJSON() : c },
       {
         contextInfo: {
           mentionedJid: users
