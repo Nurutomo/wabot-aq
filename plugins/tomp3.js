@@ -1,31 +1,19 @@
-const fs = require('fs')
-const { exec } = require('child_process')
+const { toAudio } = require('../lib/converter')
+const { MessageType } = require('@adiwajshing/baileys')
 
 let handler = async (m, { conn, usedPrefix, command }) => {
-    try {
-        let q = m.quoted ? { message: { [m.quoted.mtype]: m.quoted } } : m
-        let mime = ((m.quoted ? m.quoted : m.msg).mimetype || '')
-        if (/video|audio/.test(mime)) {
-            let media = await conn.downloadAndSaveMediaMessage(q)
-            let ran = getRandom('.mp3')
-            exec(`ffmpeg -i ${media} ${ran}`, (err, stderr, stdout) => {
-                fs.unlinkSync(media)
-                if (err) throw `_*Error!*_`
-                let buff = fs.readFileSync(ran)
-                conn.sendFile(m.chat, buff, ran, null, m, null)
-                fs.unlinkSync(ran)
-            })
-        } else throw `Balas video atau voice note yang ingin diubah ke mp3 dengan caption *${usedPrefix + command}*`
-    } catch (e) {
-        throw e
-    }
+  let q = m.quoted ? m.quoted : m
+  let mime = (m.quoted ? m.quoted : m.msg).mimetype || ''
+  if (!/video|audio/.test(mime)) throw `Balas video atau voice note yang ingin diubah ke mp3 dengan caption *${usedPrefix + command}*`
+  let media = await q.download()
+  let audio = await toAudio(media, 'mp4')
+  conn.sendMessage(m.chat, audio, MessageType.audio, {
+    quoted: m
+  })
 }
 handler.help = ['tomp3']
 handler.tags = ['audio']
-handler.command = /^(tomp3)$/i
+
+handler.command = /^to(mp3|a(udio)?)$/i
+
 module.exports = handler
-
-
-const getRandom = (ext) => {
-    return `${Math.floor(Math.random() * 10000)}${ext}`
-}
