@@ -6,7 +6,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
         let q = m.quoted ? { message: { [m.quoted.mtype]: m.quoted } } : m
         let mime = ((m.quoted ? m.quoted : m.msg).mimetype || '')
         if (/video|audio/.test(mime)) {
-            let media = await q.download()
+            let media = await conn.downloadAndSaveMediaMessage(q)
             let ran = getRandom('.mp3')
             exec(`ffmpeg -i ${media} ${ran}`, (err, stderr, stdout) => {
                 fs.unlinkSync(media)
