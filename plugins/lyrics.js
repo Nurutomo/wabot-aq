@@ -9,6 +9,7 @@ let handler = async (m, { text }) => {
   if (!res.ok) throw await res.text()
   let json = await res.json()
   if (json.error) throw json.error
+  if (!json.result) throw json
   m.reply(`
 ${json.result.lirik}
 `.trim())
