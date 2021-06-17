@@ -4,7 +4,7 @@ let handler = async (m, { conn }) => {
   if (!res.ok) throw await res.text()
   let json = await res.json()
   if (!json.image) throw 'Err!'
-  conn.sendFile(m.chat, json.image, 'memek.png', json.caption, m)
+  conn.sendFile(m.chat, json.image, 'meme.png', json.caption, m)
 }
 
 handler.help = ['meme']
