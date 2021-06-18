@@ -18,6 +18,7 @@ let tags = {
   'tools': 'Tools',
   'fun': 'Fun',
   'database': 'Database',
+  'vote': 'Voting',
   'jadibot': 'Jadi Bot',
   'owner': 'Owner',
   'host': 'Host',
