@@ -2,10 +2,10 @@
 
 Simple WhatsApp Bot
 
-## FOR TERMUX USER
+## FOR TERMUX/UBUNTU/SSH USER
 
 ```bash
-apt update && pkg upgrade
+apt update && apt upgrade
 apt install git -y
 apt install nodejs -y
 apt install ffmpeg -y
@@ -21,8 +21,8 @@ npm install
 
 * Download And Install Git [`Click Here`](https://git-scm.com/downloads)
 * Download And Install NodeJS [`Click Here`](https://nodejs.org/en/download)
-* Download And Install FFMPEG [`Click Here`](https://ffmpeg.org/download.html) (don't forget to path)
-* Download And Install ImageMagick [`Click Here`](https://imagemagick.org/script/download.php) (if nulis want work,  checklist columns 1,2,3,5,6)
+* Download And Install FFmpeg [`Click Here`](https://ffmpeg.org/download.html) (**Don't Forget Add FFmpeg to PATH enviroment variables**)
+* Download And Install ImageMagick [`Click Here`](https://imagemagick.org/script/download.php)
 
 ```bash
 git clone https://github.com/Nurutomo/wabot-aq
