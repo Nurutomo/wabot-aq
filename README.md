@@ -5,14 +5,14 @@ Simple WhatsApp Bot
 ## FOR TERMUX USER
 
 ```bash
-> pkg update && pkg upgrade
-> pkg install git -y
-> pkg install nodejs -y
-> pkg install ffmpeg -y
-> pkg install imagemagick -y
-> git clone https://github.com/Nurutomo/wabot-aq
-> cd wabot-aq
-> npm install
+apt update && pkg upgrade
+apt install git -y
+apt install nodejs -y
+apt install ffmpeg -y
+apt install imagemagick -y
+git clone https://github.com/Nurutomo/wabot-aq
+cd wabot-aq
+npm install
 ```
 
 ---------
@@ -25,9 +25,9 @@ Simple WhatsApp Bot
 * Download And Install ImageMagick [`Click Here`](https://imagemagick.org/script/download.php) (if nulis want work,  checklist columns 1,2,3,5,6)
 
 ```bash
-> git clone https://github.com/Nurutomo/wabot-aq
-> cd wabot-aq
-> npm install
+git clone https://github.com/Nurutomo/wabot-aq
+cd wabot-aq
+npm install
 ```
 
 ---------
@@ -35,7 +35,7 @@ Simple WhatsApp Bot
 ## Run
 
 ```bash
-> node . [<session name>] (session name is optional)
+node .
 ```
 
 ---------
@@ -96,3 +96,5 @@ conn.logger.level = 'debug'
 #### Author / Creator : [`Nurutomo`](https://github.com/Nurutomo)
 
 #### Most Active Contributor : [`ariffb25`](https://github.com/ariffb25)
+
+#### 2nd Most Active Contributor: [`Ftwrr`](https://github.com/Ftwrr)
