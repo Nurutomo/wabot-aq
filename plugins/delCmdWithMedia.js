@@ -4,6 +4,7 @@ module.exports = Object.assign(async function handler(m, { text }) {
     if (!hash) throw `Tidak ada hash`
     let sticker = global.DATABASE._data.sticker
     if (sticker[hash] && sticker[hash].locked) throw 'You have no permission to delete this sticker command'
+    delete sticker[hash]
     m.reply(`Done!`)
 }, {
     help: ['cmd'].map(v => 'del' + v + ' <text>'),
