@@ -1,4 +1,4 @@
-let handler = async (m, { conn, text, command, usedPrefix }) => {
+let handler = async (m, { conn, text, usedPrefix }) => {
     conn.vote = conn.vote ? conn.vote : {}
     let id = m.chat
     if (id in conn.vote) {

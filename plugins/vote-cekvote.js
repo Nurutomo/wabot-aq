@@ -2,16 +2,15 @@ let handler = async (m, { conn, usedPrefix }) => {
     let id = m.chat
     conn.vote = conn.vote ? conn.vote : {}
     if (!(id in conn.vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${usedPrefix}mulaivote* - untuk memulai vote`
-    let cekup = conn.vote[id][1]
-    let cekde = conn.vote[id][2]
-    let voter = cekup.concat(cekde)
-    let upvote = `Total: *${cekup.length}*\n`
-    for (let up of cekup) {
-        upvote += `@${up.split('@')[0]}\n`
+
+    let voter = conn.vote[id][1].concat(conn.vote[id][2])
+    let upvote = `Total: *${conn.vote[id][1].length}*\n`
+    for (let u of conn.vote[id][1]) {
+        upvote += `@${u.split`@`[0]}\n`
     }
-    let devote = `Total: *${cekde.length}*\n`
-    for (let de of cekde) {
-        devote += `@${de.split('@')[0]}\n`
+    let devote = `Total: *${conn.vote[id][2].length}*\n`
+    for (let d of conn.vote[id][2]) {
+        devote += `@${d.split`@`[0]}\n`
     }
     conn.reply(m.chat, `*「 VOTE 」*
 
