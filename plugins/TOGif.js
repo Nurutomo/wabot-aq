@@ -1,3 +1,5 @@
+//Made by Anshul
+//Tq to Nuru for always helping :)
 const axios = require('axios')
 const { MessageType, Mimetype } = require('@adiwajshing/baileys')
 const cheerio = require('cheerio')
