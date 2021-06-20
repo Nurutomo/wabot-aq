@@ -2,29 +2,26 @@ let handler = async (m, { conn, usedPrefix }) => {
     let id = m.chat
     conn.vote = conn.vote ? conn.vote : {}
     if (!(id in conn.vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${usedPrefix}mulaivote* - untuk memulai vote`
+    
+    let [reason, upvote, devote] = conn.vote[id]
+    let mentionedJid = [...upvote, ...devote]
+    m.reply(
+`*「 VOTE 」*
 
-    let voter = conn.vote[id][1].concat(conn.vote[id][2])
-    let upvote = `Total: *${conn.vote[id][1].length}*\n`
-    for (let u of conn.vote[id][1]) {
-        upvote += `@${u.split`@`[0]}\n`
-    }
-    let devote = `Total: *${conn.vote[id][2].length}*\n`
-    for (let d of conn.vote[id][2]) {
-        devote += `@${d.split`@`[0]}\n`
-    }
-    conn.reply(m.chat, `*「 VOTE 」*
-
-*Alasan:* ${conn.vote[id][0]}
+*Alasan:* ${reason}
 
 *UPVOTE*
-${upvote}
+_Total: ${upvote.length}_
+${upvote.map(u => '@' + u.split('@')[0]).join('\n')}
 
 *DEVOTE*
-${devote}
+_Total: ${devote.length}_
+${devote.map(u => '@' + u.split('@')[0]).join('\n')}}
 
 *${usedPrefix}hapusvote* - untuk menghapus vote
 
-by ariffb`, m, { contextInfo: { mentionedJid: voter } })
+_by ariffb_
+`.trim(), false, { contextInfo: { mentionedJid } })
 }
 handler.help = ['cekvote']
 handler.tags = ['vote']
