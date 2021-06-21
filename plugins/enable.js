@@ -1,4 +1,4 @@
-let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => {
+let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isROwner }) => {
   let isEnable = /true|enable|(turn)?on/i.test(command)
   let chat = global.DATABASE._data.chats[m.chat]
   let user = global.DATABASE._data.users[m.sender]
@@ -8,8 +8,10 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
   switch (type) {
     case 'welcome':
       if (!m.isGroup) {
-        global.dfail('group', m, conn)
-        throw false
+        if (!isOwner) {
+          global.dfail('group', m, conn)
+          throw false
+        }
       }
       if (!isAdmin) {
         global.dfail('admin', m, conn)
@@ -19,8 +21,10 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
       break
     case 'detect':
       if (!m.isGroup) {
-        global.dfail('group', m, conn)
-        throw false
+        if (!isOwner) {
+          global.dfail('group', m, conn)
+          throw false
+        }
       }
       if (!isAdmin) {
         global.dfail('admin', m, conn)
@@ -30,7 +34,7 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
       break
     case 'delete':
       if (m.isGroup) {
-        if (!isAdmin) {
+        if (!isAdmin || !isOwner) {
           global.dfail('admin', m, conn)
           throw false
         }
@@ -39,7 +43,7 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
       break
     case 'antidelete':
       if (m.isGroup) {
-        if (!isAdmin) {
+        if (!isAdmin || !isOwner) {
           global.dfail('admin', m, conn)
           throw false
         }
@@ -48,7 +52,7 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
       break
     case 'autodelvn':
       if (m.isGroup) {
-        if (!isAdmin) {
+        if (!isAdmin || !isOwner) {
           global.dfail('admin', m, conn)
           throw false
         }
@@ -68,7 +72,7 @@ let handler = async (m, { conn, usedPrefix, command, text, args, isROwner }) => 
       break
     case 'antilink':
       if (m.isGroup) {
-        if (!isAdmin) {
+        if (!isAdmin || !isOwner) {
           global.dfail('admin', m, conn)
           throw false
         }
