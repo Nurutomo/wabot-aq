@@ -4,11 +4,12 @@ const { sticker } = require('../lib/sticker')
 const { MessageType } = require('@adiwajshing/baileys')
 const effects = ['jail', 'gay', 'glass', 'wasted' ,'triggered']
 
-let handler = async (m, { conn, args, usedPrefix }) => {
-    let effect = (args && args[0] || '').toLowerCase()
-  if (!(effect in effects)) throw `
+let handler = async (m, { conn, usedPrefix, text }) => {
+    let effect = text.trim().toLowerCase()
+  if (!effects.includes(effect)) throw `
 *Usage:* ${usedPrefix}stickmaker <effectname>
 *Example:* ${usedPrefix}stickmaker jail
+
 *List Effect:*
 ${effects.map(effect => `_> ${effect}_`).join('\n')}
 `.trim()
