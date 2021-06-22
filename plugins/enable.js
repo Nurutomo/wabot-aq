@@ -1,5 +1,5 @@
 let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isROwner }) => {
-  let isEnable = /true|enable|(turn)?on/i.test(command)
+  let isEnable = /true|enable|(turn)?on|1/i.test(command)
   let chat = global.DATABASE._data.chats[m.chat]
   let user = global.DATABASE._data.users[m.sender]
   let type = (args[0] || '').toLowerCase()
@@ -98,6 +98,6 @@ ${usedPrefix}disable welcome
 }
 handler.help = ['en', 'dis'].map(v => v + 'able <option>')
 handler.tags = ['group', 'owner']
-handler.command = /^((en|dis)able|(tru|fals)e|(turn)?o(n|ff))$/i
+handler.command = /^((en|dis)able|(tru|fals)e|(turn)?o(n|ff)|[01])$/i
 
 module.exports = handler
