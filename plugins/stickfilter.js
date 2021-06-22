@@ -4,11 +4,12 @@ const { sticker } = require('../lib/sticker')
 const { MessageType } = require('@adiwajshing/baileys')
 const effects = ['greyscale', 'invert', 'brightness', 'threshold', 'sepia', 'red', 'green', 'blue', 'blurple', 'pixelate', 'blur']
 
-let handler = async (m, { conn, args, usedPrefix }) => {
-  let effect = (args && args[0] || '').toLowerCase()
-  if (!(effect in effects)) throw `
+let handler = async (m, { conn, usedPrefix, text }) => {
+  let effect = text.trim().toLowerCase()
+  if (!effects.includes(effect)) throw `
 *Usage:* ${usedPrefix}stickfilter <effectname>
 *Example:* ${usedPrefix}stickfilter invert
+
 *List Effect:*
 ${effects.map(effect => `_> ${effect}_`).join('\n')}
 `.trim()
