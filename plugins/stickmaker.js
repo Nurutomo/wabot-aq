@@ -2,27 +2,33 @@
 const uploadImage = require('../lib/uploadImage')
 const { sticker } = require('../lib/sticker')
 const { MessageType } = require('@adiwajshing/baileys')
+const effects = ['jail', 'gay', 'glass', 'wasted' ,'triggered']
 
 let handler = async (m, { conn, args, usedPrefix }) => {
-    if (args.length == 0) return conn.reply(m.chat, `To use *${usedPrefix}stickmaker*\nPlease type: *${usedPrefix}stickmaker* [Query]\nExample: *${usedPrefix}stickmaker jail*\n\n*List Query:*\n_> gay_\n_> glass_\n_> wasted_\n_> jail_\n_> triggered_`, m)
-    if (args == 'jail' || args == 'gay' || args == 'glass' || args == 'wasted' || args == 'triggered')
-try {
+    let effect = (args && args[0] || '').toLowerCase()
+  if (!(effect in effects)) throw `
+*Usage:* ${usedPrefix}stickmaker <effectname>
+*Example:* ${usedPrefix}stickmaker jail
+*List Effect:*
+${effects.map(effect => `_> ${effect}_`).join('\n')}
+`.trim()
   let q = m.quoted ? m.quoted : m
   let mime = (q.msg || q).mimetype || ''
-  if (!mime) throw 'No photo'
+  if (!mime) throw 'No Image Found'
   if (!/image\/(jpe?g|png)/.test(mime)) throw `Mime ${mime} not support`
   let img = await q.download()
   let url = await uploadImage(img)
-  let text = encodeURI(args)
-  
-let stick = global.API('https://some-random-api.ml/canvas/', text.toLowerCase(), {avatar: url})
-  let stiker = await sticker(null, stick, global.packname, global.author)
-  conn.sendMessage(m.chat, stiker, MessageType.sticker, {
-    quoted: m
+  let apiUrl = global.API('https://some-random-api.ml/canvas/', encodeURIComponent(effect), {
+    avatar: url
   })
-} catch (e) {
-  m.reply('Reply Image Only')
-  throw false
+try {
+    let stiker = await sticker(null, apiUrl, global.packname, global.author)
+    await conn.sendMessage(m.chat, stiker, MessageType.sticker, {
+      quoted: m
+    })
+  } catch (e) {
+    m.reply('Conversion to Sticker Failed, Sending as Image Instead')
+    await conn.sendFile(m.chat, apiUrl, 'image.png', null, m)
   }
 }
 
