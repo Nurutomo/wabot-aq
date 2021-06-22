@@ -8,7 +8,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
   let media = await q.download()
   let audio = await toAudio(media, 'mp4')
   conn.sendMessage(m.chat, audio, MessageType.audio, {
-    quoted: m
+    quoted: m, mimetype: 'audio/mp4'
   })
 }
 handler.help = ['tomp3']
