@@ -9,7 +9,6 @@ let handler = async (m, { conn, args, usedPrefix }) => {
   if (!(effect in effects)) throw `
 *Usage:* ${usedPrefix}stickfilter <effectname>
 *Example:* ${usedPrefix}stickfilter invert
-
 *List Effect:*
 ${effects.map(effect => `_> ${effect}_`).join('\n')}
 `.trim()
