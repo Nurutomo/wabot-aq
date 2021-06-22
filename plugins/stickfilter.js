@@ -2,27 +2,34 @@
 const uploadImage = require('../lib/uploadImage')
 const { sticker } = require('../lib/sticker')
 const { MessageType } = require('@adiwajshing/baileys')
+const effects = ['greyscale', 'invert', 'brightness', 'threshold', 'sepia', 'red', 'green', 'blue', 'blurple', 'pixelate', 'blur']
 
 let handler = async (m, { conn, args, usedPrefix }) => {
-    if (args.length == 0) return conn.reply(m.chat, `To use *${usedPrefix}stickfilter*\nPlease type: *${usedPrefix}stickfilter* [Query]\nExample: *${usedPrefix}stickfilter invert*\n\n*List Query:*\n_> greyscale_\n_> invert_\n_> brightness_\n_> threshold_\n_> sepia_\n_> red_\n_> green_\n_> blue_\n_> blurple_\n_> pixelate_\n_> blur_`, m)
-    if (args == 'greyscale' || args == 'invert' || args == 'brightness' || args == 'threshold'|| args == 'sepia'|| args == 'red'|| args == 'green'|| args == 'blue'|| args == 'blurple'|| args == 'pixelate'|| args == 'blur')
-try {
+  let effect = (args && args[0] || '').toLowerCase()
+  if (!(effect in effects)) throw `
+*Usage:* ${usedPrefix}stickfilter <effectname>
+*Example:* ${usedPrefix}stickfilter invert
+
+*List Effect:*
+${effects.map(effect => `_> ${effect}_`).join('\n')}
+`.trim()
   let q = m.quoted ? m.quoted : m
   let mime = (q.msg || q).mimetype || ''
-  if (!mime) throw 'No photo'
+  if (!mime) throw 'No Image Found'
   if (!/image\/(jpe?g|png)/.test(mime)) throw `Mime ${mime} not supported`
   let img = await q.download()
   let url = await uploadImage(img)
-  let text = encodeURI(args)
-  
-let stick = global.API('https://some-random-api.ml/canvas/', text.toLowerCase(), {avatar: url})
-  let stiker = await sticker(null, stick, global.packname, global.author)
-  conn.sendMessage(m.chat, stiker, MessageType.sticker, {
-    quoted: m
+  let apiUrl = global.API('https://some-random-api.ml/canvas/', encodeURIComponent(effect), {
+    avatar: url
   })
-} catch (e) {
-  m.reply('Reply Image Only')
-  throw false
+  try {
+    let stiker = await sticker(null, apiUrl, global.packname, global.author)
+    await conn.sendMessage(m.chat, stiker, MessageType.sticker, {
+      quoted: m
+    })
+  } catch (e) {
+    m.reply('Conversion to Sticker Failed, Sending as Image Instead')
+    await conn.sendFile(m.chat, apiUrl, 'image.png', null, m)
   }
 }
 
