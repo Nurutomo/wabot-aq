@@ -12,8 +12,7 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
           global.dfail('group', m, conn)
           throw false
         }
-      }
-      if (!isAdmin) {
+      } else if (!isAdmin) {
         global.dfail('admin', m, conn)
         throw false
       }
@@ -25,8 +24,7 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
           global.dfail('group', m, conn)
           throw false
         }
-      }
-      if (!isAdmin) {
+      } else if (!isAdmin) {
         global.dfail('admin', m, conn)
         throw false
       }
@@ -83,9 +81,21 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       isUser = true
       user.autolevelup = isEnable
       break
+    case 'mycontact':
+    case 'mycontacts':
+    case 'whitelistcontact':
+    case 'whitelistcontacts':
+    case 'whitelistmycontact':
+    case 'whitelistmycontacts':
+      if (!isOwner) {
+        global.dfail('owner', m, conn)
+        throw false
+      }
+      conn.callWhitelistMode = isEnable
+      break
     default:
       return m.reply(`
-List option: welcome | delete | public | antilink | autolevelup | detect | document
+List option: welcome | delete | public | antilink | autolevelup | detect | document | whitelistmycontacts
 
 Contoh:
 ${usedPrefix}enable welcome
