@@ -94,13 +94,13 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       conn.callWhitelistMode = isEnable
       break
     default:
-      return m.reply(`
+      if (!/[01]/.test(command)) throw `
 List option: welcome | delete | public | antilink | autolevelup | detect | document | whitelistmycontacts
 
 Contoh:
 ${usedPrefix}enable welcome
 ${usedPrefix}disable welcome
-`.trim())
+`.trim()
   }
   m.reply(`
 *${type}* berhasil di *${isEnable ? 'nyala' : 'mati'}kan* ${isAll ? 'untuk bot ini' : isUser ? '' : 'untuk chat ini'}
