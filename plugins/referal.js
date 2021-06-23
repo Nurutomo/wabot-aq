@@ -30,7 +30,7 @@ Seseorang telah menggunakan kode referal kamu
 +${xp_link_creator + extra} XP
 `.trim(), link_creator)
   } else {
-    let code = users[m.sender].ref_code = new Array(11).fill().map(() => [...'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'][crypto.randomInt(62)]).join('')
+    let code = users[m.sender].ref_code = users[m.sender].ref_code || new Array(11).fill().map(() => [...'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'][crypto.randomInt(62)]).join('')
     users[m.sender].ref_count = users[m.sender].ref_count ? users[m.sender].ref_count : 0
     let command_text = `${usedPrefix}ref ${code}`
     let command_link = `wa.me/${conn.user.jid.split('@')[0]}?text=${encodeURIComponent(command_text)}`
