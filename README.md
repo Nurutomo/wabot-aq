@@ -13,6 +13,7 @@ apt install imagemagick -y
 git clone https://github.com/Nurutomo/wabot-aq
 cd wabot-aq
 npm install
+npm update
 ```
 
 ---------
@@ -28,6 +29,7 @@ npm install
 git clone https://github.com/Nurutomo/wabot-aq
 cd wabot-aq
 npm install
+npm update
 ```
 
 ---------
