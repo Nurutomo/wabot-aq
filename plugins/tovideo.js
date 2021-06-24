@@ -10,7 +10,11 @@ let handler = async (m, { conn }) => {
         out = await webp2mp4(media)
     } else if (/audio/.test(mime)) {
         out = await ffmpeg(media, [
-            '-filter_complex', 'color'
+            '-filter_complex', 'color',
+            '-pix_fmt', 'yuv420p',
+            '-crf', '51',
+            '-c:a', 'copy',
+            '-shortest'
         ], 'mp3', 'mp4')
     }
     await conn.sendFile(m.chat, out, 'out.mp4', null, m)
