@@ -81,7 +81,6 @@ module.exports = {
       } catch (e) {
         console.error(e)
       }
-      if (opts['autoread']) await conn.chatRead(m.chat)
       if (opts['nyimak']) return
       if (!m.fromMe && opts['self']) return
       if (typeof m.text !== 'string') m.text = ''
@@ -308,6 +307,7 @@ module.exports = {
       } catch (e) {
         console.log(m, m.quoted, e)
       }
+      if (opts['autoread']) await conn.chatRead(m.chat).catch(() => {})
     }
   },
   async participantsUpdate({ jid, participants, action }) {
