@@ -73,6 +73,10 @@ Enables restricted plugins (which can lead your number to be **banned** if used 
 
 Enable image inspector through terminal
 
+### `--autoread`
+
+If enabled, all incoming messages will be marked as read
+
 ### `--nyimak`
 
 No bot, just print received messages and add users to database
