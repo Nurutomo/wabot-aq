@@ -1,4 +1,4 @@
-let webp2mp4 = require('../lib/webp2mp4')
+let { webp2mp4 } = require('../lib/webp2mp4')
 let { ffmpeg } = require('../lib/converter')
 let handler = async (m, { conn }) => {
     if (!m.quoted) throw 'Reply sticker or audio!'
