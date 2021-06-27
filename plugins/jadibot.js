@@ -4,7 +4,7 @@ let qrcode = require('qrcode')
 if (global.conns instanceof Array) console.log()// for (let i of global.conns) global.conns[i] && global.conns[i].user ? global.conns[i].close().then(() => delete global.conns[id] && global.conns.splice(i, 1)).catch(global.conn.logger.error) : delete global.conns[i] && global.conns.splice(i, 1)
 else global.conns = []
 
-let handler  = async (m, { conn, args, usedPrefix, command }) => {
+let handler = async (m, { conn, args, usedPrefix, command }) => {
   let parent = args[0] && args[0] == 'plz' ? conn : global.conn
   let auth = false
   if ((args[0] && args[0] == 'plz') || global.conn.user.jid == conn.user.jid) {
@@ -27,11 +27,16 @@ let handler  = async (m, { conn, args, usedPrefix, command }) => {
     conn.bye = global.conn.bye + ''
     conn.spromote = global.conn.spromote + ''
     conn.sdemote = global.conn.sdemote + ''
-    conn.on('chat-update', global.conn.handler)
-    conn.on('message-delete', global.conn.onDelete)
-    conn.on('group-participants-update', global.conn.onParticipantsUpdate)
+    conn.handler = global.conn.handler.bind(conn)
+    conn.onDelete = global.conn.onDelete.bind(conn)
+    conn.onParticipantsUpdate = global.conn.onParticipantsUpdate.bind(conn)
+    conn.onCall = global.conn.onCall.bind(conn)
+    conn.on('chat-update', conn.handler)
+    conn.on('message-delete', conn.onDelete)
+    conn.on('group-participants-update', conn.onParticipantsUpdate)
+    conn.on('CB:action,,call', conn.onCall)
     conn.regenerateQRIntervalMs = null
-    conn.connect().then(async ({user}) => {
+    conn.connect().then(async ({ user }) => {
       parent.reply(m.chat, 'Berhasil tersambung dengan WhatsApp - mu.\n*NOTE: Ini cuma numpang*\n' + JSON.stringify(user, null, 2), m)
       if (auth) return
       await parent.sendMessage(user.jid, `Kamu bisa login tanpa qr dengan pesan dibawah ini. untuk mendapatkan kode lengkapnya, silahkan kirim *${usedPrefix}getcode* untuk mendapatkan kode yang akurat`, MessageType.extendedText)

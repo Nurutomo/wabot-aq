@@ -5,7 +5,7 @@ let handler = async (m, { conn, text}) => {
     if (m.isGroup) who = m.mentionedJid[0]
     else who = m.chat
     if (!who) throw 'Tag salah satu lah'
-    let users = global.DATABASE._data.users
+    let users = global.db.data.users
     users[who].banned = true
     conn.reply(m.chat, `berhasil banned`, m)
 }

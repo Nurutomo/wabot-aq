@@ -13,7 +13,7 @@ let handler = async (m, { conn, text }) => {
   let pjk = Math.ceil(xp * pajak)
   exp += pjk
   if (exp < 1) throw 'Minimal 1'
-  let users = global.DATABASE._data.users
+  let users = global.db.data.users
   if (exp > users[m.sender].exp) throw 'Exp tidak mencukupi untuk mentransfer'
   users[m.sender].exp -= exp
   users[who].exp += xp

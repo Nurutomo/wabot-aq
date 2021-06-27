@@ -10,7 +10,7 @@ let handler = async (m) => {
   let link = await (isTele ? uploadImage : uploadFile)(media)
   m.reply(`${link}
 ${media.length} Byte(s)
-${isTele ? '(No Expiry Date)' : '(1 Time Use + Expired in 1 Week)'}`)
+${isTele ? '(No Expiry Date)' : '(Unknown)'}`)
 }
 handler.help = ['upload (caption|reply media)']
 handler.tags = ['tools']

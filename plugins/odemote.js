@@ -1,19 +1,17 @@
-let handler = async (m, { conn, args }) => {
-  let users = m.mentionedJid
-  conn.groupDemoteAdmin(m.chat, users)
+let handler = async (m, { conn, participants }) => {
+  let members = participants.filter(member => member.isAdmin).map(member => member.jid)
+  let users = m.mentionedJid.filter(user => members.includes(user))
+  for (let user of users) await conn.groupDemoteAdmin(m.chat, [user]).catch(console.log)
 }
-handler.help = ['demote','member','v'].map(v => 'o' + v + ' @user')
-handler.tags = ['owner']
-handler.command = /^(odemote|omember|ov)$/i
+handler.help = ['demote','member','↓'].map(v => v + ' @user')
+handler.tags = ['admin']
+
+handler.command = /^(demote|member|↓)$/i
+
 handler.owner = true
-handler.mods = false
-handler.premium = false
 handler.group = true
-handler.private = false
 
-handler.admin = false
+handler.admin = true
 handler.botAdmin = true
-
-handler.fail = null
 
 module.exports = handler

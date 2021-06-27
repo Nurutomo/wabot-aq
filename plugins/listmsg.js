@@ -1,5 +1,5 @@
 let handler = m => {
-    let msgs = global.DATABASE._data.msgs
+    let msgs = global.db.data.msgs
     m.reply(`
 *LIST PESAN*
 
