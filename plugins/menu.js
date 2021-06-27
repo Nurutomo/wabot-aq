@@ -56,7 +56,7 @@ ${'```%npmdesc```'}
 let handler = async (m, { conn, usedPrefix: _p }) => {
   try {
     let package = JSON.parse(await fs.promises.readFile(path.join(__dirname, '../package.json')).catch(_ => '{}'))
-    let { exp, limit, level } = global.DATABASE.data.users[m.sender]
+    let { exp, limit, level } = global.db.data.users[m.sender]
     let { min, xp, max } = levelling.xpRange(level, global.multiplier)
     let name = conn.getName(m.sender)
     let d = new Date(new Date + 3600000)
@@ -93,8 +93,8 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
     }
     let muptime = clockString(_muptime)
     let uptime = clockString(_uptime)
-    let totalreg = Object.keys(global.DATABASE._data.users).length
-    let rtotalreg = Object.values(global.DATABASE._data.users).filter(user => user.registered == true).length
+    let totalreg = Object.keys(global.db.data.users).length
+    let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length
     let help = Object.values(global.plugins).filter(plugin => !plugin.disabled).map(plugin => {
       return {
         help: Array.isArray(plugin.tags) ? plugin.help : [plugin.help],

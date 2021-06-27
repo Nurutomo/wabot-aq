@@ -1,18 +1,27 @@
 require('./config.js')
-let { WAConnection: _WAConnection } = require('@adiwajshing/baileys')
-let { generate } = require('qrcode-terminal')
-let syntaxerror = require('syntax-error')
-let simple = require('./lib/simple')
-//  let logs = require('./lib/logs')
-let { promisify } = require('util')
-let yargs = require('yargs/yargs')
-let Readline = require('readline')
-let cp = require('child_process')
-let path = require('path')
-let fs = require('fs')
+const { WAConnection: _WAConnection } = require('@adiwajshing/baileys')
+const cloudDBAdapter = require('./lib/cloudDBAdapter')
+const { generate } = require('qrcode-terminal')
+const syntaxerror = require('syntax-error')
+const simple = require('./lib/simple')
+//  const logs = require('./lib/logs')
+const { promisify } = require('util')
+const yargs = require('yargs/yargs')
+const Readline = require('readline')
+const cp = require('child_process')
+const _ = require('lodash')
+const path = require('path')
+const fs = require('fs')
+var low
+try {
+  low = require('lowdb')
+} catch (e) {
+  low = require('./lib/lowdb')
+}
+const { Low, JSONFile } = low
 
-let rl = Readline.createInterface(process.stdin, process.stdout)
-let WAConnection = simple.WAConnection(_WAConnection)
+const rl = Readline.createInterface(process.stdin, process.stdout)
+const WAConnection = simple.WAConnection(_WAConnection)
 
 
 global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name] } : {}) })) : '')
@@ -25,38 +34,23 @@ global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse()
 
 global.prefix = new RegExp('^[' + (opts['prefix'] || '‎xzXZ/i!#$%+£¢€¥^°=¶∆×÷π√✓©®:;?&.\\-').replace(/[|\\{}()[\]^$+*?.\-\^]/g, '\\$&') + ']')
 
-global.DATABASE = new (require('./lib/database'))(`${opts._[0] ? opts._[0] + '_' : ''}database.json`, null, 2)
-if (!global.DATABASE.data.users) global.DATABASE.data = {
-  users: {},
-  chats: {},
-  stats: {},
-  msgs: {},
-  sticker: {},
-}
-if (!global.DATABASE.data.chats) global.DATABASE.data.chats = {}
-if (!global.DATABASE.data.stats) global.DATABASE.data.stats = {}
-if (!global.DATABASE.data.stats) global.DATABASE.data.msgs = {}
-if (!global.DATABASE.data.sticker) global.DATABASE.data.sticker = {}
+global.db = new Low(
+  /https?:\/\//.test(opts['db'] || '') ?
+  new cloudDBAdapter(opts['db']) :
+  new JSONFile(`${opts._[0] ? opts._[0] + '_' : ''}database.json`)
+)
+global.DATABASE = global.db // Backwards Compatibility
+
 global.conn = new WAConnection()
 let authFile = `${opts._[0] || 'session'}.data.json`
 if (fs.existsSync(authFile)) conn.loadAuthInfo(authFile)
 if (opts['trace']) conn.logger.level = 'trace'
 if (opts['debug']) conn.logger.level = 'debug'
 if (opts['big-qr'] || opts['server']) conn.on('qr', qr => generate(qr, { small: false }))
-let lastJSON = JSON.stringify(global.DATABASE.data)
-if (!opts['test']) setInterval(() => {
-  conn.logger.info('Saving database . . .')
-  if (JSON.stringify(global.DATABASE.data) == lastJSON) conn.logger.info('Database is up to date')
-  else {
-    global.DATABASE.save()
-    conn.logger.info('Done saving database!')
-    lastJSON = JSON.stringify(global.DATABASE.data)
-  }
+if (!opts['test']) setInterval(async () => {
+  await global.db.write()
 }, 60 * 1000) // Save every minute
 if (opts['server']) require('./server')(global.conn, PORT)
-
-
-
 
 if (opts['test']) {
   conn.user = {
@@ -100,10 +94,19 @@ if (opts['test']) {
   rl.on('line', line => conn.sendMessage('123@s.whatsapp.net', line.trim(), 'conversation'))
 } else {
   rl.on('line', line => {
-    global.DATABASE.save()
     process.send(line.trim())
   })
-  conn.connect().then(() => {
+  conn.connect().then(async () => {
+    await global.db.read()
+    global.db.data = {
+      users: {},
+      chats: {},
+      stats: {},
+      msgs: {},
+      sticker: {},
+      ...(global.db.data || {})
+    }
+    global.db.chain = _.chain(global.db.data)
     fs.writeFileSync(authFile, JSON.stringify(conn.base64EncodedAuthInfo(), null, '\t'))
     global.timestamp.connect = new Date
   })
@@ -191,7 +194,6 @@ global.reload = (_event, filename) => {
 Object.freeze(global.reload)
 fs.watch(path.join(__dirname, 'plugins'), global.reload)
 global.reloadHandler()
-process.on('exit', () => global.DATABASE.save())
 
 
 

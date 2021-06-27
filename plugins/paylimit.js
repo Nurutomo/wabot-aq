@@ -13,7 +13,7 @@ let handler = async (m, { conn, text }) => {
     let pjk = Math.ceil(poin * pajak)
     limit += pjk
     if (limit < 1) throw 'Minimal 1'
-    let users = global.DATABASE._data.users
+    let users = global.db.data.users
     if (limit > users[m.sender].limit) throw 'Limit tidak mencukupi untuk mentransfer'
     users[m.sender].limit -= limit
     users[who].limit += poin

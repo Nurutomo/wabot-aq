@@ -9,8 +9,8 @@ ${usedPrefix + command} remove 6281111111111,12345678901,0
     let teks = text.replace(args[0], '').trim()
     let users = teks.split(',').map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net')
     for (let who of users) {
-        let user = global.DATABASE.data.users[who]
-        if (!user) user = global.DATABASE.data.users[who] = {}
+        let user = global.db.data.users[who]
+        if (!user) user = global.db.data.users[who] = {}
         user.whitelist = type
     }
     m.reply(`Done ${type ? 'add' : 'remove'} whitelist ${users.length} user(s)`)

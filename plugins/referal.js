@@ -11,7 +11,7 @@ const xp_bonus = {
 }
 
 let handler = async (m, { conn, usedPrefix, text }) => {
-  let users = global.DATABASE.data.users
+  let users = global.db.data.users
   if (text) {
     if ('ref_count' in users[m.sender]) throw 'Tidak bisa menggunakan kode referal!'
     let link_creator = (Object.entries(users).find(([, { ref_code }]) => ref_code === text.trim()) || [])[0]

@@ -1,9 +1,9 @@
 const free = 500
 let handler = async (m) => {
-  if (new Date - global.DATABASE._data.users[m.sender].lastclaim < 86400000) throw 'Anda sudah mengklaim klaim harian hari ini'
-  global.DATABASE._data.users[m.sender].exp += free
+  if (new Date - global.db.data.users[m.sender].lastclaim < 86400000) throw 'Anda sudah mengklaim klaim harian hari ini'
+  global.db.data.users[m.sender].exp += free
   m.reply(`+${free} XP`)
-  global.DATABASE._data.users[m.sender].lastclaim = new Date * 1
+  global.db.data.users[m.sender].lastclaim = new Date * 1
 }
 handler.help = ['daily', 'claim']
 handler.tags = ['xp']

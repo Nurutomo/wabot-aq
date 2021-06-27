@@ -15,7 +15,7 @@ module.exports = {
                 return !0
             }
             if (room.terjawab[index]) return !0
-            let users = global.DATABASE.data.users[m.sender]
+            let users = global.db.data.users[m.sender]
             room.terjawab[index] = m.sender
             users.exp += room.winScore
         }

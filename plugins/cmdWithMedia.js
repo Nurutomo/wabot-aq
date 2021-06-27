@@ -5,8 +5,8 @@ module.exports = {
         if (m.isBaileys) return
         if (!m.message) return
         if (!m.msg.fileSha256) return
-        if (!(m.msg.fileSha256.toString('hex') in global.DATABASE.data.sticker)) return
-        let hash = global.DATABASE.data.sticker[m.msg.fileSha256.toString('hex')]
+        if (!(m.msg.fileSha256.toString('hex') in global.db.data.sticker)) return
+        let hash = global.db.data.sticker[m.msg.fileSha256.toString('hex')]
         let { text, mentionedJid } = hash
         this.emit('chat-update', {
             ...chatUpdate,
