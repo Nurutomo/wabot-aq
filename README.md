@@ -59,6 +59,34 @@ Set prefix
 
 Used for [heroku](https://heroku.com/) or scan through website
 
+### `--db <json-server-url>`
+
+Use external db instead of local db, 
+Example Server `https://json-server.nurutomo.repl.co/`
+Code: `https://repl.it/@Nurutomo/json-server`
+
+`node . --db 'https://json-server.nurutomo.repl.co/'`
+
+The server should have like this specification
+
+#### GET
+
+```http
+GET /
+Accept: application/json
+```
+
+#### POST
+
+```http
+POST /
+Content-Type: application/json
+
+{
+ data: {}
+}
+```
+
 ### `--big-qr`
 
 If small qr unicode doesn't support
