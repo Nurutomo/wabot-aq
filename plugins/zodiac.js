@@ -11,7 +11,7 @@ let handler = (m, { usedPrefix, command, text }) => {
     const ageD = new Date(d - date)
     const age = ageD.getFullYear() - new Date(1970, 0, 1).getFullYear()
 
-    const birthday = [tahun + (birth[1] < bulan), ...birth.slice(1)]
+    const birthday = [tahun + (+ new Date(1970, bulan - 1, tanggal) > + new Date(1970, birth[1] - 1, birth[2])), ...birth.slice(1)]
     const cekusia = bulan === birth[1] && tanggal === birth[2] ? `Selamat ulang tahun yang ke-${age} 🥳` : age
 
     const teks = `
