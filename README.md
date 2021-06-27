@@ -106,3 +106,6 @@ conn.logger.level = 'debug'
 #### Most Active Contributor : [`ariffb25`](https://github.com/ariffb25)
 
 #### 2nd Most Active Contributor: [`Ftwrr`](https://github.com/Ftwrr)
+
+
+NOTE: This project will not maintained after `27 June 2021`, that means no update. Feel free to anyone to continue this project :)
