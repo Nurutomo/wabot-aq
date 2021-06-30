@@ -11,7 +11,7 @@ let handler = async (m, { conn, args }) => {
 } 
 handler.help = ['pinterest'].map(v => v + ' <pencarian>')
 handler.tags = ['internet']
-handler.command = /^(pinterest)$/
+handler.command = /^pinterest$/
 module.exports = handler
 
 function pickRandom(arr) {
