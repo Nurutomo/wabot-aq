@@ -32,7 +32,7 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       break
     case 'delete':
       if (m.isGroup) {
-        if (!isAdmin || !isOwner) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn)
           throw false
         }
@@ -41,7 +41,7 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       break
     case 'antidelete':
       if (m.isGroup) {
-        if (!isAdmin || !isOwner) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn)
           throw false
         }
@@ -50,7 +50,7 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       break
     case 'autodelvn':
       if (m.isGroup) {
-        if (!isAdmin || !isOwner) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn)
           throw false
         }
@@ -70,7 +70,7 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       break
     case 'antilink':
       if (m.isGroup) {
-        if (!isAdmin || !isOwner) {
+        if (!(isAdmin || isOwner)) {
           global.dfail('admin', m, conn)
           throw false
         }
