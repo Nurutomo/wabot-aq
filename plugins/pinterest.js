@@ -1,19 +1,18 @@
-//Created by Villagerindo, saya masih pemula hehe
-const fetch = require('node-fetch')
-let handler = async (m, { conn, args }) => {
-	let text = args.join` `
-	if (!text) return m.reply('Tidak ada teks untuk di cari')
-    res = await fetch(`https://fdciabdul.tech/api/pinterest?keyword=` + encodeURIComponent(text)).then((res) => res.json())
-	result = JSON.parse(JSON.stringify(res));
-    let dpa = pickRandom(result) || {}
-    if (!dpa[3]) return m.reply(`Foto ${text} tidak dapat ditemukan!`)
-    conn.sendFile(m.chat,dpa, "", `Nih ${text}`, m)
-} 
-handler.help = ['pinterest'].map(v => v + ' <pencarian>')
-handler.tags = ['internet']
-handler.command = /^pinterest$/
-module.exports = handler
-
-function pickRandom(arr) {
-  return arr[Math.floor(Math.random() * arr.length)]
+let fetch = require('node-fetch')
+let handler = async(m, { conn, text }) => {
+  let res = await fetch(global.API('https://fdciabdul.tech', '/api/pinterest', {
+    keyword : encodeURI(text)
+  }))
+  if (!res.ok) throw await res.text()
+  let json = await res.json()
+  let pint = json[Math.floor(Math.random() * json.length)];
+  conn.sendFile(m.chat, pint, '', `
+*Hasil pencarian*
+${text}
+`.trim(), m)
 }
+handler.help = ['pinterest <keyword>']
+handler.tags = ['internet']
+handler.command = /^(pinterest)$/i
+//MADE IN ERPAN 1140 BERKOLABORASI DENGAN BTS dan Ftwrr
+module.exports = handler
