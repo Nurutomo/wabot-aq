@@ -6,7 +6,10 @@ let handler = async(m, { conn, text }) => {
   if (!res.ok) throw await res.text()
   let json = await res.json()
   let pint = json[Math.floor(Math.random() * json.length)];
-  conn.sendFile(m.chat, pint, '', 'random photo from keyword', m)
+  conn.sendFile(m.chat, pint, '', `
+*Hasil pencarian*
+${text}
+`.trim(), m)
 }
 handler.help = ['pinterest <keyword>']
 handler.tags = ['internet']
