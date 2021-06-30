@@ -3,7 +3,7 @@ const fetch = require('node-fetch')
 let handler = async (m, { conn, args }) => {
 	let text = args.join` `
 	if (!text) return m.reply('Tidak ada teks untuk di cari')
-    res = await fetch(`https://fdciabdul.tech/api/pinterest?keyword=${text}`).then((res) => res.json())
+    res = await fetch(`https://fdciabdul.tech/api/pinterest?keyword=` + encodeURIComponent(text)).then((res) => res.json())
 	result = JSON.parse(JSON.stringify(res));
     let dpa = pickRandom(result) || {}
     if (!dpa[3]) return m.reply(`Foto ${text} tidak dapat ditemukan!`)
