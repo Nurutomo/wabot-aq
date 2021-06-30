@@ -101,6 +101,7 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
         tags: Array.isArray(plugin.tags) ? plugin.tags : [plugin.tags],
         prefix: 'customPrefix' in plugin,
         limit: plugin.limit,
+        premium: plugin.premium,
         enabled: !plugin.disabled,
       }
     })
@@ -122,7 +123,7 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
             return menu.help.map(help => {
               return body.replace(/%cmd/g, menu.prefix ? help : '%p' + help)
                 .replace(/%islimit/g, menu.limit ? '(Limit)' : '')
-                .replace(/%isPremium/g, menu.limit ? '(Premium)' : '')
+                .replace(/%isPremium/g, menu.premium ? '(Premium)' : '')
                 .trim()
             }).join('\n')
           }),
