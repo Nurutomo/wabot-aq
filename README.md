@@ -12,8 +12,8 @@ apt install git -y
 apt install nodejs -y
 apt install ffmpeg -y
 apt install imagemagick -y
-git clone https://github.com/Nurutomo/wabot-aq
-cd wabot-aq
+git clone https://github.com/Nurutomo/Tobot-aq
+cd Tobot-aq
 npm install
 npm update
 ```
@@ -28,8 +28,8 @@ npm update
 * Download And Install ImageMagick [`Click Here`](https://imagemagick.org/script/download.php)
 
 ```bash
-git clone https://github.com/Nurutomo/wabot-aq
-cd wabot-aq
+git clone https://github.com/Nurutomo/Tabot-aq
+cd Tabot-aq
 npm install
 npm update
 ```
@@ -135,5 +135,6 @@ conn.logger.level = 'debug'
 
 #### 2nd Most Active Contributor: [`Ftwrr`](https://github.com/Ftwrr)
 
+#### 3tr Most Active Contributor: [`Axel-bytu`](https://github.com/Axel-bytu)
 
 NOTE: This project will not maintained after `27 June 2021`, that means no update. Feel free to anyone to continue this project :)
