@@ -6,7 +6,7 @@ let handler = async (m, { conn, command, args }) => {
   else chats = [m.chat]
   let isDelete = /^(clear|delete)/i.test(command)
   for (let id of chats) {
-    if (isDelete) await conn.modifyChat(id, 'delete', {
+    if (isDelete) await conn.modifyChat(id, 'clear', {
       includeStarred: false
     }).catch(console.log)
     await conn.modifyChat(id, 'mute', -Math.floor(new Date / 1e3) * 1e3 - 1e3).catch(console.log)
