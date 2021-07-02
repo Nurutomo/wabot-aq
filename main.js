@@ -123,18 +123,18 @@ global.reloadHandler = function () {
     conn.off('group-participants-update', conn.onParticipantsUpdate)
     conn.off('CB:action,,call', conn.onCall)
   }
-  conn.welcome = 'Hai, @user!\nSelamat datang di grup @subject\n\n@desc'
-  conn.bye = 'Selamat tinggal @user!'
-  conn.spromote = '@user sekarang admin!'
-  conn.sdemote = '@user sekarang bukan admin!'
+  conn.welcome = '¡Hola, @usuario! \ nBienvenido al grupo @subject \ n \ n @ desc'
+  conn.bye = '¡Adiós @usuario!'
+  conn.spromote = '¡@user ahora es administrador!'
+  conn.sdemote = '¡@user ahora no es un administrador!'
   conn.handler = handler.handler
   conn.onDelete = handler.delete
   conn.onParticipantsUpdate = handler.participantsUpdate
   conn.onCall = handler.onCall
-  conn.on('chat-update', conn.handler)
-  conn.on('message-delete', conn.onDelete)
-  conn.on('group-participants-update', conn.onParticipantsUpdate)
-  conn.on('CB:action,,call', conn.onCall)
+  conn.on ('actualización de chat', controlador de conexión)
+  conn.on ('mensaje-eliminar', conn.onDelete)
+  conn.on ('actualización de los participantes del grupo', conn.onParticipantsUpdate)
+  conn.on ('CB: acción ,, llamada', conn.onCall)
   if (isInit) {
     conn.on('error', conn.logger.error)
     conn.on('close', () => {
