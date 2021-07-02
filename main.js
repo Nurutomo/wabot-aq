@@ -32,11 +32,11 @@ global.timestamp = {
 const PORT = process.env.PORT || 3000
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse())
 
-global.prefix = new RegExp('^[' + (opts['prefix'] || '‎xzXZ/i!#$%+£¢€¥^°=¶∆×÷π√✓©®:;?&.\\-').replace(/[|\\{}()[\]^$+*?.\-\^]/g, '\\$&') + ']')
+global.prefix = new RegExp('^[' + (process.env.PREFIX || opts['prefix'] || '‎xzXZ/i!#$%+£¢€¥^°=¶∆×÷π√✓©®:;?&.\\-').replace(/[|\\{}()[\]^$+*?.\-\^]/g, '\\$&') + ']')
 
 global.db = new Low(
-  /https?:\/\//.test(opts['db'] || '') ?
-  new cloudDBAdapter(opts['db']) :
+  /https?:\/\//.test(process.env.DB || opts['db'] || '') ?
+  new cloudDBAdapter(process.env.DB || opts['db']) :
   new JSONFile(`${opts._[0] ? opts._[0] + '_' : ''}database.json`)
 )
 global.DATABASE = global.db // Backwards Compatibility
@@ -44,15 +44,15 @@ global.DATABASE = global.db // Backwards Compatibility
 global.conn = new WAConnection()
 let authFile = `${opts._[0] || 'session'}.data.json`
 if (fs.existsSync(authFile)) conn.loadAuthInfo(authFile)
-if (opts['trace']) conn.logger.level = 'trace'
-if (opts['debug']) conn.logger.level = 'debug'
-if (opts['big-qr'] || opts['server']) conn.on('qr', qr => generate(qr, { small: false }))
-if (!opts['test']) setInterval(async () => {
+if (process.env.TRACE || opts['trace']) conn.logger.level = 'trace'
+if (process.env.DEBUG || opts['debug']) conn.logger.level = 'debug'
+if (process.env.BIG_QR || opts['big-qr'] || process.env.SERVER || opts['server']) conn.on('qr', qr => generate(qr, { small: false }))
+if (!(process.env.TEST || opts['test'])) setInterval(async () => {
   await global.db.write()
 }, 60 * 1000) // Save every minute
-if (opts['server']) require('./server')(global.conn, PORT)
+if (process.env.SERVER || opts['server']) require('./server')(global.conn, PORT)
 
-if (opts['test']) {
+if (process.env.TEST || opts['test']) {
   conn.user = {
     jid: '2219191@s.whatsapp.net',
     name: 'test',

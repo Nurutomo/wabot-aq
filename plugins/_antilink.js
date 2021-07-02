@@ -8,7 +8,7 @@ handler.before = function (m, { isAdmin, isBotAdmin }) {
 
   if (chat.antiLink && isGroupLink) {
     m.reply('Hapus!!\n\nLink Grup terdeteksi')
-    if (global.opts['restrict']) {
+    if (process.env.RESTRICT || global.opts['restrict']) {
       if (isAdmin || !isBotAdmin) return true
       // this.groupRemove(m.chat, [m.sender])
     }

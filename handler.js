@@ -81,8 +81,8 @@ module.exports = {
       } catch (e) {
         console.error(e)
       }
-      if (opts['nyimak']) return
-      if (!m.fromMe && opts['self']) return
+      if (process.env.NYIMAK || opts['nyimak']) return
+      if (!m.fromMe && (process.env.SELF || opts['self'])) return
       if (typeof m.text !== 'string') m.text = ''
       for (let name in global.plugins) {
         let plugin = global.plugins[name]
@@ -117,7 +117,7 @@ module.exports = {
         let plugin = global.plugins[name]
         if (!plugin) continue
         if (plugin.disabled) continue
-        if (!opts['restrict']) if (plugin.tags && plugin.tags.includes('admin')) continue
+        if (!(process.env.RESTRICT || opts['restrict'])) if (plugin.tags && plugin.tags.includes('admin')) continue
         const str2Regex = str => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
         let _prefix = plugin.customPrefix ? plugin.customPrefix : conn.prefix ? conn.prefix : global.prefix
         let match = (_prefix instanceof RegExp ? // RegExp Mode?
@@ -307,7 +307,7 @@ module.exports = {
       } catch (e) {
         console.log(m, m.quoted, e)
       }
-      if (opts['autoread']) await this.chatRead(m.chat).catch(() => {})
+      if (process.env.AUTOREAD || opts['autoread']) await this.chatRead(m.chat).catch(() => {})
     }
   },
   async participantsUpdate({ jid, participants, action }) {
