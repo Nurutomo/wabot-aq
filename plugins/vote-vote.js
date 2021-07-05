@@ -13,8 +13,8 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     m.reply(`Done!\n\n*${usedPrefix}cekvote* - untuk mengecek vote`)
 
 }
-handler.help = ['vote']
+handler.help = ['upvote', 'devote']
 handler.tags = ['vote']
-handler.command = /^(up|de)?vote$/i
+handler.command = /^(up|de)vote$/i
 handler.group = true
 module.exports = handler
