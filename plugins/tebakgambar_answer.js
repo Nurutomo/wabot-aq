@@ -7,12 +7,12 @@ handler.before = async function (m) {
   if (m.quoted.id == conn.tebakgambar[id][0].id) {
     let json = JSON.parse(JSON.stringify(conn.tebakgambar[id][1]))
     // m.reply(JSON.stringify(json, null, '\t'))
-    if (m.text.toLowerCase() == json.jawaban.toLowerCase()) {
+    if (m.text.toLowerCase() == json.result.jawaban.toLowerCase()) {
       global.db.data.users[m.sender].exp += conn.tebakgambar[id][2]
       m.reply(`*Benar!*\n+${conn.tebakgambar[id][2]} XP`)
       clearTimeout(conn.tebakgambar[id][3])
       delete conn.tebakgambar[id]
-    } else if (m.text.toLowerCase().endsWith(json.jawaban.split` `[1])) m.reply(`*Dikit Lagi!*`)
+    } else if (m.text.toLowerCase().endsWith(json.result.jawaban.split` `[1])) m.reply(`*Dikit Lagi!*`)
     else m.reply(`*Salah!*`)
   }
   return !0
