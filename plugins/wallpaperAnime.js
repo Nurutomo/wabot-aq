@@ -1,16 +1,13 @@
-const { MessageType } = require('@adiwajshing/baileys')
 const fetch = require('node-fetch')
 
 let handler = async (m, { conn }) => {
     try {
         let res = await fetch(global.API('xteam', '/randomimage/wpmobile', {}, 'APIKEY'))
+        if (res.status != 200) throw await res.text()
         let img = await res.buffer()
-        conn.sendMessage(m.chat, img, MessageType.image, {
-            quoted: m, caption: '*© Astrobot*'
-        })
+        conn.sendFile(m.chat, img, '', '*© stikerin*', m, false, { thumbnail: Buffer.alloc(0) })
     } catch (e) {
-        console.log(e)
-        throw '_*Owner belum membayar tagihan fitur ini*_'
+        throw `Limit apikey habis atau error!`
     }
 }
 handler.help = ['wallpaperanime']

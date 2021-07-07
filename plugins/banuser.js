@@ -1,5 +1,4 @@
-let { MessageType } = require('@adiwajshing/baileys')
-let handler = async (m, { conn, text}) => {
+let handler = async (m, { conn, text }) => {
     if (!text) throw 'Siapa yang mau di banned?'
     let who
     if (m.isGroup) who = m.mentionedJid[0]

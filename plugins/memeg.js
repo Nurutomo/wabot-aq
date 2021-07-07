@@ -1,7 +1,7 @@
 const uploadFile = require('../lib/uploadFile')
 const uploadImage = require('../lib/uploadImage')
 let handler = async (m, { conn, text }) => {
-  let [t1, t2] = text.split `|`
+  let [t1, t2] = text.split`|`
   if (!t1) throw 'No Text'
   if (!t2) {
     t2 = t1

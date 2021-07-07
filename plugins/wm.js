@@ -8,7 +8,7 @@ let handler = async (m, { conn, text }) => {
     let mime = m.quoted.mimetype || ''
     if (!/webp/.test(mime)) throw 'Reply sticker!'
     let img = await m.quoted.download()
-    stiker = await sticker(img, false, packname || global.packname, author || global.author)
+    stiker = await sticker(img, false, packname || '', author || '')
   } finally {
     if (stiker) conn.sendMessage(m.chat, stiker, MessageType.sticker, {
       quoted: m

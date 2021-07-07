@@ -13,7 +13,7 @@ const colors = [
 ]
 
 let handler = async (m, { conn, text }) => {
-    let _m = Promise.resolve({ key: { id: '' }})
+    let _m = Promise.resolve({ key: { id: '' } })
     if (!m.quoted && !text) throw 'reply pesan atau sebagai argumen'
     if (m.quoted && m.quoted.mtype !== 'conversation' && !text) _m = m.quoted.forward('status@broadcast')
     if (m.quoted && m.quoted.mtype === 'conversation' && !text) _m = conn.sendMessage('status@broadcast', {
@@ -33,6 +33,8 @@ handler.help = ['upsw [text] (Reply Media)', 'upsw <text>']
 handler.tags = ['']
 
 handler.command = /^upsw$/i
+
+handler.owner = true
 
 module.exports = handler
 

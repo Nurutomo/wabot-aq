@@ -10,7 +10,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     }
     await conn.sendFile(m.chat, out, 'out.gif', '*© stikerin*', m, false, { mimetype: 'video/gif', thumbnail: Buffer.alloc(0) })
 }
-handler.help = ['togif']
+handler.help = ['togif (reply)']
 handler.tags = ['sticker']
 handler.command = ['togif']
 
