@@ -1,4 +1,4 @@
-let handler  = async (m, { conn, command, text }) => {
+let handler = async (m, { conn, command, text }) => {
   let type = command.replace(/^set(menu|help|\?)/, '').toLowerCase()
   if (type == '') {
     if (text) {
@@ -19,7 +19,7 @@ let handler  = async (m, { conn, command, text }) => {
     }
   }
 }
-handler.help = ['', 'before','header','body','footer','after'].map(v => 'setmenu' + v + ' <teks>')
+handler.help = ['', 'before', 'header', 'body', 'footer', 'after'].map(v => 'setmenu' + v + ' <teks>')
 handler.tags = ['owner']
 handler.command = /^set(menu|help|\?)(before|header|body|footer|after)?$/i
 handler.owner = true
@@ -63,4 +63,5 @@ Bagian Menu Header & Footer:
 Bagian Menu Body:
 %cmd (Command)
 %islimit (Jika command di limit)
+%isPremium (Jika command premium)
 `.trim()
