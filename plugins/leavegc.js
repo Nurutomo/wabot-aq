@@ -1,3 +1,12 @@
+/* Codded By TOXIC-DEVIL
+
+## Contribution - 17th
+## wabot -aq
+## Nurutomo/wabot -aq
+## https://github.com/Nurutomo/wabot-aq
+
+GNU General Public License v3.0 */
+
 let handler = async (m, { conn, usedPrefix, command }) => {
 
   await m.reply(`
