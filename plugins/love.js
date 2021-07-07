@@ -26,3 +26,8 @@ module.exports = handler
 function pickRandom(list) {
   return list[Math.floor(Math.random() * list.length)]
 }
+
+/* Codded By TOXIC-DEVIL
+# wabot-aq
+## Nurutomo/wabot-aq
+LICENSED UNDER = GNU General Public */
