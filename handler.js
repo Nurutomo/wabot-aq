@@ -39,6 +39,7 @@ module.exports = {
           if (!('afkReason' in user)) user.afkReason = ''
           if (!('banned' in user)) user.banned = false
           if (!isNumber(user.level)) user.level = 0
+          if (!user.role) user.role = 'Beginner'
           if (!('autolevelup' in user)) user.autolevelup = false
         } else global.db.data.users[m.sender] = {
           exp: 0,
@@ -52,6 +53,7 @@ module.exports = {
           afkReason: '',
           banned: false,
           level: 0,
+          role: 'Beginner',
           autolevelup: false,
         }
 
