@@ -10,7 +10,7 @@ let handler = async(m, { conn, text, usedPrefix, command}) => {
     await conn.sendFile(m.chat, json.result, 'q.jpg', '©levibot', m)
 }
 handler.help = ['quotemaker2 <teks | wm>']
-handler.tags = ['maker']
+handler.tags = ['nulis']
 handler.command = /^q(uote)?maker?2$/i
 handler.limit = true
 
