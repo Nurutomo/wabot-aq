@@ -14,6 +14,10 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
       let img = await q.download()
       if (!img) throw `balas video/gif dengan caption *${usedPrefix + command}*`
       stiker = await sticker(img, false, global.packname, global.author)
+    } else if (/webp/.test(mime)) {
+      let img = await q.download()
+      if (!img) throw `balas sticker dengan caption *${usedPrefix + command}*`
+      stiker = await sticker(img, false, global.packname, global.author)
     } else if (args[0]) {
       if (isUrl(args[0])) stiker = await sticker(false, args[0], global.packname, global.author)
       else return m.reply('URL tidak valid!')
