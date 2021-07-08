@@ -224,6 +224,10 @@ module.exports = {
             this.reply(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, m)
             continue // Limit habis
           }
+          if (plugin.level > _user.level) {
+            this.reply(m.chat, `diperlukan level ${plugin.level} untuk menggunakan perintah ini. Level kamu ${_user.level}`, m)
+            continue // If the level has not been reached
+          }
           let extra = {
             match,
             usedPrefix,
@@ -309,7 +313,7 @@ module.exports = {
       } catch (e) {
         console.log(m, m.quoted, e)
       }
-      if (opts['autoread']) await this.chatRead(m.chat).catch(() => {})
+      if (opts['autoread']) await this.chatRead(m.chat).catch(() => { })
     }
   },
   async participantsUpdate({ jid, participants, action }) {
