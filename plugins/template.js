@@ -30,6 +30,7 @@ handler.command = ['tagme']
 
 // handler.fail = null
 // handler.exp = 0
+// handler.level = 1
 
 handler.disabled = true
 
