@@ -26,7 +26,7 @@ module.exports = {
 Terdapat *${room.jawaban.length}* jawaban${room.jawaban.find(v => v.includes(' ')) ? `
 (beberapa jawaban terdapat spasi)
 `: ''}
-${isWin ? `*SEMUA JAWABAN TERJAWAB*`: isSurrender ? '*MENYERAH!*' : ''}
+${isWin ? `*SEMUA JAWABAN TERJAWAB*` : isSurrender ? '*MENYERAH!*' : ''}
 ${Array.from(room.jawaban, (jawaban, index) => {
             return isSurrender || room.terjawab[index] ? `(${index + 1}) ${jawaban} ${room.terjawab[index] ? '@' + room.terjawab[index].split('@')[0] : ''}`.trim() : false
         }).filter(v => v).join('\n')}
@@ -39,7 +39,7 @@ ${isSurrender ? '' : `+${room.winScore} XP tiap jawaban benar`}
             }
         }).then(msg => {
             return this.game[id].msg = msg
-        })
+        }).catch(_ => _)
         if (isWin || isSurrender) delete this.game[id]
         return !0
     }
