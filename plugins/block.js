@@ -21,5 +21,6 @@ handler.help = ['block', 'unblock'].map(v => v + ' @user')
 handler.tags = 'owner'
 
 handler.command = /^(un)?block$/i
+handler.owner = true
 
 module.exports = handler
