@@ -19,6 +19,8 @@ let tags = {
   'fun': 'Fun',
   'database': 'Database',
   'vote': 'Voting',
+  'absen': 'Absen',
+  'quran': 'Al Qur\'an',
   'jadibot': 'Jadi Bot',
   'owner': 'Owner',
   'host': 'Host',

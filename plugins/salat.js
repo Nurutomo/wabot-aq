@@ -6,6 +6,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (res.status != 200) throw await `${res.status} ${res.statusText}`
     let json = await res.json()
     if (!json.status) {
+        if (json.message == 'use of apikey reached the limit') throw json
         let hasil = json.listdaerah.map((v, i) => `│ ${i + 1}. ${v}`).join`\n`
         m.reply(`
 *${json.message}*
