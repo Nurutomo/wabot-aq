@@ -1,55 +1,54 @@
 // Terimakasih kpd RC047 :v
 // Fitur By Xteams
 // Modified by Nurutomo (Update Xteam :v)
-
+// Update No API biar unlimited Hit :v
+//:v
 const { sticker } = require('../lib/sticker')
+const { emoji } = require('../lib/emojipedias.js')
 const fetch = require('node-fetch')
 const defaultType = 'whatsapp'
 let handler = async (m, { usedPrefix, conn, args, text }) => {
-  let [tipe, emoji] = text.includes('|') ? text.split('|') : args
-  if (tipe && !emoji) {
-    emoji = tipe
+  let [tipe, emo] = text.includes('|') ? text.split('|') : args
+  if (tipe && !emo) { 
+    emo = tipe
     tipe = defaultType
   }
-  if (!emoji) throw `
+  if (!emo) throw `
 Silahkan masukan emojinya
 
-Misal ${usedPrefix}semoji whatsapp 😎
+Misal ${usedPrefix}emo whatsapp 😎
 
 List Tipe:
 ${[
-  "apple",
-  "google",
-  "samsung",
-  "microsoft",
-  "whatsapp",
-  "twitter",
-  "facebook",
-  "joypixels",
-  "openmoji",
-  "emojidex",
-  "messenger",
-  "lg",
-  "htc",
-  "mozilla",
-  "softbank",
-  "docomo",
-  "au_by_kddi"
+"apple",
+"google",
+"samsung",
+"microsoft",
+"whatsapp",
+"twitter",
+"facebook",
+"jooxpixel",
+"openemoji",
+"emojidex",
+"messanger",
+"lg",
+"htc",
+"mozila",
+"softbank",
+"docomo",
+"kddi",
 ].map(v => `- ${v}`).join('\n')}
 `.trim()
-  emoji = emoji.trim()
+  emo = emo.trim()
   tipe = tipe.trim().toLowerCase()
 
-  let res = await fetch(global.API('xteam', '/sticker/emojitopng', { emo: emoji.trim() }, 'APIKEY'))
-  if (!res.ok) throw res.text()
-  let json = await res.json()
-  if (!json.status) throw json
-  if (!(tipe in json.result)) tipe = defaultType
-  let stiker = await sticker(null, json.result[tipe].img, global.packname, global.author, [emoji], { name: json.result[tipe].name })
+  let res = await emoji(`${emo}`)
+  if (!(tipe in res)) tipe = defaultType
+  let stiker = await sticker(null, res.result[tipe].img,global.packname, global.author, [emo], { name: res.result[tipe].img })
   //   m.reply(`
   // Tipe: ${tipe}
   // Emoji: ${emoji}
-  // `.trim())
+  // `.trim()) 
   m.reply(stiker)
 }
 handler.help = ['semoji [tipe] <emoji>']
