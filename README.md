@@ -1,4 +1,4 @@
-# wabot-aq
+# Tobot-aq
 
 Simple WhatsApp Bot
 
@@ -12,8 +12,8 @@ apt install git -y
 apt install nodejs -y
 apt install ffmpeg -y
 apt install imagemagick -y
-git clone https://github.com/Nurutomo/wabot-aq
-cd wabot-aq
+git clone https://github.com/Axel-bytu/Tobot-aq
+cd Tobot-aq
 npm install
 npm update
 ```
@@ -28,8 +28,8 @@ npm update
 * Download And Install ImageMagick [`Click Here`](https://imagemagick.org/script/download.php)
 
 ```bash
-git clone https://github.com/Nurutomo/wabot-aq
-cd wabot-aq
+git clone https://github.com/Axel-bytu/Tobot-aq
+cd Tobot-aq
 npm install
 npm update
 ```
