@@ -50,6 +50,18 @@ node .
 
 Activate self mode (Ignores other)
 
+### `--pconly`
+
+If that chat not from private bot, bot will ignore
+
+### `--gconly`
+
+If that chat not from group, bot will ignore
+
+### `--swonly`
+
+If that chat not from status, bot will ignore
+
 ### `--prefix <prefixes>`
 
 * `prefixes` are seperated by each character
