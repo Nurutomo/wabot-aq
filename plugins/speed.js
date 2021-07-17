@@ -38,7 +38,6 @@ let handler = async (m, { conn }) => {
     }
   })
   let old = performance.now()
-  await m.reply('_Testing speed..._')
   let neww = performance.now()
   let speed = neww - old
   let txt = `
@@ -51,11 +50,18 @@ Merespon dalam ${speed} millidetik
 - *${chats.length - groups.length}* Personal Chats
 - *${chats.length}* Total Chats
 
-📱 *Phone Info* :
 ${'```' + `
 🔋 Battery : ${conn.battery ? `${conn.battery.value}% ${conn.battery.live ? '🔌 Charging...' : '⚡ Discharging'}` : 'Unknown'}
-${util.format(conn.user.phone)}
 `.trim() + '```'}
+
+❏ Phone :
+Wa Version : *${util.format(conn.user.phone.wa_version)}*
+MCC : *${util.format(conn.user.phone.mcc)}*
+MNC : *${util.format(conn.user.phone.mnc)}*
+Phone Manufacturer : *${util.format(conn.user.phone.device_manufacturer)}*
+Phone Model : *${util.format(conn.user.phone.device_model)}*
+OS Version : *${util.format(conn.user.phone.os_version)}*
+OS Build Number : *${util.format(conn.user.phone.os_build_number)}*
 
 💻 *Server Info* :
 RAM: ${format(os.totalmem() - os.freemem())} / ${format(os.totalmem())}
@@ -74,5 +80,5 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
 handler.help = ['ping', 'speed']
 handler.tags = ['info', 'tools']
 
-handler.command = /^(ping|speed|info)$/i
+handler.command = /^(ping|speed)$/i
 module.exports = handler
