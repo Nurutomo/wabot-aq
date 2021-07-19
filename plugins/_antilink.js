@@ -10,10 +10,9 @@ handler.before = function (m, { isAdmin, isBotAdmin }) {
     m.reply('Hapus!!\n\nLink Grup terdeteksi')
     if (global.opts['restrict']) {
       if (isAdmin || !isBotAdmin) return true
-      // this.groupRemove(m.chat, [m.sender])
-    }
+   this.groupRemove(m.chat, [m.sender])
   }
-  return true
 }
+handler.group = true
 
 module.exports = handler
