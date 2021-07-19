@@ -14,9 +14,10 @@ let handler = async (m, { conn, text }) => {
       let img = await q.download()
       if (!img) throw `membalas gambar atau memberikan keterangan *${usedPrefix + command}*`
 
-  await conn.sendFile(m.chat, global.API('https://some-random-api.ml', '/canvas/wasted', {
-    avatar: image, // Special Thanks To : some-random-api.ml 
-  }), 'wasted.png', 'wasted 😂', m)
+   let res = global.API('https://some-random-api.ml', '/canvas/wasted', {
+             avatar: image, // Special Thanks To : some-random-api.ml 
+           })
+  await conn.sendFile(m.chat, res, 'wasted.png', 'wasted 😂', m)
 }
 handler.help = ['wasted (caption|reply media)']
 handler.tags = ['maker']
