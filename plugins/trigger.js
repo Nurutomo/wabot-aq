@@ -7,11 +7,9 @@ let handler = async (m, { conn }) => {
   let marah = global.API('https://some-random-api.ml', '/canvas/triggered', {
     avatar: await conn.getProfilePicture(who).catch(_ => 'https://telegra.ph/file/24fa902ead26340f3df2c.png'),
   })
-  let stiker = await sticker(null, marah, global.packname, global.author)
- if (stiker) return conn.sendMessage(m.chat, stiker, MessageType.sticker, {
-    quoted: m
-  })
-  throw stiker.toString()
+ let stiker = await sticker(null, marah, global.packname, global.author)
+ if (stiker) return conn.sendFile(m.chat, stiker, m, false, { asSticker: true });
+  else throw stiker.toString()
 }
 
 
