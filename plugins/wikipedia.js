@@ -2,7 +2,8 @@ let fetch = require('node-fetch')
 let handler = async (m, { text }) => {
   let res = await fetch(global.API('zeks', '/api/wiki', { q: text }, 'apikey'))
   let json = await res.json()
-  if (json.result.status) m.reply(`${json.result.result}\n\n@Fatur`)
+  if (json.result.error) throw `Saya tidak dapat menemukan yang seperti ini di Wikipedia!`
+  if (json) m.reply(`${json.result.result}\n\n@Fatur`)
   else throw `Error!`
 }
 handler.help = ['wikipedia'].map(v => v + ' <apa>')
