@@ -1,6 +1,3 @@
-///case by Rizxyu (Rizky)
-//saya disini Cuman mau nambahin fitur game di script wabot-aq nurutomo
-//thx forr all creator bot and god
 let handler = async (m, { conn, isPrems, text }) => {
 	let teks = text ? text : m.quoted && m.quoted.text ? m.quoted.text : m.text
 	if (!teks) throw 'alasannya mana pak?'
@@ -18,3 +15,4 @@ handler.tags = ['game']
 handler.command = /^adventure/i
 
 module.exports = handler
+//Belajar bikin SCript dan fitur
