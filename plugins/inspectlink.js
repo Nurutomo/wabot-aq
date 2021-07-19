@@ -24,12 +24,7 @@ ${res.desc}` : '*Tidak ada Deskripsi*'}
 \`\`\`${JSON.stringify(res, null, 1)}\`\`\`
 `.trim()
   let pp = await conn.getProfilePicture(res.id).catch(console.error)
-  if (pp) conn.sendFile(m.chat, pp, 'pp.jpg', null, m)
-  m.reply(caption, false, {
-    contextInfo: {
-      mentionedJid: conn.parseMention(caption)
-    }
-  })
+  if (pp) conn.sendFile(m.chat, pp, 'pp.jpg', caption, m)
 }
 handler.help = ['inspect <chat.whatsapp.com>']
 handler.tags = ['tools']
