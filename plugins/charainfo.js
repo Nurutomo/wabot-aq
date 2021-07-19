@@ -10,8 +10,8 @@ let charaingfo = `*Name:* ${name}
 *Link*: ${url}`
   conn.sendFile(m.chat, image_url, '', charaingfo, m)
 }
-handler.help = ['character <judul>']
+handler.help = ['character <nama>']
 handler.tags = ['internet']
 handler.command = /^(chara|character)$/i
-//kyaaa jangan biarkan wabot-aq terbengkalai sampai nurutomo kembali :v
+//kyaa jangan biarkan wabot-aq terbengkalai sampai nurutomo kembali
 module.exports = handler
