@@ -18,5 +18,3 @@ handler.tags = ['game']
 handler.command = /^adventure/i
 
 module.exports = handler
-
-///silahkan Direcode Kalo ada yg eror,Tapi jangan ngaku buatan sendiri ya
