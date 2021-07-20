@@ -4,7 +4,7 @@ let handler = async (m, { text }) => {
   let json = await res.json()
   if (json.result.error) throw json.result.error
   if (json.result.status) m.reply(`${json.result.result}\n\n@Fatur`)
-  else throw `Error!`
+  else throw json
 }
 handler.help = ['wikipedia'].map(v => v + ' <apa>')
 handler.tags = ['internet']
