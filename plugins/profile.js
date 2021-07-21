@@ -13,6 +13,7 @@ let handler = async (m, { conn, usedPrefix }) => {
     let { min, xp, max } = levelling.xpRange(level, global.multiplier)
     let username = conn.getName(who)
     let math = max - xp
+    let prem = global.prems.includes(who.split`@`[0])
     let str = `
 Name: ${username} ${registered ? '(' + name + ') ': ''}(@${who.replace(/@.+/, '')})${about ? '\nAbout: ' + about : ''}
 Number: ${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}
@@ -21,7 +22,8 @@ XP: TOTAL ${exp} (${exp - min} / ${xp}) [${math <= 0 ? `Ready to *${usedPrefix}l
 Level: ${level}
 Role: *${role}*
 Limit: ${limit}
-Registered: ${registered ? 'Yes (' + new Date(regTime) + ')': 'No'}${lastclaim > 0 ? '\nLast Claim: ' + new Date(lastclaim) : ''}
+Registered: ${registered ? 'Yes (' + new Date(regTime) + ')': 'No'}
+Premium: ${prem ? 'Yes' : 'No'}${lastclaim > 0 ? '\nLast Claim: ' + new Date(lastclaim) : ''}
 `.trim()
     let mentionedJid = [who]
     conn.sendFile(m.chat, pp, 'pp.jpg', str, m, false, { contextInfo: { mentionedJid }})
