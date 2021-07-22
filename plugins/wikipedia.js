@@ -4,7 +4,7 @@ let handler = async (m, { text }) => {
   if (!res.ok) throw await res.text()
   let json = await res.json()
   if (!json.result.result) throw 'Error!'
-  if (json.result.status) m.reply(`${json.result.result}\n\n@Fatur`)
+  if (json.result.status) m.reply(`${json.result.result}\n\nMade By: You ❤️`)
   else throw json
 }
 handler.help = ['wikipedia'].map(v => v + ' <apa>')
