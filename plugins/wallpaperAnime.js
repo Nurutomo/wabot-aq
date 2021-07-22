@@ -5,7 +5,7 @@ let handler = async (m, { conn }) => {
         let res = await fetch(global.API('xteam', '/randomimage/wpmobile', {}, 'APIKEY'))
         if (res.status != 200) throw await res.text()
         let img = await res.buffer()
-        conn.sendFile(m.chat, img, '', '*© stikerin*', m, false, { thumbnail: Buffer.alloc(0) })
+        conn.sendFile(m.chat, img, '', 'Made by: You ❤️', m, false, { thumbnail: Buffer.alloc(0) })
     } catch (e) {
         throw `Limit apikey habis atau error!`
     }
