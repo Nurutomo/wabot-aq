@@ -28,7 +28,7 @@ ${devote.map(u => '@' + u.split('@')[0]).join('\n')}
 
 *${usedPrefix}hapusvote* - untuk menghapus vote
 
-_by ariffb_
+Made by: You ❤️
 `.trim(), false, { contextInfo: { mentionedJid } })
 }
 handler.help = ['upvote', 'devote']
