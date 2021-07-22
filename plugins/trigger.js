@@ -13,9 +13,9 @@ let handler = async (m, { conn }) => {
 }
 
 
-handler.help = ['trigger']
+handler.help = ['trigger', 'triggered']
 handler.tags = ['maker']
 
-handler.command = /^(trigger)$/i
+handler.command = /^(trigger|triggered)$/i
 
 module.exports = handler
