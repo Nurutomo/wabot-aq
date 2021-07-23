@@ -1,7 +1,7 @@
 // Made By github.com/TOXIC-DEVIL
 let fetch = require('node-fetch')
 let handler = async(m, { conn, text }) => {
-  if (!text) throw `Masukkan music nama!`
+  if (!text) throw `Masukkan nama musik!`
   let res = await fetch(global.API('zeks', '/api/spotify', { q: text }, 'apikey'))
   if (!res.ok) throw await res.text()
   let json = await res.json()
