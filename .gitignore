@@ -1,9 +1,6 @@
 # Node.js Modules
 node_modules
 
-# important session
-*.data.json
-
 # vim state
 .*.swp
 
@@ -12,9 +9,6 @@ database.json
 *_database.json
 
 tmp
-
-# Okay
-config.js
 
 # Google Drive Credentials?
 credentials.json
