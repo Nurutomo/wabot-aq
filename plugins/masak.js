@@ -8,11 +8,11 @@ let handler = async (m, { conn, text }) => {
   await conn.sendFile(m.chat, json.thumb, '', `
 ${json.title}
 ${json.url}\n
-${json.tingkat}
-${json.duration}
-${json.banyak}\n\n
-${json.bahan}
-${json.cara}
+*Tingkat:* ${json.tingkat}
+*Durasi:* ${json.duration}
+*Porsi:* ${json.banyak}\n\n
+*Bahan:* ${json.bahan}
+*Cara:* ${json.cara}
 `.trim(), m)
 }
 handler.help = ['resep <makanan>', 'masak <makanan>']
