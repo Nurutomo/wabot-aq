@@ -7,8 +7,8 @@ let handler = async(m, { conn, text }) => {
   let { name, alternative_names, url, image_url, type } = json.results[0]
 let charaingfo = `💬 *Name:* ${name}
 💭 *Nickname:* ${alternative_names}
-🔗 *Link*: ${url}`
-👤 *Character Type*: ${type}
+🔗 *Link*: ${url}
+👤 *Character Type*: ${type}`
 
   conn.sendFile(m.chat, image_url, '', charaingfo, m)
 }
