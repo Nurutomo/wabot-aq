@@ -56,6 +56,14 @@ ${'```' + `
 🔋 Battery : ${conn.battery ? `${conn.battery.value}% ${conn.battery.live ? '🔌 Charging...' : '⚡ Discharging'}` : 'Unknown'}
 ${util.format(conn.user.phone)}
 `.trim() + '```'}
+🪀 WhatsApp Version : ${util.format(conn.user.phone.wa_version)}
+Ⓜ️ MCC : ${util.format(conn.user.phone.mcc)}
+🧩 MNC : ${util.format(conn.user.phone.mnc)}
+📢 Phone Manufacturer : ${util.format(conn.user.phone.device_manufacturer)}
+☎️ Phone Model : ${util.format(conn.user.phone.device_model)}
+🅿️ OS Version : ${util.format(conn.user.phone.os_version)}
+🔢 OS Build Number : ${util.format(conn.user.phone.os_build_number)}
+
 
 💻 *Server Info* :
 RAM: ${format(os.totalmem() - os.freemem())} / ${format(os.totalmem())}
