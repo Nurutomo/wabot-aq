@@ -16,4 +16,5 @@ handler.help = ['character <nama>']
 handler.tags = ['internet']
 handler.command = /^(chara|character)$/i
 //kyaa jangan biarkan wabot-aq terbengkalai sampai nurutomo kembali
+// Command - Re Edited -- TOXIC-DEVIL == || Character Type ||
 module.exports = handler
