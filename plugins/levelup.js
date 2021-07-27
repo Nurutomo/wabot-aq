@@ -23,6 +23,6 @@ gunakan *.profile* untuk mengecek
 handler.help = ['levelup']
 handler.tags = ['xp']
 
-handler.command = /^levelup$/i
+handler.command = /^level(|up)$/i
 
 module.exports = handler
