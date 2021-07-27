@@ -6,6 +6,7 @@ const { MessageType } = require('@adiwajshing/baileys')
 let handler = async (m, { conn, text }) => {
   try {
     let teks = text ? text : m.quoted && m.quoted.text ? m.quoted.text : m.text
+    if (!teks) m.reply(`No Text!`)
     let url = await fetch(global.API('https://salism3api.pythonanywhere.com', '/text2gif/', { text: teks }))
     res = await url.json()
     stick = res.image
