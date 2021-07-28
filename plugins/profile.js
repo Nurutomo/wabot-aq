@@ -32,5 +32,6 @@ let handler = async (m, { conn, usedPrefix }) => {
 handler.help = ['profile [@user]']
 handler.tags = ['tools']
 handler.command = /^profile$/i
+//Emojy added by @fazilvk786
 module.exports = handler
 
