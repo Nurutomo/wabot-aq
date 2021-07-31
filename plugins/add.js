@@ -1,5 +1,6 @@
 let fetch = require('node-fetch')
-let handler = async (m, { conn, text, participants }) => {
+let handler = async (m, { conn, text, participants, usedPrefix, command }) => {
+  if (!text) throw `_Masukkan nomor!_ \nContoh:\n\n${usedPrefix + command + ' ' + global.owner[0]}`
   let _participants = participants.map(user => user.jid)
   let users = (await Promise.all(
     text.split(',')
@@ -11,6 +12,7 @@ let handler = async (m, { conn, text, participants }) => {
       ])
   )).filter(v => v[1]).map(v => v[0] + '@c.us')
   let response = await conn.groupAdd(m.chat, users)
+  if (response[users] == 408) throw `Nomor tersebut telah keluar baru² ini\nHanya bisa masuk melalui ${usedPrefix}link`
   let pp = await conn.getProfilePicture(m.chat).catch(_ => false)
   let jpegThumbnail = pp ? await (await fetch(pp)).buffer() : false
   for (let user of response.participants.filter(user => Object.values(user)[0].code == 403)) {
