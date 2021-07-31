@@ -6,7 +6,7 @@ let handler = async (m, { conn, text }) => {
   else who = m.chat
   if (!who) throw 'Tag salah satu lah'
   let txt = text.replace('@' + who.split`@`[0], '').trim()
-  if (txt == '') throw 'Masukkan jumlah exp yang akan diberi'
+  if (!txt) throw 'Masukkan jumlah exp yang akan diberi'
   if (isNaN(txt)) throw 'Hanya angka'
   let xp = parseInt(txt)
   let exp = xp
