@@ -1,6 +1,6 @@
 let fetch = require('node-fetch')
 let handler = async (m, {  text, args }) => {
-  let res = await fetch(global.API('https://covid19.mathdro.id', '/api/countries/'+ (text)))
+  let res = await fetch(global.API('https://covid19.mathdro.id', '/api/countries/'+ (args[0])))
   if (!res.ok) throw await res.text()
   let json = await res.json()
   if (!json.confirmed) throw 'Negara?'
