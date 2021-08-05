@@ -12,7 +12,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     ptt: true
   })
 }
-handler.help = ['tovn']
+handler.help = ['tovn (reply)']
 handler.tags = ['audio']
 
 handler.command = /^to(vn|(ptt)?)$/i

@@ -39,6 +39,7 @@ module.exports = {
           if (!('afkReason' in user)) user.afkReason = ''
           if (!('banned' in user)) user.banned = false
           if (!isNumber(user.level)) user.level = 0
+          if (!user.role) user.role = 'Beginner'
           if (!('autolevelup' in user)) user.autolevelup = false
         } else global.db.data.users[m.sender] = {
           exp: 0,
@@ -52,6 +53,7 @@ module.exports = {
           afkReason: '',
           banned: false,
           level: 0,
+          role: 'Beginner',
           autolevelup: false,
         }
 
@@ -83,6 +85,9 @@ module.exports = {
       }
       if (process.env.NYIMAK || opts['nyimak']) return
       if (!m.fromMe && (process.env.SELF || opts['self'])) return
+      if ((process.env.PCONLY || opts['pconly']) && m.chat.endsWith('g.us')) return
+      if ((process.env.GCONLY || opts['gconly']) && !m.chat.endsWith('g.us')) return
+      if ((process.env.SWONLY || opts['swonly']) && m.chat !== 'status@broadcast') return
       if (typeof m.text !== 'string') m.text = ''
       for (let name in global.plugins) {
         let plugin = global.plugins[name]
@@ -222,6 +227,10 @@ module.exports = {
             this.reply(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, m)
             continue // Limit habis
           }
+          if (plugin.level > _user.level) {
+            this.reply(m.chat, `diperlukan level ${plugin.level} untuk menggunakan perintah ini. Level kamu ${_user.level}`, m)
+            continue // If the level has not been reached
+          }
           let extra = {
             match,
             usedPrefix,
@@ -307,7 +316,7 @@ module.exports = {
       } catch (e) {
         console.log(m, m.quoted, e)
       }
-      if (process.env.AUTOREAD || opts['autoread']) await this.chatRead(m.chat).catch(() => {})
+      if (process.env.AUTOREAD || opts['autoread']) await this.chatRead(m.chat).catch(() => { })
     }
   },
   async participantsUpdate({ jid, participants, action }) {

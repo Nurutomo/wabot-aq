@@ -1,15 +1,27 @@
-let handler = async (m) => {
+let handler = async (m, { args }) => {
     let asmaulhusna = JSON.stringify(global.asmaulhusna)
     let json = JSON.parse(asmaulhusna)
     let data = json.result.data.map((v, i) => `${i + 1}. ${v.latin}\n${v.arabic}\n${v.translation_id}`).join('\n\n')
+    if (args[0]) {
+        if (args[0] < 1) throw `minimal 1!`
+        if (args[0] > 99) throw `maksimal 99!`
+        let { index, latin, arabic, translation_id, translation_en } = json.result.data.find(v => v.index == args[0])
+        return m.reply(`No. ${index}
+
+${latin} 
+${arabic}
+${translation_id} 
+${translation_en}  
+`)
+    }
     contoh = `*Asmaul Husna*\n\n`
     anjuran = `\n\nDari Abu hurarirah radhiallahu anhu, Rasulullah Saw bersabda: "إِنَّ لِلَّهِ تَعَالَى تِسْعَةً وَتِسْعِينَ اسْمًا، مِائَةٌ إِلَّا وَاحِدًا، مَنْ أَحْصَاهَا دخل الجنة، وهو وتر يُحِبُّ الْوِتْرَ"
 
 Artinya: "Sesungguhnya Allah mempunyai sembilan puluh sembilan nama, alias seratus kurang satu. Barang siapa yang menghitung-hitungnya, niscaya masuk surga; Dia Witir dan menyukai yang witir".`
     m.reply(contoh + data + anjuran)
 }
-handler.help = ['asmaulhusna']
-handler.tags = ['tools', 'quran']
+handler.help = ['asmaulhusna [nomor]']
+handler.tags = ['quran']
 handler.command = /^(asmaulhusna)$/i
 module.exports = handler
 

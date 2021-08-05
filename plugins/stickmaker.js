@@ -2,7 +2,7 @@
 const uploadImage = require('../lib/uploadImage')
 const { sticker } = require('../lib/sticker')
 const { MessageType } = require('@adiwajshing/baileys')
-const effects = ['jail', 'gay', 'glass', 'wasted' ,'triggered']
+const effects = ['jail', 'gay', 'glass', 'wasted' ,'triggered', 'lolice', 'simpcard', 'horny']
 
 let handler = async (m, { conn, usedPrefix, text }) => {
     let effect = text.trim().toLowerCase()

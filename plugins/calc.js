@@ -1,5 +1,6 @@
 let handler = async (m, { conn, text }) => {
   let id = m.chat
+  conn.math = conn.math ? conn.math : {}
   if (id in conn.math) {
     clearTimeout(conn.math[id][3])
     delete conn.math[id]

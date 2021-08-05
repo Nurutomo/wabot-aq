@@ -11,16 +11,18 @@ Kurang *${max - user.exp}* lagi!
   }
   let before = user.level * 1
 	while (levelling.canLevelUp(user.level, user.exp, global.multiplier)) user.level++
-	if (before !== user.level) m.reply(`
+	if (before !== user.level) {
+            m.reply(`
 Selamat, anda telah naik level!
 *${before}* -> *${user.level}*
 gunakan *.profile* untuk mengecek
 	`.trim())
+        }
 }
 
 handler.help = ['levelup']
 handler.tags = ['xp']
 
-handler.command = /^levelup$/i
+handler.command = /^level(|up)$/i
 
 module.exports = handler

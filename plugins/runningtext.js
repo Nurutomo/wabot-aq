@@ -1,5 +1,7 @@
 let handler = async (m, { conn, text }) => {
-  let q
+  let q = m.quoted ? m.quoted : m
+  let mime = (q.msg || q).mimetype || ''
+  if (!/image/.test(mime)) throw `Balas gambarnya`
   try { q = m.quoted.download() }
   catch (e) { q = m.download() }
   m.reply('_Sedang membuat..._\n*Mohon tunggu sekitar 1 menit*')
@@ -40,16 +42,16 @@ function running(img, duration = 10, fps = 60) {
     ]
     console.log('ffmpeg', ...args)
     spawn('ffmpeg', args, { stdio: 'inherit' })
-    .on('error', reject)
-    .on('close', () => {
-      try {
-        fs.unlinkSync(i)
-        resolve(fs.readFileSync(o))
-        fs.unlinkSync(o)
-      } catch (e) {
-        reject(e)
-      }
-    })
+      .on('error', reject)
+      .on('close', () => {
+        try {
+          fs.unlinkSync(i)
+          resolve(fs.readFileSync(o))
+          fs.unlinkSync(o)
+        } catch (e) {
+          reject(e)
+        }
+      })
     //.stderr.on('data', a => console.log(a+''))
   })
 }
