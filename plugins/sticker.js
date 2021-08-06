@@ -35,7 +35,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
         crop: true,
        })
     } else if (args[0]) {
-      if (!isUrl(args[0])) throw 'URL tidak valid!'
+      if (!isUrl(args[0])) throw 'URL tidak valid! @Daeho'
       sticker = new WSF.Sticker(args[0] , {
         pack: global.packname,
         author: global.author,
