@@ -43,7 +43,7 @@ apt install wget curl git ffmpeg imagemagick build-essential libcairo2-dev libpa
 
 [ INSTALLING NODEJS & WABOT-AQ ]
 
-
+```bash
 ubuntu
 curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
 apt install -y nodejs gcc g++ make
