@@ -25,8 +25,8 @@ npm update
 ```bash
 apt update && apt full-upgrade
 apt install wget curl git proot-distro
-proot-distro install ubuntu-20.04
-echo "proot-distro login ubuntu-20.04" > $PREFIX/bin/ubuntu
+proot-distro install ubuntu
+echo "proot-distro login ubuntu" > $PREFIX/bin/ubuntu
 ubuntu
 ```
 ---------
