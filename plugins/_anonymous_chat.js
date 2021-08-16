@@ -6,6 +6,7 @@ handler.before = async function (m, { match }) {
     this.anonymous = this.anonymous ? this.anonymous : {}
     let room = Object.values(this.anonymous).find(room => [room.a, room.b].includes(m.sender) && room.state === 'CHATTING')
     if (room) {
+        if (/^.*(next|leave|start)/.test(m.text)) return
         let other = [room.a, room.b].find(user => user !== m.sender)
         m.copyNForward(other, true, m.quoted && m.quoted.fromMe ? {
             contextInfo: {
