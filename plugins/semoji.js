@@ -40,7 +40,7 @@ ${[
   emoji = emoji.trim()
   tipe = tipe.trim().toLowerCase()
 
-  let res = await fetch(global.API('xteam', '/sticker/emojitopng', { emo: emoji.trim().slice(0, 1) }, 'APIKEY'))
+  let res = await fetch(global.API('xteam', '/sticker/emojitopng', { emo: emoji.slice(0, 1).trim() }, 'APIKEY'))
   if (!res.ok) throw res.text()
   let json = await res.json()
   if (!json.status) throw json
