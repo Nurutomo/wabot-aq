@@ -51,6 +51,7 @@ if (!opts['test']) setInterval(async () => {
   await global.db.write()
 }, 60 * 1000) // Save every minute
 if (opts['server']) require('./server')(global.conn, PORT)
+conn.connectOptions.maxQueryResponseTime = 60_000
 
 if (opts['test']) {
   conn.user = {
