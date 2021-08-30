@@ -1,4 +1,4 @@
-# wabot-aq
+# Fernazer Bot
 
 Simple WhatsApp Bot
 
