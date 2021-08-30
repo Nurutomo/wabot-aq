@@ -5,7 +5,7 @@ let fs = require('fs')
 let handler  = async (m, { conn, text }) => {
 	
 	
-      ////let pp = './lib/logo.jpg'
+
 let { exp, limit, level, role } = global.db.data.users[m.sender]
     let { min, xp, max } = levelling.xpRange(level, global.multiplier)
 let name = conn.getName(m.sender)
@@ -20,6 +20,7 @@ let caption = `
 *🎏Role :* ${role}
 *🏮Level:* ${level}
 *🎋Exp :* ${exp} --> ${max}
+*🎟️limit:* ${limit}
 `
 conn.sendFile(m.chat, res, 'test.jpg', caption, m, false)
 } 
@@ -27,8 +28,9 @@ conn.sendFile(m.chat, res, 'test.jpg', caption, m, false)
     }
 handler.help = ['rank']
 handler.tags = ['info']
-handler.command = /^(rank|profile)$/i
+handler.command = /^(rank|rankcard)$/i
 
+handler.register = true
 handler.fail = null
-//BY RIZXYU
+
 module.exports = handler
