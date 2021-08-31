@@ -62,6 +62,8 @@
     "url-regex": "^5.0.0",
     "xmldom": "^0.6.0",
     "yargs": "^17.0.1",
-    "yt-search": "^2.9.0"
+    "yt-search": "^2.9.0",
+    "canvacord": "^5.1.0",
+    "swiftcord": "^2.1.7"
   }
 }
