@@ -4,7 +4,7 @@ let handler = async (m, { conn }) => {
     if (!(id in conn.asahotak)) throw false
     let json = conn.asahotak[id][1]
     let ans = json.result.jawaban
-    let clue = ans.replace(/[bcdfghjklmnpqrstvwxyz]/g, '_')
+    let clue = ans.replace(/[AIUEOaiueo]/g, '_')
     m.reply('```' + clue + '```')
 }
 handler.command = /^ao$/i

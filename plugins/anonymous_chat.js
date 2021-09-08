@@ -1,5 +1,3 @@
-const { MessageType } = require("@adiwajshing/baileys")
-
 async function handler(m, { command }) {
     command = command.toLowerCase()
     this.anonymous = this.anonymous ? this.anonymous : {}
@@ -7,21 +5,27 @@ async function handler(m, { command }) {
         case 'next':
         case 'leave': {
             let room = Object.values(this.anonymous).find(room => room.check(m.sender))
-            if (!room) throw 'Kamu tidak sedang berada di anonymous chat'
+            if (!room) {
+                await this.sendButton(m.chat, '_Kamu tidak sedang berada di anonymous chat_', author, 'Cari Partner', `.start`, m)
+                throw false
+            }
             m.reply('Ok')
             let other = room.other(m.sender)
-            if (other) this.sendMessage(other, 'Partner meninggalkan chat', MessageType.text)
+            if (other) await this.sendButton(other, '_Partner meninggalkan chat_', author, 'Cari Partner', `.start`, m)
             delete this.anonymous[room.id]
             if (command === 'leave') break
         }
         case 'start': {
-            if (Object.values(this.anonymous).find(room => room.check(m.sender))) throw 'Kamu masih berada di dalam anonymous chat'
+            if (Object.values(this.anonymous).find(room => room.check(m.sender))) {
+                await this.sendButton(m.chat, '_Kamu masih berada di dalam anonymous chat, menunggu partner_', author, 'Keluar', `.leave`)
+                throw false
+            }
             let room = Object.values(this.anonymous).find(room => room.state === 'WAITING' && !room.check(m.sender))
             if (room) {
-                this.sendMessage(room.a, 'Menemukan partner!', MessageType.text)
+                await this.sendButton(room.a, '_Partner ditemukan!_', author, 'Next', `.next`, m)
                 room.b = m.sender
                 room.state = 'CHATTING'
-                m.reply('Menemukan partner!')
+                await this.sendButton(room.a, '_Partner ditemukan!_', author, 'Next', `.next`, m)
             } else {
                 let id = + new Date
                 this.anonymous[id] = {
@@ -36,7 +40,7 @@ async function handler(m, { command }) {
                         return who === this.a ? this.b : who === this.b ? this.a : ''
                     },
                 }
-                m.reply('Menunggu parter...')
+                await this.sendButton(m.chat, '_Menunggu partner..._', author, 'Keluar', `.leave`, m)
             }
             break
         }
