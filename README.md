@@ -4,7 +4,31 @@ Simple WhatsApp Bot
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Nurutomo/wabot-aq)
 
-## FOR TERMUX/UBUNTU/SSH USER
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+   <ul>
+   <li><a href="#creator-and-contributor">Creator And Contributor</a></li>
+  </ol>
+</details>
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+Here Are Some Ways To Install On Different Devices 
+
+
+### Installation
+
++ FOR TERMUX/UBUNTU/SSH USER
 
 ```bash
 apt update && apt upgrade
@@ -18,33 +42,36 @@ npm install
 npm update
 ```
 
-## INSTALL ON TERMUX WITH UBUNTU
++ INSTALL ON TERMUX WITH UBUNTU
+ 
+For Installation In Termux Using Ubuntu
+Please do it in order of numbers below
 
-[ INSTALLING UBUNTU ]
+
+1. [ INSTALLING UBUNTU ]
 
 ```bash
 apt update && apt full-upgrade
 apt install wget curl git proot-distro
 proot-distro install ubuntu
 echo "proot-distro login ubuntu" > $PREFIX/bin/ubuntu
-ubuntu
+chmod +x $PREFIX/bin/ubuntu
 ```
 ---------
 
-[ INSTALLING REQUIRED PACKAGES ]
+2. [ INSTALLING REQUIRED PACKAGES ]
 
 ```bash
 ubuntu
 apt update && apt full-upgrade
-apt install wget curl git ffmpeg imagemagick build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev dbus-x11 ffmpeg2theora ffmpegfs ffmpegthumbnailer ffmpegthumbnailer-dbg ffmpegthumbs libavcodec-dev libavcodec-extra libavcodec-extra58 libavdevice-dev libavdevice58 libavfilter-dev libavfilter-extra libavfilter-extra7 libavformat-dev libavformat58 libavifile-0.7-bin libavifile-0.7-common libavifile-0.7c2 libavresample-dev libavresample4 libavutil-dev libavutil56 libpostproc-dev libpostproc55 graphicsmagick graphicsmagick-dbg graphicsmagick-imagemagick-compat graphicsmagick-libmagick-dev-compat groff imagemagick-6.q16hdri imagemagick-common libchart-gnuplot-perl libgraphics-magick-perl libgraphicsmagick++-q16-12 libgraphicsmagick++1-dev
+apt install wget curl git nano ffmpeg imagemagick build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev dbus-x11 ffmpeg2theora ffmpegfs ffmpegthumbnailer ffmpegthumbnailer-dbg ffmpegthumbs libavcodec-dev libavcodec-extra libavcodec-extra58 libavdevice-dev libavdevice58 libavfilter-dev libavfilter-extra libavfilter-extra7 libavformat-dev libavformat58 libavifile-0.7-bin libavifile-0.7-common libavifile-0.7c2 libavresample-dev libavresample4 libavutil-dev libavutil56 libpostproc-dev libpostproc55 graphicsmagick graphicsmagick-dbg graphicsmagick-imagemagick-compat graphicsmagick-libmagick-dev-compat groff imagemagick-6.q16hdri imagemagick-common libchart-gnuplot-perl libgraphics-magick-perl libgraphicsmagick++-q16-12 libgraphicsmagick++1-dev
 ```
 
 ---------
 
-[ INSTALLING NODEJS & WABOT-AQ ]
+3. [ INSTALLING NODEJS & WABOT-AQ ]
 
 ```bash
-ubuntu
 curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
 apt install -y nodejs gcc g++ make
 git clone https://github.com/Nurutomo/wabot-aq
@@ -55,7 +82,7 @@ npm update
 
 ---------
 
-## FOR WINDOWS/VPS/RDP USER
++ FOR WINDOWS/VPS/RDP USER
 
 * Download And Install Git [`Click Here`](https://git-scm.com/downloads)
 * Download And Install NodeJS [`Click Here`](https://nodejs.org/en/download)
@@ -71,7 +98,8 @@ npm update
 
 ---------
 
-## Run
+<!-- USAGE EXAMPLES -->
+## Usage
 
 ```bash
 node .
@@ -173,6 +201,10 @@ conn.logger.level = 'debug'
 ```
 
 ---------
+
+<!-- USAGE EXAMPLES -->
+## creator and contributor
+
 
 <a href="https://api.xteam.xyz"><img src="https://i.ibb.co/7j0vtwz/xlogo.png" width="100" height="100"></a> | [![Nurutomo](https://github.com/Nurutomo.png?size=100)](https://github.com/Nurutomo) | [![Ariffb](https://github.com/ariffb25.png?size=100)](https://github.com/ariffb25) | [![Ftwrr](https://github.com/Ftwrr.png?size=100)](https://github.com/Ftwrr) 
 ----|----|----|----
