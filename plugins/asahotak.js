@@ -10,7 +10,7 @@ let handler = async (m, { conn, usedPrefix }) => {
         throw false
     }
     let res = await fetch(global.API('xteam', '/game/asahotak', {}, 'APIKEY'))
-    if (res.status !== 200) throw await res.text()
+    if (!res.ok) throw await res.text()
     let json = await res.json()
     if (!json.status) throw json
     let caption = `
@@ -21,10 +21,10 @@ Ketik ${usedPrefix}ao untuk bantuan
 Bonus: ${poin} XP
 `.trim()
     conn.asahotak[id] = [
-        await conn.reply(m.chat, caption, m),
+        await conn.sendButton(m.chat, caption, author, 'Bantuan', '.ao', m),
         json, poin,
-        setTimeout(() => {
-            if (conn.asahotak[id]) conn.reply(m.chat, `Waktu habis!\nJawabannya adalah *${json.result.jawaban}*`, conn.asahotak[id][0])
+        setTimeout(async () => {
+            if (conn.asahotak[id]) await conn.sendButton(m.chat, `Waktu habis!\nJawabannya adalah *${json.result.jawaban}*`, author, 'Asah Otak', '.asahotak', conn.asahotak[id][0])
             delete conn.asahotak[id]
         }, timeout)
     ]

@@ -1,5 +1,5 @@
 let handler = async (m, { usedPrefix, command }) => {
-    let which = command.replace(/list/i, '')
+    let which = command.replace(/(daftar|list)/i, '')
     let msgs = global.db.data.msgs
     let split = Object.entries(msgs).map(([nama, isi]) => { return { nama, ...isi } })
     let fltr
@@ -26,12 +26,13 @@ let handler = async (m, { usedPrefix, command }) => {
 
 ${fltr}
 
-Akses/ambil dengan nengetik:
+Akses/ambil dengan mengetik:
 *${usedPrefix}get${which}* <nama>
+atau langsung ketik teksnya
 `.trim())
 }
 handler.help = ['vn', 'msg', 'video', 'gif', 'audio', 'img', 'sticker'].map(v => 'list' + v)
 handler.tags = ['database']
-handler.command = /^list(vn|msg|video|audio|img|stic?ker|gif)$/
+handler.command = /^(daftar|list)(vn|msg|video|audio|img|stic?ker|gif)$/
 
 module.exports = handler

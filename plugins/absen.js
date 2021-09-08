@@ -6,14 +6,17 @@ let handler = async (m, { conn, usedPrefix }) => {
         throw false
     }
 
+    let absen = conn.absen[id][1]
+    const wasVote = absen.includes(m.sender)
+    if (wasVote) throw 'Kamu sudah absen!'
+    absen.push(m.sender)
     let d = new Date
     let date = d.toLocaleDateString('id', {
         day: 'numeric',
         month: 'long',
         year: 'numeric'
     })
-    let absen = conn.absen[id][1]
-    let list = absen.map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')
+    let list = absen.map((v, i) => `├ ${i + 1}.  @${v.split`@`[0]}`).join('\n')
     let caption = `
 Tanggal: ${date}
 ${conn.absen[id][2]}
@@ -21,10 +24,10 @@ ${conn.absen[id][2]}
 ├ Total: ${absen.length}
 ${list}
 └────`.trim()
-    await conn.send2Button(m.chat, caption, '© stikerin', 'Absen', `${usedPrefix}absen`, 'Hapus', `${usedPrefix}hapusabsen`, m, { contextInfo: { mentionedJid: conn.parseMention(caption) } })
+    await conn.send2Button(m.chat, caption, '© stikerin', 'Absen', `${usedPrefix}absen`, 'Cek', `${usedPrefix}cekabsen`, m, { contextInfo: { mentionedJid: conn.parseMention(caption) } })
 }
-handler.help = ['cekabsen']
+handler.help = ['absen']
 handler.tags = ['absen']
-handler.command = /^cekabsen$/i
+handler.command = /^(absen|hadir)$/i
 
 module.exports = handler
