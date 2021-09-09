@@ -1,6 +1,6 @@
 let fetch = require('node-fetch')
 
-let handler = async (m, { conn, args, usedPrefix, command }) => {
+let handler = async (m, { args, usedPrefix, command }) => {
     let er = `Opsi tersedia:
 • latinkejawa
 • latinkesunda
@@ -19,7 +19,7 @@ ${usedPrefix + command} latinkejawa selamat pagi
         case 'sundakelatin':
             let text = args.slice(1).join(' ')
             let res = await fetch(global.API('xteam', '/aksara/' + args[0].toLowerCase(), { text }, 'APIKEY'))
-            if (res.status !== 200) throw await res.text()
+            if (!res.ok) throw await res.text()
             let json = await res.json()
             if (!json.status) throw json
             m.reply(json.message)
