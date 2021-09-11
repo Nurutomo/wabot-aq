@@ -4,7 +4,7 @@ let handler = async (m, { conn, command, args }) => {
   if (!args[0]) return conn.reply(m.chat, 'Tidak ada url', m)
   var url = ''
   if (args[0].includes('https:')) url = /https?:\/\//.test(args[0]) ? args[0] : 'https://' + args[0]
-  if (args[0].includes('www') url = /www?:\/\//.test(args[0]) ? args[0] : 'www.' + args[0]
+  if (args[0].includes('www')) url = /www?:\/\//.test(args[0]) ? args[0] : 'www.' + args[0]
   let ss = await (await fetch(global.API('nrtm', '/api/ssweb', { delay: 1000, url, full }))).buffer()
   conn.sendFile(m.chat, ss, 'screenshot.png', url, m)
 }
