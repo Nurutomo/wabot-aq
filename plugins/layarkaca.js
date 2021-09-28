@@ -38,4 +38,4 @@ handler.private = false
 handler.register = false
 handler.admin = false
 handler.botAdmin = false
-module.exports = handlerq
+module.exports = handler
