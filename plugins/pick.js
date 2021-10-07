@@ -3,15 +3,10 @@ let users = participants.map(u => u.jid)
 if (!text) throw 'Example: #pick 15 | gay'
 let users = participants.map(u => u.jid)
 let split = text.split`|`
-let entah = split[0]
-let jum = split[1]
-let nus = users
-let ids_mem = []
-teks = `*Kamu Terpick sebagai ${entah}*\n\n`
-for (let i = 0; i < jum; i++) {
-let sipa = nus[Math.floor(Math.random() * nus.length)]
+teks = `*Kamu Terpick sebagai ${split[0]}*\n\n`
+for (let i = 0; i <  split[1]; i++) {
+let sipa = users[Math.floor(Math.random() * users.length)]
 teks += `@${sipa.jid.split("@")[0]}\n`
-ids_mem.push(sipa.jid)
 }
 m.reply(teks)
 }
