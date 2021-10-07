@@ -13,7 +13,7 @@ let sipa = nus[Math.floor(Math.random() * nus.length)]
 teks += `@${sipa.jid.split("@")[0]}\n`
 ids_mem.push(sipa.jid)
 }
-m.reply(teks+ids_mem)
+m.reply(teks)
 }
 handler.help = ['pick <jumlah>|<teks>']
 handler.command = /^pick/i
