@@ -24,7 +24,7 @@ let pp = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gam
   let sn = createHash('md5').update(m.sender).digest('hex')
   m.reply(`Success√`)
   let regis =`┍━━━━━━━━━━━━━━━
-│ᏒᎬᎶᎥᏕᏖᎬᏒ ᏟᎧᎷᏞᎬᏆᎬᎠ
+│ᏒᎬᎶᎥᏕᏖᎬᏒ ᏟᎧᎷ₱ᏞᎬᏆᎬᎠ
 │───────────────
 │ *•NAME* : ${name}
 │ *•AGE* : ${age} Years old
