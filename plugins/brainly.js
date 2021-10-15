@@ -1,4 +1,4 @@
-const Brainly = require('brainly-scraper-v2')
+const Brainly = require('brainly-scraper-v2') // Jangan lupa ketik di bot kalian $ npm i brainly-scraper-v2
 
 const brain = new Brainly("id")
 
