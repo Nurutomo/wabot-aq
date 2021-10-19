@@ -28,7 +28,7 @@ handler.help = ['ig'].map(v => v + ' <url>')
 
 handler.tags = ['downloader']
 
-handler.command = /^(ig|instagram)$/i
+handler.command = /^(ig(dl)?|instagram()$/i
 
 handler.limit = true
 
