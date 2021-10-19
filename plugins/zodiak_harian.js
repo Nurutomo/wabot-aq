@@ -1,7 +1,7 @@
-let axios = require('axios')
-let cheerio = require('cheerio')
-let handler = async (m, { conn, text, command, args }) => {
-  if(!text) throw `Ulangi dengan menambahkan zodiak\n*Contoh* : ${usedPrefix + command} libra
+let fetch = require('node-fetch')
+let { JSDOM } = require('jsdom')
+let handler = async (m, { conn, text, command }) => {
+	if (!text) throw `Ulangi dengan menambahkan zodiak\n*Contoh* : ${usedPrefix + command} libra
 
 ▢ *List zodiak*
 
@@ -18,18 +18,22 @@ let handler = async (m, { conn, text, command, args }) => {
 - Scorpio
 - Sagittarius
 - Capricorn`
-try {
-	const link = await axios.get(`https://www.fimela.com/zodiak/${text}`)
-			const $ = cheerio.load(link.data)
-			let thumb = $('body > div > div > div').find('div > div > a > img').attr('src')
-			let judul = $('body > div > div.container-main > div.container-article > div').find('div.zodiak--content-header__right > div.zodiak--content-header__text > h5').text().trim()
-			let tanggal = $('body > div > div > div > div > div > div > span').text().trim()
-			let nomer_ = $('body > div > div > div > div > div > div').find('div:nth-child(1) > div.zodiak--content__content > span').text().trim()
-				let umum = $('body > div > div > div > div > div > div').find('div:nth-child(1) > div.zodiak--content__content > p').text().trim() || undefined
-				let love = $('body > div > div > div > div > div > div').find('div:nth-child(2) > div.zodiak--content__content > p').text().trim() || undefined
-				let keuangan = $('body > div > div > div > div > div > div').find('div:nth-child(3) > div.zodiak--content__content > p').text().trim() || undefined
-        let rezeki = keuangan.replace('Couple', '\n\n- Couple').replace('Single', '- Single')
-		caption = `${umum} Nomor keberuntungan kamu adalah *${nomer_}*
+	try {
+		let res = await fetch(`https://www.fimela.com/zodiak/${text}`)
+		if (!res.ok) throw await res.text()
+		let html = await res.text()
+		let { document } = new JSDOM(html).window
+		let thumb = document.querySelector('body > div > div > div div > div > a > img').src
+		// let judul = document.querySelector('body > div > div.container-main > div.container-article > div div.zodiak--content-header__right > div.zodiak--content-header__text > h5').textContent.trim()
+		// let tanggal = document.querySelector('body > div > div > div > div > div > div > span').textContent.trim()
+
+		let main = document.querySelector('body > div > div > div > div > div > div')
+		let nomer_ = main.find('div:nth-child(1) > div.zodiak--content__content > span').textContent.trim()
+		let umum = main.find('div:nth-child(1) > div.zodiak--content__content > p').textContent.trim() || undefined
+		let love = main.find('div:nth-child(2) > div.zodiak--content__content > p').textContent.trim() || undefined
+		let keuangan = $('body > div > div > div > div > div > div').find('div:nth-child(3) > div.zodiak--content__content > p').textContent.trim() || undefined
+		let rezeki = keuangan.replace('Couple', '\n\n- Couple').replace('Single', '- Single')
+		let caption = `${umum} Nomor keberuntungan kamu adalah *${nomer_}*
 		
 ▢ *Asmara* : 
 ${love}
@@ -37,10 +41,10 @@ ${love}
 ▢ *Keuangan* : 
 ${rezeki}`
 
-conn.sendFile(m.chat, thumb, 'zodiak.jpeg' , caption, m)
-} catch (e){
-  m.reply('Hasil tidak di temukan')
-}
+		conn.sendFile(m.chat, thumb, 'zodiak.jpeg', caption, m)
+	} catch (e) {
+		m.reply('Hasil tidak di temukan')
+	}
 }
 
 handler.help = ['Zodiakharian <zodiak>']

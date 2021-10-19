@@ -2,6 +2,7 @@ let fetch = require('node-fetch')
 
 let timeout = 120000
 let poin = 500
+let src = []
 let handler = async (m, { conn, usedPrefix }) => {
     conn.caklontong = conn.caklontong ? conn.caklontong : {}
     let id = m.chat
@@ -9,7 +10,7 @@ let handler = async (m, { conn, usedPrefix }) => {
         conn.reply(m.chat, 'Masih ada soal belum terjawab di chat ini', conn.caklontong[id][0])
         throw false
     }
-    let src = await (await fetch('https://raw.githubusercontent.com/BochilTeam/database/master/games/caklontong.json')).json()
+    if (!src) src = await (await fetch('https://raw.githubusercontent.com/BochilTeam/database/master/games/caklontong.json')).json()
     let json = src[Math.floor(Math.random() * src.length)]
     let caption = `
 ${json.soal}

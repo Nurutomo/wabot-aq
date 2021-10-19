@@ -9,13 +9,13 @@ let handler = async (m, { conn, usedPrefix }) => {
   if (!/image\/(jpe?g|png)/.test(mime)) throw `Mime ${mime} tidak support`
   let img = await q.download()
   await m.reply('Searching Anime Titles...')
-  let anime = `data:${mime};base64,${img.toString('base64')}`
+  let image = `data:${mime};base64,${img.toString('base64')}`
   let response = await fetch('https://trace.moe/api/search', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ image: anime }),
+    body: JSON.stringify({ image }),
   })
   if (!response.ok) throw 'Gambar tidak ditemukan!'
   let result = await response.json()

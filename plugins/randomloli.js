@@ -1,22 +1,19 @@
-var {WAMessageProto} = require('@adiwajshing/baileys')
-
 let handler = async (m, { conn, text }) => {
-yh = global.loli
-let url = yh[Math.floor(Math.random() * yh.length)]
- let buttons = [
-  {buttonId: '/loli', buttonText: {displayText: 'Get Again'}, type: 1}
-]
-const buttonsMessage = {
+  let yh = global.loli
+  let url = yh[Math.floor(Math.random() * yh.length)]
+  let buttons = [
+    { buttonId: '/loli', buttonText: { displayText: 'Get Again' }, type: 1 }
+  ]
+  const buttonsMessage = {
     contentText: `
 Random Loli
-`.trim(),    footerText: 'Lolinya Kaak',
+`.trim(), footerText: 'Lolinya Kaak',
     buttons: buttons,
-  imageMessage: await conn.prepareMessageMedia({ url }, 'imageMessage'),
+    imageMessage: await conn.prepareMessageMedia({ url }, 'imageMessage'),
     headerType: 'IMAGE'
-}
-const sendMsg = await conn.prepareMessageFromContent(m.chat,{buttonsMessage},{ quoted: m})
-
-conn.relayWAMessage(sendMsg)
+  }
+  const sendMsg = await conn.prepareMessageFromContent(m.chat, { buttonsMessage }, { quoted: m })
+  conn.relayWAMessage(sendMsg)
 }
 handler.command = /^(loli)$/i
 handler.tags = ['internet']

@@ -2,7 +2,7 @@ let syntaxerror = require('syntax-error')
 let util = require('util')
 
 let handler  = async (m, _2) => {
-  let { conn, usedPrefix, command, text, noPrefix, args, groupMetadata } = _2
+  let { conn, usedPrefix, noPrefix, args, groupMetadata } = _2
   let _return
   let _syntax = ''
   let _text = (/^=/.test(usedPrefix) ? 'return ' : '') + noPrefix

@@ -1,6 +1,6 @@
 let express = require('express')
 let path = require('path')
-let SocketIO = require('socket.io')
+// let SocketIO = require('socket.io')
 let qrcode = require('qrcode')
 
 function connect(conn, PORT) {
@@ -17,11 +17,11 @@ function connect(conn, PORT) {
     })
     
     let server = app.listen(PORT, () => console.log('App listened on port', PORT))
-    let io = SocketIO(server)
-    io.on('connection', socket => {
-        let { unpipeEmit } = pipeEmit(conn, socket, 'conn-')
-        socket.on('disconnect', unpipeEmit)
-    })
+    // let io = SocketIO(server)
+    // io.on('connection', socket => {
+    //     let { unpipeEmit } = pipeEmit(conn, socket, 'conn-')
+    //     socket.on('disconnect', unpipeEmit)
+    // })
 }
 
 function pipeEmit(event, event2, prefix = '') {

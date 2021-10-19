@@ -1,34 +1,34 @@
 function handler(m, { text }) {
     let teks = text ? text : m.quoted && m.quoted.text ? m.quoted.text : m.text
     m.reply(teks.replace(/[a-z]/gi, v => {
-        switch (v.toLowerCase()) {
-            case 'a': return 'ka'
-            case 'b': return 'tu'
-            case 'c': return 'mi'
-            case 'd': return 'te'
-            case 'e': return 'ku'
-            case 'f': return 'lu'
-            case 'g': return 'ji'
-            case 'h': return 'ri'
-            case 'i': return 'ki'
-            case 'j': return 'zu'
-            case 'k': return 'me'
-            case 'l': return 'ta'
-            case 'm': return 'rin'
-            case 'n': return 'to'
-            case 'o': return 'mo'
-            case 'p': return 'no'
-            case 'q': return 'ke'
-            case 'r': return 'shi'
-            case 's': return 'ari'
-            case 't': return 'ci'
-            case 'u': return 'do'
-            case 'v': return 'ru'
-            case 'w': return 'mei'
-            case 'x': return 'na'
-            case 'y': return 'fu'
-            case 'z': return 'zi'
-        }
+        return {
+            'a': 'ka',
+            'b': 'tu',
+            'c': 'mi',
+            'd': 'te',
+            'e': 'ku',
+            'f': 'lu',
+            'g': 'ji',
+            'h': 'ri',
+            'i': 'ki',
+            'j': 'zu',
+            'k': 'me',
+            'l': 'ta',
+            'm': 'rin',
+            'n': 'to',
+            'o': 'mo',
+            'p': 'no',
+            'q': 'ke',
+            'r': 'shi',
+            's': 'ari',
+            't': 'ci',
+            'u': 'do',
+            'v': 'ru',
+            'w': 'mei',
+            'x': 'na',
+            'y': 'fu',
+            'z': 'zi'
+        }[v.toLowerCase()] || v
     }))
 }
 handler.help = ['Namaninja <teks>']

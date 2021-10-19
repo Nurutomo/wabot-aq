@@ -1,8 +1,8 @@
-let handler = async (m, { conn, args, groupMetadata}) => {
+let handler = async (m, { conn, args, groupMetadata }) => {
     if (args.length > 0) {
-  const time = async (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+        const time = async (ms) => {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
         let mention = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : false
         let warn = global.db.data.users[mention].warn
         if (warn < 2) {
@@ -12,10 +12,10 @@ let handler = async (m, { conn, args, groupMetadata}) => {
         } else if (warn == 2) {
             global.db.data.users[mention].warn = 0
             m.reply('Selamat tinggal')
-                await time(5000)
-             await conn.groupRemove(m.chat, [mention])
-             m.reply(`Kamu dikeluarkan dari group ${groupMetadata.subject} karena telah mendapat 3 kali warn`, mention)
-           
+            await time(5000)
+            await conn.groupRemove(m.chat, [mention])
+            m.reply(`Kamu dikeluarkan dari group ${groupMetadata.subject} karena telah mendapat 3 kali warn`, mention)
+
         }
     } else conn.reply(m.chat, 'Tag target', m)
 }

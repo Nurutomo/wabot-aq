@@ -1,7 +1,7 @@
 const similarity = require('similarity')
 const threshold = 0.72
-let handler = m => m
-handler.before = async function (m) {
+module.exports = {
+    async before(m) {
     let id = m.chat
     if (!m.quoted || !m.quoted.fromMe || !m.quoted.isBaileys || !/Ketik.*teli/i.test(m.quoted.text)) return !0
     this.tebaklirik = this.tebaklirik ? this.tebaklirik : {}
@@ -18,7 +18,6 @@ handler.before = async function (m) {
         else m.reply(`*Salah!*`)
     }
     return !0
+},
+exp: 0
 }
-handler.exp = 0
-
-module.exports = handler

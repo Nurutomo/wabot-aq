@@ -18,8 +18,8 @@ let handler = async (m, { conn, args }) => {
 *Nama:* ${conn.getName(user.jid)}
 *Nomor:* ${splitM(user.jid)}
 *Mention:* ${toM(user.jid)}
-*Api:* wa.me/${splitM(user.jid)}
-*Jid:* ${user.jid}
+*API:* wa.me/${splitM(user.jid)}
+*JID:* ${user.jid}
 *Whatsapp Bussines:* ${user.isBusiness ? 'Yes' : 'No'}
 *In Database:* ${isInDatabase ? 'Yes' : 'No'}
 *Group Yang Sama Dengan BOT:* ${sameGroup.length} *Group*

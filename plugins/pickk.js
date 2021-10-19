@@ -1,16 +1,14 @@
-let handler = async (m, { conn, text,participants}) => {
-let gsg = participants.map(u => u.jid)
-if (!text) throw 'Example: #pick 15 | gay'
-let users = participants.map(u => u.jid)
-let split = text.split`|`
-teks = `*Kamu Terpick sebagai ${split[1]}*\n\n`
-for (let i = 0; i <  split[0]; i++) {
-let sipa = gsg[Math.floor(Math.random() * gsg.length)]
-teks += `@${sipa.jid.split("@")[0]}\n`
+let handler = async (m, { text, args, participants }) => {
+    if (args[0] < 0, args.length < 2) throw 'Example: #pick 15 gay'
+    let users = participants.map(u => u.jid)
+    m.reply(`*Kamu Terpick sebagai ${text.replace(args, '').trimStart()}*
+    
+${new Array(Math.min(users.length, args[0])).fill().map(() => {
+    let index = Math.floor(Math.random() * users.length)
+    return `@${users.splice(index, 1)}`
+}).join`\n`}`)
 }
-m.reply(teks)
-}
-handler.help = ['pick <jumlah>|<teks>']
+handler.help = ['pick <jumlah> <teks>']
 handler.command = /^pick/i
 
 module.exports = handler

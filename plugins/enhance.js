@@ -13,7 +13,7 @@ let handler = async (m) => {
     method: 'POST',
     body
   })
-  if (res.status !== 200) throw await res.json()
+  if (!res.ok) throw await res.json()
   await conn.sendFile(m.chat, await res.buffer(), 'hd.jpg', 'Nih, hd kan?', m)
 }
 handler.help = ['hd (caption|reply media)', 'enhance (caption|reply media)']
