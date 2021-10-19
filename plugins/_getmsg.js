@@ -1,5 +1,5 @@
 module.exports = {
-    all(m) {
+    async all(m) {
         if (m.chat.endsWith('broadcast')) return
         if (db.data.chats[m.chat].isBanned) return
         if (db.data.users[m.sender].banned) return
