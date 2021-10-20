@@ -21,4 +21,3 @@ module.exports = {
     },
     exp: 0
 }
-s
