@@ -56,6 +56,7 @@
     "node-gtts": "^2.0.2",
     "node-webpmux": "^3.1.0",
     "nodemon": "^2.0.13",
+    "mongoose": "^6.0.11",
     "qrcode": "^1.4.4",
     "qrcode-terminal": "^0.12.0",
     "similarity": "^1.2.1",
