@@ -19,6 +19,7 @@ try {
   low = require('./lib/lowdb')
 }
 const { Low, JSONFile } = low
+const mongoDB = require('./lib/mongoDB')
 
 const rl = Readline.createInterface(process.stdin, process.stdout)
 const WAConnection = simple.WAConnection(_WAConnection)
@@ -35,8 +36,10 @@ global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse()
 global.prefix = new RegExp('^[' + (opts['prefix'] || '‎xzXZ/i!#$%+£¢€¥^°=¶∆×÷π√✓©®:;?&.\\-').replace(/[|\\{}()[\]^$+*?.\-\^]/g, '\\$&') + ']')
 
 global.db = new Low(
-  /https?:\/\//.test(opts['db'] || '') ?
-  new cloudDBAdapter(opts['db']) :
+  /https?:\/\//.test(opts['db'] || '') ? 
+  new cloudDBAdapter(opts['db']) : 
+  /mongodb/.test(opts['db']) ? 
+  new mongoDB(opts['db']) :
   new JSONFile(`${opts._[0] ? opts._[0] + '_' : ''}database.json`)
 )
 global.DATABASE = global.db // Backwards Compatibility
@@ -49,7 +52,7 @@ if (opts['debug']) conn.logger.level = 'debug'
 if (opts['big-qr']) conn.on('qr', qr => generate(qr, { small: false }))
 if (!opts['test']) setInterval(async () => {
   await global.db.write()
-}, 60 * 1000) // Save every minute
+}, 10 * 1000) // Save every minute
 if (opts['server']) require('./server')(global.conn, PORT)
 
 if (opts['test']) {
