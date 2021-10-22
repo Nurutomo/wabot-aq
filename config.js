@@ -32,7 +32,6 @@ if (stickerpack.spackname == '') {
 } else {
   var sticker_name = stickerpack.spackname
   var sticker_author = stickerpack.sauthor
-  console.log(sticker_name)
 }
 
 const file_exif = "lib/exif.json"
