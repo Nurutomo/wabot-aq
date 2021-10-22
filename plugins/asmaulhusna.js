@@ -7,7 +7,7 @@ const anjuran = `
 Dari Abu hurarirah radhiallahu anhu, Rasulullah Saw bersabda: "إِنَّ لِلَّهِ تَعَالَى تِسْعَةً وَتِسْعِينَ اسْمًا، مِائَةٌ إِلَّا وَاحِدًا، مَنْ أَحْصَاهَا دخل الجنة، وهو وتر يُحِبُّ الْوِتْرَ"
 Artinya: "Sesungguhnya Allah mempunyai sembilan puluh sembilan nama, alias seratus kurang satu. Barang siapa yang menghitung-hitungnya, niscaya masuk surga; Dia Witir dan menyukai yang witir".`
 
-let handler = async (m, { args }) => {
+let handler = async (m, { args, usedPrefix, command }) => {
     let json = JSON.parse(JSON.stringify(global.asmaulhusna))
     let data = json.map((v, i) => `${i + 1}. ${v.latin}\n${v.arabic}\n${v.translation_id}`).join('\n\n')
     if (isNaN(args[0])) throw `contoh:\n${usedPrefix + command} 1`
