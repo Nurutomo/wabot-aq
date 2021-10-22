@@ -31,7 +31,7 @@ let handler = async (m, { usedPrefix, command, args }) => {
 //st4rz
 
 handler.help = ['set'].map(v => v + 'exif <packname>|<owner>')
-handler.tags = ['setexif']
+handler.tags = ['owner']
 handler.command = /^setexif$/i
 handler.owner = true
 handler.mods = false
