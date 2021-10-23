@@ -9,6 +9,7 @@ let handler = async (m, { text, usedPrefix }) => {
     let kamu = Case(pilihan[suitP1])
     let bot = Case(pilihan[suitPC])
     let state = `Kamu: ${kamu}\nBot: ${bot}`
+    let user = global.db.data.users[m.sender]
     if (suitP1 === suitPC) {
         user.exp += 100
         m.reply(`*Kita Seri*\n\n${state}\n\nPoin (±)100 XP`)
