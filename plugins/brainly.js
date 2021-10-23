@@ -1,12 +1,13 @@
-const brainly = require('brainly-scraper-v2')
+const Brainly = require('brainly-scraper-v2')
+const brainly = new Brainly('id')
 let handler = async function (m, { text }) {
   if (!text) throw 'Soalnya?'
-  let res = await brainly(text)
-  let answer = res.data.map((v, i) => `
+  let res = await brainly.search('id', text)
+  let answer = res.map(({ question, answers }, i) => `
 _*PERTANYAAN KE ${i + 1}*_
-${v.pertanyaan}${v.jawaban.map((v,i) => `
+${question.content}${answers.map((v, i) => `
 *JAWABAN KE ${i + 1}*
-${v.text}`).join``}`).join(`
+${v.content}`).join``}`).join(`
 
 •------------•
 
