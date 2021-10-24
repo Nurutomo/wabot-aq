@@ -11,6 +11,5 @@ handler.help = ['renungan']
 handler.tags = ['quran']
 handler.command = /^renungan$/i
 handler.limit = false
-module.exports = handler
 
 module.exports = handler
