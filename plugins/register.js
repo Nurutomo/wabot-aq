@@ -23,6 +23,7 @@ Daftar berhasil!
 │ Umur: ${age} tahun
 │ SN: ${sn}
 ╰────
+*jika sn kamu hilang, ketik ${usedPrefix}ceksn
 `.trim())
 }
 handler.help = ['daftar', 'reg', 'register'].map(v => v + ' <nama>.<umur>')
