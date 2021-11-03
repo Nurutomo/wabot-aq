@@ -1,12 +1,7 @@
-const { MessageType } = require("@adiwajshing/baileys");
+const { MessageType } = require("@adiwajshing/baileys")
 //const { sticker } = require("../lib/sticker")
 const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
-const uploadFile = require("../lib/uploadFile");
-const uploadImage = require("../lib/uploadImage");
-let { webp2png, webp2mp4 } = require("../lib/webp2mp4");
 let handler = async (m, { conn, args, usedPrefix, command }) => {
-  let stiker = false;
-  let wsf = false;
   let q = m.quoted ? m.quoted : m;
   let mime = (q.msg || q).mimetype || "";
   if (/image/.test(mime)) {
