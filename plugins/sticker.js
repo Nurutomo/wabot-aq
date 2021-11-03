@@ -1,34 +1,59 @@
-const { MessageType } = require('@adiwajshing/baileys')
-const { sticker } = require('../lib/sticker')
+const { MessageType } = require("@adiwajshing/baileys");
+//const { sticker } = require("../lib/sticker")
+const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
+const uploadFile = require("../lib/uploadFile");
+const uploadImage = require("../lib/uploadImage");
+let { webp2png, webp2mp4 } = require("../lib/webp2mp4");
 let handler = async (m, { conn, args, usedPrefix, command }) => {
-  let stiker = false
-  try {
-    let q = m.quoted ? m.quoted : m
-    let mime = (q.msg || q).mimetype || ''
-    if (/image/.test(mime)) {
-      let img = await q.download()
-      if (!img) throw `balas gambar dengan caption *${usedPrefix + command}*`
-      stiker = await sticker(img, false, global.packname, global.author)
-    } else if (/video/.test(mime)) {
-      if ((q.msg || q).seconds > 11) return m.reply('Maksimal 10 detik!')
-      let img = await q.download()
-      if (!img) throw `balas video/gif dengan caption *${usedPrefix + command}*`
-      stiker = await sticker(img, false, global.packname, global.author)
-    } else if (/webp/.test(mime)) {
-      let img = await q.download()
-      if (!img) throw `balas sticker dengan caption *${usedPrefix + command}*`
-      stiker = await sticker(img, false, global.packname, global.author)
-    } else if (args[0]) {
-      if (isUrl(args[0])) stiker = await sticker(false, args[0], global.packname, global.author)
-      else return m.reply('URL tidak valid!')
-    }
-  } finally {
-    if (stiker) conn.sendMessage(m.chat, stiker, MessageType.sticker, {
-      quoted: m
-    })
-    else throw 'Conversion failed'
-  }
-}
+  let stiker = false;
+  let wsf = false;
+  let q = m.quoted ? m.quoted : m;
+  let mime = (q.msg || q).mimetype || "";
+  if (/image/.test(mime)) {
+    let img = await q.download();
+    if (!img) throw `balas gambar dengan caption *${usedPrefix + command}*`;
+    const buffer = await createSticker(img, {
+      type: StickerTypes.CROPPED,
+      pack: global.packname,
+      author: global.author,
+      id: owner[0],
+      quality: 1,
+    });
+    await conn.sendMessage(m.chat, buffer, MessageType.sticker, {
+      quoted: m,
+      mimetype: "image/webp",
+    });
+  } else if (/video/.test(mime)) {
+    if ((q.msg || q).seconds > 11) throw "Maksimal 10 detik!";
+    let img = await q.download();
+    if (!img) throw `balas video/gif dengan caption *${usedPrefix + command}*`;
+    const buffer = await createSticker(img, {
+      type: StickerTypes.CROPPED,
+      pack: global.packname,
+      author: global.author,
+      id: owner[0],
+      quality: 1,
+    });
+    await conn.sendMessage(m.chat, buffer, MessageType.sticker, {
+      quoted: m,
+      mimetype: "image/webp",
+    });
+  } else if (args[0]) {
+    if (isUrl(args[0])) {
+    const buffer = await createSticker(args[0], {
+      type: StickerTypes.CROPPED,
+      pack: global.packname,
+      author: global.author,
+      id: owner[0],
+      quality: 1,
+    });
+    await conn.sendMessage(m.chat, await buffer, MessageType.sticker, {
+      quoted: m,
+      mimetype: "image/webp",
+    });
+    } else throw "URL tidak valid!";
+  } else throw `Conversion failed`;
+};
 handler.help = ['stiker (caption|reply media)', 'stiker <url>', 'stikergif (caption|reply media)', 'stikergif <url>']
 handler.tags = ['sticker']
 handler.command = /^s(tic?ker)?(gif)?(wm)?$/i
