@@ -67,6 +67,7 @@
     "url-regex": "^5.0.0",
     "xmldom": "^0.6.0",
     "yargs": "^17.0.1",
-    "yt-search": "^2.9.0"
+    "yt-search": "^2.9.0",
+    "wa-sticker-formatter": "github:alensaito1/wa-sticker-formatter"
   }
 }
