@@ -1,23 +1,26 @@
-const { MessageType } = require('@adiwajshing/baileys')
-const { sticker } = require('../lib/sticker')
-let handler = async (m, { conn, text }) => {
-  let stiker = false
-  try {
-    let [packname, ...author] = text.split('|')
-    author = (author || []).join('|')
-    let mime = m.quoted.mimetype || ''
-    if (!/webp/.test(mime)) throw 'Reply sticker!'
-    let img = await m.quoted.download()
-    stiker = await sticker(img, false, packname || '', author || '')
-  } finally {
-    if (stiker) conn.sendMessage(m.chat, stiker, MessageType.sticker, {
-      quoted: m
-    })
-    else throw 'Conversion failed'
-  }
-}
-handler.help = ['wm <packname>|<author>']
-handler.tags = ['sticker']
-handler.command = /^wm$/i
+const { MessageType } = require("@adiwajshing/baileys");
+const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
 
-module.exports = handler
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+    let [packname, ...author] = text.split`|`;
+    author = (author || []).join`|`;
+    let quot = `Reply sticker!`
+    if (!m.quoted) throw quot
+    if (!/stickerMessage/.test(m.quoted.mtype)) throw quot
+    let img = await m.quoted.download();
+    const buffer = await createSticker(img, {
+      type: StickerTypes.CROPPED,
+      pack: packname || global.packname,
+      author: author || global.author,
+      id: owner[0],
+    });
+    await conn.sendMessage(m.chat, buffer, MessageType.sticker, {
+      quoted: m,
+      mimetype: "image/webp",
+    });
+};
+handler.help = ["wm <packname>|<author>"];
+handler.tags = ["sticker"];
+handler.command = /^wm$/i;
+
+module.exports = handler;
