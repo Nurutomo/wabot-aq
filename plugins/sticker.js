@@ -7,7 +7,11 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
   if (/image/.test(mime)) {
     let img = await q.download();
     if (!img) throw `balas gambar dengan caption *${usedPrefix + command}*`;
-    const buffer = await createSticker(img, {
+    let out = img
+    if (q.isAnimated) {
+      out = await webp2mp4(img)
+    }
+    const buffer = await createSticker(out, {
       type: StickerTypes.CROPPED,
       pack: global.packname,
       author: global.author,
