@@ -34,10 +34,11 @@ module.exports = {
             if (!('name' in user)) user.name = this.getName(m.sender)
             if (!isNumber(user.age)) user.age = -1
             if (!isNumber(user.regTime)) user.regTime = -1
-          }
+         }
           if (!isNumber(user.afk)) user.afk = -1
           if (!('afkReason' in user)) user.afkReason = ''
           if (!('banned' in user)) user.banned = false
+          if (!isNumber(user.pc)) user.pc = 0
           if (!isNumber(user.level)) user.level = 0
           if (!user.role) user.role = 'Beginner'
           if (!('autolevelup' in user)) user.autolevelup = false
@@ -52,6 +53,7 @@ module.exports = {
           afk: -1,
           afkReason: '',
           banned: false,
+          pc: 0,
           level: 0,
           role: 'Beginner',
           autolevelup: false,
