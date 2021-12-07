@@ -34,10 +34,11 @@ module.exports = {
             if (!('name' in user)) user.name = this.getName(m.sender)
             if (!isNumber(user.age)) user.age = -1
             if (!isNumber(user.regTime)) user.regTime = -1
-          }
+         }
           if (!isNumber(user.afk)) user.afk = -1
           if (!('afkReason' in user)) user.afkReason = ''
           if (!('banned' in user)) user.banned = false
+          if (!isNumber(user.pc)) user.pc = 0
           if (!isNumber(user.level)) user.level = 0
           if (!user.role) user.role = 'Beginner'
           if (!('autolevelup' in user)) user.autolevelup = false
@@ -52,6 +53,7 @@ module.exports = {
           afk: -1,
           afkReason: '',
           banned: false,
+          pc: 0,
           level: 0,
           role: 'Beginner',
           autolevelup: false,
@@ -68,7 +70,9 @@ module.exports = {
           if (!('sPromote' in chat)) chat.sPromote = ''
           if (!('sDemote' in chat)) chat.sDemote = ''
           if (!('delete' in chat)) chat.delete = true
-          if (!('antiLink' in chat)) chat.antiLink = false
+          if (!('antiLink' in chat)) chat.antiLink = false  
+          if (!('antiSticker' in chat)) chat.antiSticker = false
+          if (!('viewonce' in chat)) chat.viewonce = false
         } else global.db.data.chats[m.chat] = {
           isBanned: false,
           welcome: false,
@@ -79,6 +83,8 @@ module.exports = {
           sDemote: '',
           delete: true,
           antiLink: false,
+          antiSticker: false,
+          viewonce: false,
         }
       } catch (e) {
         console.error(e)
@@ -112,6 +118,7 @@ module.exports = {
       let isOwner = isROwner || m.fromMe
       let isMods = isOwner || global.mods.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
       let isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+      let antiSticker = global.db.data.chats[m.chat].antiSticker
       let groupMetadata = m.isGroup ? this.chats.get(m.chat).metadata || await this.groupMetadata(m.chat) : {} || {}
       let participants = m.isGroup ? groupMetadata.participants : [] || []
       let user = m.isGroup ? participants.find(u => u.jid == m.sender) : {} // User Data
@@ -150,6 +157,7 @@ module.exports = {
           isAdmin,
           isBotAdmin,
           isPrems,
+          antiSticker,
           chatUpdate,
         })) continue
         if (typeof plugin !== 'function') continue
@@ -259,7 +267,7 @@ module.exports = {
             m.error = e
             console.error(e)
             if (e) {
-              let text = util.format(e)
+              let text = util.format(e.message ? e.message : e)
               for (let key of Object.values(global.APIKeys))
                 text = text.replace(new RegExp(key, 'g'), '#HIDDEN#')
               m.reply(text)
