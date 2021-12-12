@@ -4,7 +4,7 @@ let handler = async (m, { conn, usedPrefix }) => {
   conn.reply(m.chat, `*${pickRandom(hacker)}*`, m)
 }
 handler.help = ['hacker']
-handler.tags = ['random']
+handler.tags = ['quotes']
 handler.command = /^(hacker)$/i
 handler.owner = false
 handler.mods = false
