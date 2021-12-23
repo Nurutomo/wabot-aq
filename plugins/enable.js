@@ -57,6 +57,15 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       }
       chat.autodelvn = isEnable
       break
+    case 'simi':
+      if (m.isGroup) {
+        if (!(isAdmin || isOwner)) {
+          global.dfail('admin', m, conn)
+          throw false
+        }
+      }
+      chat.simi = isEnable
+      break
     case 'document':
       chat.useDocument = isEnable
       break

@@ -34,7 +34,7 @@ module.exports = {
             if (!('name' in user)) user.name = this.getName(m.sender)
             if (!isNumber(user.age)) user.age = -1
             if (!isNumber(user.regTime)) user.regTime = -1
-         }
+          }
           if (!isNumber(user.afk)) user.afk = -1
           if (!('afkReason' in user)) user.afkReason = ''
           if (!('banned' in user)) user.banned = false
@@ -70,8 +70,9 @@ module.exports = {
           if (!('sPromote' in chat)) chat.sPromote = ''
           if (!('sDemote' in chat)) chat.sDemote = ''
           if (!('delete' in chat)) chat.delete = true
-          if (!('antiLink' in chat)) chat.antiLink = false  
+          if (!('antiLink' in chat)) chat.antiLink = false
           if (!('antiSticker' in chat)) chat.antiSticker = false
+          if (!('simi' in chat)) chat.simi = false
           if (!('viewonce' in chat)) chat.viewonce = false
         } else global.db.data.chats[m.chat] = {
           isBanned: false,
@@ -84,6 +85,7 @@ module.exports = {
           delete: true,
           antiLink: false,
           antiSticker: false,
+          simi: false,
           viewonce: false,
         }
       } catch (e) {
