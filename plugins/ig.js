@@ -2,6 +2,7 @@ let fetch = require('node-fetch')
 const FormData = require('form-data')
 let handler = async (m, { conn, args }) => {
   if (!args[0]) throw 'Uhm...url nya mana?'
+//   Instagram Downloader By DwiRizqiH
   try {
     const downloadIg = new FormData();
     await downloadIg.append('url', args[0])
