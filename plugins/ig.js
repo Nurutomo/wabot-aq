@@ -1,5 +1,6 @@
 let fetch = require('node-fetch')
 const FormData = require('form-data')
+const cheerio = require('cheerio')
 let handler = async (m, { conn, args }) => {
   if (!args[0]) throw 'Uhm...url nya mana?'
 //   Instagram Downloader By DwiRizqiH
