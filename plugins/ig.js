@@ -18,8 +18,19 @@ let handler = async (m, { conn, args }) => {
         const $ = cheerio.load(res)
         $(`#downloadBox > a`).each((a, b) => {
             const urlDownload = $(b).attr('href')
-            const nameFile0 = urlDownload.trim().split('/')[5]
-            const nameFile = nameFile0.split('?')[0]
+            let nameFile = ''
+            let loop = 1
+            for (let i = 0; i < loop; i++) {
+              const validate = urlDownload.trim().split('/')[i]
+              if (!urlDownload.includes('?')) {
+                // Prevent Stuck
+                nameFile = ''
+              } else if (validate.includes('?')) {
+                nameFile = validate.split('?')[0]
+              } else {
+                loop++
+              }
+            }
             if(urlDownload == undefined || urlDownload == null) return m.reply('Not Found!')
             conn.sendFile(m.chat, urlDownload, nameFile, '', m)
         })
