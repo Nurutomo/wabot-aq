@@ -1,30 +1,27 @@
 let handler = async (m, { conn, usedPrefix }) => {
     let id = m.chat
     conn.vote = conn.vote ? conn.vote : {}
-    if (!(id in conn.vote)) throw `_*tidak ada voting digrup ini!*_\n\n*${usedPrefix}mulaivote* - untuk memulai vote`
-
+    if (!(id in conn.vote)) return conn.sendButton(m.chat, `Tidak ada voting di chat ini!`, '© wabot-aq', 'Mulai', `${usedPrefix}+vote`, m)
     let [reason, upvote, devote] = conn.vote[id]
-    let mentionedJid = [...upvote, ...devote]
-    m.reply(`
-*「 VOTE 」*
+    conn.sendButton(m.chat, `
+「 Voting 」
 
-*Alasan:* ${reason}
+Alasan: ${reason}
 
-*UPVOTE*
-_Total: ${upvote.length}_
-${upvote.map(u => '@' + u.split('@')[0]).join('\n')}
-
-*DEVOTE*
-_Total: ${devote.length}_
-${devote.map(u => '@' + u.split('@')[0]).join('\n')}
-
-*${usedPrefix}hapusvote* - untuk menghapus vote
-
-_by ariffb_
-`.trim(), false, { contextInfo: { mentionedJid } })
+╭─「 Upvote 」
+│ _Total: ${upvote.length}_
+│ ${upvote.map(u => '@' + u.split('@')[0]).join('\n')}
+╰────
+╭─「 Devote 」
+│ _Total: ${devote.length}_
+│ ${devote.map(u => '@' + u.split('@')[0]).join('\n')}
+╰────
+`.trim(), '© wabot-aq', 'Hapus', `${usedPrefix}-vote`, m)
 }
 handler.help = ['cekvote']
 handler.tags = ['vote']
 handler.command = /^cekvote$/i
+
 handler.group = true
+
 module.exports = handler

@@ -1,20 +1,19 @@
 let handler = async (m, { conn, text, usedPrefix }) => {
+    if (m.isGroup) {
+        if (!(isAdmin || isOwner)) return dfail('admin', m, conn)
+    }
     conn.vote = conn.vote ? conn.vote : {}
     let id = m.chat
-    if (id in conn.vote) {
-        throw `_Masih ada vote di chat ini!_\n\n*${usedPrefix}hapusvote* - untuk menghapus vote`
-    }
-    m.reply(`Vote dimulai!\n\n*${usedPrefix}upvote* - untuk ya\n*${usedPrefix}devote* - untuk tidak\n*${usedPrefix}cekvote* - untuk mengecek vote\n*${usedPrefix}hapusvote* - untuk menghapus vote`)
+    if (id in conn.vote) return conn.send2Button(m.chat, `Masih ada voting di chat ini!`, '© wabot-aq', 'Cek', `${usedPrefix}cekvote`, 'Hapus', `${usedPrefix}-vote`, conn.vote[id][3])
     conn.vote[id] = [
         text,
         [],
-        []
+        [],
+        await conn.send2Button(m.chat, 'Voting dimulai', '© wabot-aq', 'Upvote', `${usedPrefix}upvote`, 'Devote', `${usedPrefix}devote`, m)
     ]
 }
 handler.help = ['mulaivote [alasan]']
 handler.tags = ['vote']
-handler.command = /^(start|mulai)vote$/i
-handler.limit = true
-handler.group = true
-handler.admin = true
+handler.command = /^(start|mulai|\+)vote$/i
+
 module.exports = handler

@@ -129,6 +129,7 @@ module.exports = {
       let bot = m.isGroup ? participants.find(u => u.jid == this.user.jid) : {} // Your Data
       let isAdmin = user.isAdmin || user.isSuperAdmin || false // Is User Admin?
       let isBotAdmin = bot.isAdmin || bot.isSuperAdmin || false // Are you Admin?
+      let isBlocked = this.blocklist.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').filter(v => v != this.user.jid).includes(m.sender) // Is User Blocked?
       for (let name in global.plugins) {
         let plugin = global.plugins[name]
         if (!plugin) continue
@@ -163,6 +164,7 @@ module.exports = {
           isPrems,
           antiSticker,
           chatUpdate,
+          isBlocked,
         })) continue
         if (typeof plugin !== 'function') continue
         if ((usedPrefix = (match[0] || '')[0])) {
@@ -262,6 +264,7 @@ module.exports = {
             isBotAdmin,
             isPrems,
             chatUpdate,
+            isBlocked,
           }
           try {
             await plugin.call(this, m, extra)
