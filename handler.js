@@ -72,6 +72,7 @@ module.exports = {
           if (!('delete' in chat)) chat.delete = true
           if (!('antiLink' in chat)) chat.antiLink = false
           if (!('antiSticker' in chat)) chat.antiSticker = false
+          if (!('getmsg' in chat)) chat.getmsg = false
           if (!('simi' in chat)) chat.simi = false
           if (!('viewonce' in chat)) chat.viewonce = false
         } else global.db.data.chats[m.chat] = {
@@ -85,6 +86,7 @@ module.exports = {
           delete: true,
           antiLink: false,
           antiSticker: false,
+          getmsg: false,
           simi: false,
           viewonce: false,
         }

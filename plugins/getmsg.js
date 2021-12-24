@@ -1,8 +1,9 @@
-let handler = async (m, { conn, command, usedPrefix, text }) => {
+let handler = async (m, { conn, command, usedPrefix, text, isROwner }) => {
     let which = command.replace(/get/i, '')
-    if (!text) throw `Gunakan *${usedPrefix}list${which}* untuk melihat list nya`
-    let msgs = global.db.data.msgs
-    if (!(text in msgs)) throw `'${text}' tidak terdaftar di list pesan`
+    if (!text) return conn.sendButton(m.chat, `Uhm.. teksnya mana?\n\nContoh:\n${usedPrefix + command} tes`, '© wabot-aq', 'Daftar Pesan', `${usedPrefix}list${which}`, m)
+    let msgs = db.data.msgs
+    if (!(text in msgs)) return conn.sendButton(m.chat, `'${text}' tidak terdaftar!`, '© wabot-aq', 'Daftar Pesan', `${usedPrefix}list${which}`, m)
+    if (msgs[text].locked) if (!isROwner) return m.reply('Dikunci!')
     let _m = conn.serializeM(JSON.parse(JSON.stringify(msgs[text]), (_, v) => {
         if (
             v !== null &&

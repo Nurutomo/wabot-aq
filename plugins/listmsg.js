@@ -1,37 +1,44 @@
 let handler = async (m, { usedPrefix, command }) => {
     let which = command.replace(/(daftar|list)/i, '')
-    let msgs = global.db.data.msgs
+    let msgs = db.data.msgs
     let split = Object.entries(msgs).map(([nama, isi]) => { return { nama, ...isi } })
     let fltr
+    if (/all/i.test(command)) fltr = split
     if (/audio/i.test(command)) fltr = split
         .filter(v => v.message.audioMessage)
         .filter(m => m.message.audioMessage.ptt == false)
-        .map(v => '- ' + v.nama).join('\n')
+    if (/doc/i.test(command)) fltr = split.filter(v => v.message.documentMessage)
     if (/vn/i.test(command)) fltr = split
         .filter(v => v.message.audioMessage)
         .filter(m => m.message.audioMessage.ptt == true)
-        .map(v => '- ' + v.nama).join('\n')
     if (/video/i.test(command)) fltr = split
         .filter(v => v.message.videoMessage && !v.message.videoMessage.gifPlayback)
-        .map(v => '- ' + v.nama).join('\n')
     if (/gif/i.test(command)) fltr = split
         .filter(v => v.message.videoMessage)
         .filter(m => m.message.videoMessage.gifPlayback)
-        .map(v => '- ' + v.nama).join('\n')
-    if (/stic?ker/i.test(command)) fltr = split.filter(v => v.message.stickerMessage).map(v => '- ' + v.nama).join('\n')
-    if (/msg/i.test(command)) fltr = split.filter(v => v.message.conversation).map(v => '- ' + v.nama).join('\n')
-    if (/img/i.test(command)) fltr = split.filter(v => v.message.imageMessage).map(v => '- ' + v.nama).join('\n')
-    m.reply(`
-*LIST PESAN*
+    if (/stic?ker/i.test(command)) fltr = split.filter(v => v.message.stickerMessage)
+    if (/msg/i.test(command)) fltr = split.filter(v => v.message.conversation)
+    if (/img/i.test(command)) fltr = split.filter(v => v.message.imageMessage)
+    let list = fltr.map(v => `├ ${v.nama} ${v.locked ? '(🔒)' : ''}`).join('\n')
+    if (db.data.chats[m.chat].getmsg) return m.reply(`
+┌「 *Daftar Pesan* 」
+${list}
+└────
 
-${fltr}
-
-Akses/ambil dengan mengetik:
-*${usedPrefix}get${which}* <nama>
-atau langsung ketik teksnya
+Akses dengan mengetik nama
 `.trim())
+    else return conn.sendButton(m.chat, `
+┌「 *Daftar Pesan* 」
+${list}
+└────
+
+Akses dengan:
+*${usedPrefix}get${which}* <nama>
+
+Jika Getmsg diaktifkan maka tidak perlu lagi mengetik *${usedPrefix}get${which}*
+`.trim(), '© wabot-aq', 'Aktifkan', '.1 getmsg', m)
 }
-handler.help = ['vn', 'msg', 'video', 'gif', 'audio', 'img', 'sticker'].map(v => 'list' + v)
+handler.help = ['all', 'doc', 'vn', 'msg', 'video', 'gif', 'audio', 'img', 'sticker'].map(v => 'list' + v)
 handler.tags = ['database']
 handler.command = /^(daftar|list)(vn|msg|video|audio|img|stic?ker|gif)$/
 

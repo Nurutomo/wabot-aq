@@ -57,6 +57,15 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       }
       chat.autodelvn = isEnable
       break
+    case 'getmsg':
+      if (m.isGroup) {
+        if (!(isAdmin || isOwner)) {
+          global.dfail('admin', m, conn)
+          throw false
+        }
+      }
+      chat.getmsg = isEnable
+      break
     case 'simi':
       if (m.isGroup) {
         if (!(isAdmin || isOwner)) {
@@ -173,7 +182,7 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       break
     default:
       if (!/[01]/.test(command)) throw `
-List option: welcome | delete | public | antilink | autolevelup | detect | document | whitelistmycontacts | restrict | nyimak | autoread | pconly | gconly | swonly | viewonce
+List option: welcome | delete | public | antilink | autolevelup | detect | document | whitelistmycontacts | restrict | nyimak | autoread | getmsg | simi | pconly | gconly | swonly | viewonce
 
 Contoh:
 ${usedPrefix}enable welcome
@@ -182,7 +191,7 @@ ${usedPrefix}disable welcome
       throw false
   }
   m.reply(`
-*${type}* berhasil di *${isEnable ? 'nyala' : 'mati'}kan* ${isAll ? 'untuk bot ini' : isUser ? '' : 'untuk chat ini'}
+*${type}* berhasil *di${isEnable ? 'nyala' : 'mati'}kan* ${isAll ? 'untuk bot ini' : isUser ? '' : 'untuk chat ini'}
 `.trim())
 }
 handler.help = ['en', 'dis'].map(v => v + 'able <option>')

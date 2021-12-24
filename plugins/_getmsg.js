@@ -1,12 +1,12 @@
 module.exports = {
     async all(m) {
-        if (m.chat.endsWith('broadcast')) return
-        if (db.data.chats[m.chat].isBanned) return
-        if (db.data.users[m.sender].banned) return
+        let chat = db.data.chats[m.chat]
+        let user = db.data.users[m.sender]
+        if (m.chat.endsWith('broadcast') || chat.isBanned || !chat.getmsg || user.banned) return
         if (m.isBaileys) return
         let msgs = db.data.msgs
         if (!(m.text in msgs)) return
-        let _m = conn.serializeM(JSON.parse(JSON.stringify(msgs[m.text]), (_, v) => {
+        let _m = this.serializeM(JSON.parse(JSON.stringify(msgs[m.text]), (_, v) => {
             if (
                 v !== null &&
                 typeof v === 'object' &&
