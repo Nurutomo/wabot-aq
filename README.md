@@ -81,21 +81,9 @@ node .
 
 ## Arguments `node . [--options] [<session name>]`
 
-### `--self`
+### `--session <file name>`
 
-Activate self mode (Ignores other)
-
-### `--pconly`
-
-If that chat not from private bot, bot will ignore
-
-### `--gconly`
-
-If that chat not from group, bot will ignore
-
-### `--swonly`
-
-If that chat not from status, bot will ignore
+Use another session with another name, default is ```session.data.json```
 
 ### `--prefix <prefixes>`
 
@@ -110,6 +98,7 @@ Used for [heroku](https://heroku.com/) or scan through website
 
 Use external db instead of local db, 
 Example Server `https://json-server.nurutomo.repl.co/`
+
 Code: `https://repl.it/@Nurutomo/json-server`
 
 `node . --db 'https://json-server.nurutomo.repl.co/'`
@@ -138,23 +127,9 @@ Content-Type: application/json
 
 If small qr unicode doesn't support
 
-### `--restrict`
-
-Enables restricted plugins (which can lead your number to be **banned** if used too often)
-
-* Group Administration `add, kick`
-
 ### `--img`
 
 Enable image inspector through terminal
-
-### `--autoread`
-
-If enabled, all incoming messages will be marked as read
-
-### `--nyimak`
-
-No bot, just print received messages and add users to database
 
 ### `--test`
 
@@ -170,6 +145,21 @@ conn.logger.level = 'trace'
 
 ```js
 conn.logger.level = 'debug'
+```
+
+## Settings
+
+Now set using switch [enable.js](https://github.com/Nurutomo/wabot-aq/blob/master/plugins/enable.js), among others are
+
+```js
+anticall: false, // Auto Reject better than autoblock
+autoread: false, // If true all chats are automatically read
+nyimak: false, // No bot, just print received messages and add users to database
+restrict: false, // Enables restricted plugins (which can lead your number to be banned if used too often)
+self: false, // Activate self mode (Ignores other)
+pconly: false, // If that chat not from private bot, bot will ignore
+gconly: false, // If that chat not from group, bot will ignore
+jadibot: false, 
 ```
 
 ---------

@@ -90,14 +90,35 @@ module.exports = {
           simi: false,
           viewonce: false,
         }
+
+        var setting = global.db.data.settings[this.user.jid]
+        if (typeof setting !== 'object') global.db.data.settings[this.user.jid] = {}
+        if (setting) {
+          if (!('anticall' in setting)) setting.anticall = false
+          if (!('autoread' in setting)) setting.autoread = false
+          if (!('nyimak' in setting)) setting.nyimak = false
+          if (!('restrict' in setting)) setting.restrict = false
+          if (!('self' in setting)) setting.self = false
+          if (!('pconly' in setting)) setting.pconly = false
+          if (!('gconly' in setting)) setting.gconly = false
+          if (!('jadibot' in setting)) setting.jadibot = false
+        } else global.db.data.settings[this.user.jid] = {
+          anticall: false,
+          autoread: false,
+          nyimak: false,
+          restrict: false,
+          self: false,
+          pconly: false,
+          gconly: false,
+          jadibot: false,
+        }
       } catch (e) {
         console.error(e)
       }
-      if (opts['nyimak']) return
-      if (!m.fromMe && opts['self']) return
-      if (opts['pconly'] && m.chat.endsWith('g.us')) return
-      if (opts['gconly'] && !m.chat.endsWith('g.us')) return
-      if (opts['swonly'] && m.chat !== 'status@broadcast') return
+      if (setting.nyimak) return
+      if (!m.fromMe && setting.self) return
+      if (setting.pconly && m.chat.endsWith('g.us')) return
+      if (setting.gconly && !m.chat.endsWith('g.us')) return
       if (typeof m.text !== 'string') m.text = ''
       for (let name in global.plugins) {
         let plugin = global.plugins[name]
@@ -134,7 +155,7 @@ module.exports = {
         let plugin = global.plugins[name]
         if (!plugin) continue
         if (plugin.disabled) continue
-        if (!opts['restrict']) if (plugin.tags && plugin.tags.includes('admin')) continue
+        if (!setting.restrict) if (plugin.tags && plugin.tags.includes('admin')) continue
         const str2Regex = str => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
         let _prefix = plugin.customPrefix ? plugin.customPrefix : conn.prefix ? conn.prefix : global.prefix
         let match = (_prefix instanceof RegExp ? // RegExp Mode?
@@ -238,11 +259,11 @@ module.exports = {
           if (xp > 200) m.reply('Ngecit -_-') // Hehehe
           else m.exp += xp
           if (!isPrems && plugin.limit && global.db.data.users[m.sender].limit < plugin.limit * 1) {
-            this.reply(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, m)
+            this.send2Button(m.chat, `Limit anda habis, silahkan beli melalui *${usedPrefix}buy*`, '© wabot-aq', 'Buy', `${usedPrefix}buy`, 'Buy All', `${usedPrefix}buyall`, m)
             continue // Limit habis
           }
           if (plugin.level > _user.level) {
-            this.reply(m.chat, `diperlukan level ${plugin.level} untuk menggunakan perintah ini. Level kamu ${_user.level}`, m)
+            this.reply(m.chat, `Diperlukan level *${plugin.level}* untuk menggunakan perintah ini. Level kamu ${_user.level}`, m)
             continue // If the level has not been reached
           }
           let extra = {
@@ -331,7 +352,7 @@ module.exports = {
       } catch (e) {
         console.log(m, m.quoted, e)
       }
-      if (opts['autoread']) await this.chatRead(m.chat).catch(() => { })
+      if (setting.autoread) await this.chatRead(m.chat).catch(() => { })
     }
   },
   async participantsUpdate({ jid, participants, action }) {
@@ -364,11 +385,7 @@ module.exports = {
       case 'demote':
         if (!text) text = (chat.sDemote || this.sdemote || conn.sdemote || '@user ```is no longer Admin```')
         text = text.replace('@user', '@' + participants[0].split('@')[0])
-        if (chat.detect) this.sendMessage(jid, text, MessageType.extendedText, {
-          contextInfo: {
-            mentionedJid: this.parseMention(text)
-          }
-        })
+        if (chat.detect) m.reply(text)
         break
     }
   },
@@ -376,31 +393,35 @@ module.exports = {
     if (m.key.fromMe) return
     let chat = global.db.data.chats[m.key.remoteJid]
     if (chat.delete) return
-    await this.reply(m.key.remoteJid, `
+    await this.sendButton(m.key.remoteJid, `
 Terdeteksi @${m.participant.split`@`[0]} telah menghapus pesan
 
 Untuk mematikan fitur ini, ketik
 *.enable delete*
-`.trim(), m.message, {
-      contextInfo: {
-        mentionedJid: [m.participant]
-      }
-    })
+`.trim(), '© wabot-aq', 'Matikan', '.1 delete', m.message)
     this.copyNForward(m.key.remoteJid, m.message).catch(e => console.log(e, m))
   },
   async onCall(json) {
-    let { from } = json[2][0][1]
+    if (!setting.anticall) return
+    let jid = json[2][0][1]['from']
+    let isOffer = json[2][0][2][0][0] == 'offer'
     let users = global.db.data.users
-    let user = users[from] || {}
+    let user = users[jid] || {}
     if (user.whitelist) return
-    switch (this.callWhitelistMode) {
-      case 'mycontact':
-        if (from in this.contacts && 'short' in this.contacts[from])
-          return
-        break
+    if (jid && isOffer) {
+      const tag = this.generateMessageTag()
+      const nodePayload = ['action', 'call', ['call', {
+        'from': this.user.jid,
+        'to': `${jid.split`@`[0]}@s.whatsapp.net`,
+        'id': tag
+      }, [['reject', {
+        'call-id': json[2][0][2][0][1]['call-id'],
+        'call-creator': `${jid.split`@`[0]}@s.whatsapp.net`,
+        'count': '0'
+      }, null]]]]
+      this.sendJSON(nodePayload, tag)
+      m.reply('Dimohon untuk tidak menelpon bot!')
     }
-    await this.sendMessage(from, 'Maaf, karena anda menelfon bot. anda diblokir otomatis', MessageType.extendedText)
-    await this.blockUser(from, 'add')
   }
 }
 

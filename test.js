@@ -1,4 +1,5 @@
 let fs = require('fs')
+let chalk = require('chalk')
 let path = require('path')
 let assert = require('assert')
 let { spawn } = require('child_process')
@@ -11,9 +12,9 @@ for (let file of files) {
   if (file == path.join(__dirname, __filename)) continue
   console.error('Checking', file)
   spawn(process.argv0, ['-c', file])
-  .on('close', () => {
-    assert.ok(file)
-    console.log('Done', file)
-  })
-  .stderr.on('data', chunk => assert.ok(chunk.length < 1, file + '\n\n' + chunk))
+    .on('close', () => {
+      assert.ok(file)
+      console.log(chalk.greenBright('Done', file))
+    })
+    .stderr.on('data', chunk => assert.ok(chunk.length < 1, file + '\n\n' + chunk))
 }

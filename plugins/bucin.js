@@ -1,19 +1,9 @@
 let handler = async (m, { conn, usedPrefix }) => {
-  await conn.sendButton(m.chat, `“${pickRandom(global.bucin)}”`, author, 'Bucin', `${usedPrefix}bucin`, m)
+  await conn.sendButton(m.chat, `“${pickRandom(global.bucin)}”`, '© wabot-aq', 'Bucin', `${usedPrefix}bucin`, m)
 }
 handler.help = ['bucin']
 handler.tags = ['quotes']
 handler.command = /^(bucin)$/i
-handler.owner = false
-handler.mods = false
-handler.premium = false
-handler.group = false
-handler.private = false
-
-handler.admin = false
-handler.botAdmin = false
-
-handler.fail = null
 
 module.exports = handler
 

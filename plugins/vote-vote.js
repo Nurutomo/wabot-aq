@@ -11,7 +11,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
         conn.vote[id][2].push(m.sender)
     }
     let [reason, upvote, devote] = conn.vote[id]
-    conn.send3Button(m.chat, `
+    conn.send2Button(m.chat, `
 「 Voting 」
 
 Alasan: ${reason}

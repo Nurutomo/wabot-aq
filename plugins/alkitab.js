@@ -1,5 +1,6 @@
 let fetch = require('node-fetch')
 let { JSDOM } = require('jsdom')
+
 let handler = async (m, { text, usedPrefix, command }) => {
     if (!text) throw `uhm.. teksnya mana?\n\ncontoh:\n${usedPrefix + command} kejadian`
     let res = await fetch(`https://alkitab.me/search?q=${encodeURIComponent(text)}`, {
