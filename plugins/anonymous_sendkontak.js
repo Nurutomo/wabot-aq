@@ -24,7 +24,7 @@ async function handler(m, { command, conn, text }) {
   var name
   if (text) name = text
   else name = conn.getName(who)
-	var number = other.split('@')[0]
+	var number = .split('@')[0]
 	if (other) this.sendMessage(other, `Partner mengirimkan kontak kepadamu`, MessageType.text)
 	if (other) this.sendContact(other, number, name, m)
 }
