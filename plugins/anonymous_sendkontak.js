@@ -22,6 +22,7 @@ async function handler(m, { command, conn, text }) {
 	if (other) this.sendMessage(other, `Partner mengirimkan kontak kepadamu`, MessageType.text)
 	if (other) this.sendContact(other, number, name, m)
 }
+
 handler.help = ['sendkontak']
 handler.tags = 'anonymous'
 handler.command = /^(sendkontak)$/i
