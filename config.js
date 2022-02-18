@@ -42,12 +42,12 @@ fs.watchFile(file_exif, () => {
   require('./lib/exif.json')
 })
 
-global.packname = '✩☆★×͜× 4NUR46 ×͜×★☆✩'
-global.author = ''
+// global.packname = '✩☆★×͜× 4NUR46 ×͜×★☆✩'
+// global.author = ''
 
 
-// global.packname = sticker_name
-// global.author = sticker_author
+ global.packname = sticker_name
+ global.author = sticker_author
 
 
 global.multiplier = 69 // The higher, The harder levelup
