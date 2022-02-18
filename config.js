@@ -1,9 +1,9 @@
 let fs = require('fs')
 let chalk = require('chalk')
 
-global.owner = ['917985532371'] // Put your number here
-global.mods = [] // Want some help?
-global.prems = [] // Premium user has unlimited limit
+global.owner = ['917985532371', '919793051616'] // Put your number here
+global.mods = ['917985532371'] // Want some help?
+global.prems = ['917985532371'] // Premium user has unlimited limit
 global.APIs = { // API Prefix
   // name: 'https://website'
   nrtm: 'https://nurutomo.herokuapp.com',
@@ -27,8 +27,8 @@ global.APIKeys = { // APIKey Here
 const spack = fs.readFileSync("lib/exif.json")
 const stickerpack = JSON.parse(spack)
 if (stickerpack.spackname == '') {
-  var sticker_name = 'Stay'
-  var sticker_author = 'Safe'
+  var sticker_name = '✩☆★×͜× 4NUR46 ×͜×★☆✩'
+  var sticker_author = ''
 } else {
   var sticker_name = stickerpack.spackname
   var sticker_author = stickerpack.sauthor
@@ -42,8 +42,12 @@ fs.watchFile(file_exif, () => {
   require('./lib/exif.json')
 })
 
-global.packname = sticker_name
-global.author = sticker_author
+global.packname = '✩☆★×͜× 4NUR46 ×͜×★☆✩'
+global.author = ''
+
+
+// global.packname = sticker_name
+// global.author = sticker_author
 
 
 global.multiplier = 69 // The higher, The harder levelup
