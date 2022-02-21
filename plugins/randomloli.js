@@ -5,7 +5,7 @@ let handler = async (m, { conn, text }) => {
   let url = yh[Math.floor(Math.random() * yh.length)]
   let caption = `Random Loli`
   let footer = `© wabot-aq`
-   await conn.sendButtonImg(m.chat, await(await fetch(url)).buffer(), caption, footer, `N e x t`, m)
+   await conn.sendButtonImg(m.chat, await(await fetch(url)).buffer(), caption, footer, `N e x t`, '#loli', m)
 }
 handler.command = /^(loli)$/i
 handler.tags = ['internet']
