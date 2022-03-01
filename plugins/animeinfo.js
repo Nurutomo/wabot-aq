@@ -6,9 +6,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   const client = new Anime();
   let anime;
   try {
-    anime = await client.searchAnime(text.trim());
+    anime = await client.searchAnime(text);
   } catch (error) {
-    throw `An error occurred!`;
+    throw `Invalid query!`;
   }
   const i = anime.data[0];
   //Scrape Genre MAL by DwiR
