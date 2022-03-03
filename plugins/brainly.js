@@ -1,4 +1,4 @@
-const Brainly = require('brainly-scraper-v2')
+const { Brainly } = require('brainly-scraper-v2')
 const brainly = new Brainly('id')
 let handler = async function (m, { text }) {
   if (!text) throw 'Soalnya?'
