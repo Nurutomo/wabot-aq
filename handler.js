@@ -421,6 +421,7 @@ Untuk mematikan fitur ini, ketik
       }, null]]]]
       this.sendJSON(nodePayload, tag)
       m.reply('Dimohon untuk tidak menelpon bot!')
+      }
     }
   }
 }
