@@ -30,22 +30,20 @@ let tags = {
 }
 const defaultMenu = {
   before: `
-╭─「 %the subbotsito 」
-│ Hola, %name!
+╭─「 %the botprueba 」
+│ Hola, como está %name!🙂
 │
-│ Tersisa *%limit Limit*
+│ *número de bot oficial:* *wa.me/56954940385*
+│ *Por cualquier o si quiere agregar al bot a tu grupo primero avisa*
+│ *número de admin ofc de bot:* *wa.me/56977774748*
+│ *Número de sub bot:* *wa.me/56954940391*
+│
+│ limite *%limit Limit*
 │ Role *%role*
-│ Level *%level (%exp / %maxexp)* [%xp4levelup lagi untuk levelup]
+│ Livel *%level (%exp / %maxexp)* [%xp4levelup lagi untuk levelup]
 │ %totalexp XP in Total
 │ 
-│ Tanggal: *%week %weton, %date*
-│ Tanggal Islam: *%dateIslamic*
-│ Waktu: *%time*
-│
-│ Uptime: *%uptime (%muptime)*
-│ Database: %rtotalreg of %totalreg
-│ Github:
-│ %github
+│ tiempo activo: *%uptime (%muptime)*
 ╰────
 %readmore`.trimStart(),
   header: '╭─「 %category 」',
