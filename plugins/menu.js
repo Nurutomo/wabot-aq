@@ -30,8 +30,8 @@ let tags = {
 }
 const defaultMenu = {
   before: `
-╭─「 %me 」
-│ Hai, %name!
+╭─「 %the subbotsito 」
+│ Hola, %name!
 │
 │ Tersisa *%limit Limit*
 │ Role *%role*
