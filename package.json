@@ -37,7 +37,7 @@
   "dependencies": {
     "@adiwajshing/baileys": "github:melcanz/baileys",
     "awesome-phonenumber": "^2.54.0",
-    "brainly-scraper-v2": "^2.0.4-1",
+    "brainly-scraper-v2": "^2.0.13",
     "cfonts": "^2.9.3",
     "chalk": "^4.1.1",
     "cheerio": "^1.0.0-rc.5",
