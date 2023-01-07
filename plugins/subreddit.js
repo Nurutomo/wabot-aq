@@ -10,4 +10,5 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
 handler.help = ['subreddit'].map(v => v + ' <subreddit>')
 handler.tags = ['internet']
 handler.command = /^(sr|subreddit)$/i
-export default handler
+
+module.exports = handler
