@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+let fetch = require("node-fetch")
 
 let handler = async (m, { conn, args, usedPrefix, command }) => {
     const response = await fetch(global.API('https://meme-api.com', '/gimme' + `/${args[0]}` || ''))
