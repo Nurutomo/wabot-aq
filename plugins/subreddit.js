@@ -1,15 +1,13 @@
-let fetch = require("node-fetch")
+import fetch from 'node-fetch'
 
-let handler = async (m, { conn, text }) => {
-  let res = await fetch(global.API('https://meme-api.herokuapp.com', '/gimme/' + encodeURI(text || ''), {}))
-  if (!res.ok) throw await res.text()
-  let json = await res.json()
-  if (!json.url) throw 'Media tidak ditemukan!'
-  if (json.nsfw) throw 'Content blocked'
-  await conn.sendFile(m.chat, json.url, text, json.title, m, false, { thumbnail: Buffer.alloc(0) })
+let handler = async (m, { conn, args, usedPrefix, command }) => {
+    const response = await fetch(global.API('https://meme-api.com', '/gimme' + `/${args[0]}` || ''))
+    const data = await response.json();
+    if (!data.url) throw data.message
+    if (!data.nsfw) throw 'Content blocked'
+    conn.sendFile(m.chat, data.url, 'subreddit', data.title, m)
 }
-handler.help = ['subreddit <query>']
+handler.help = ['subreddit'].map(v => v + ' <subreddit>')
 handler.tags = ['internet']
 handler.command = /^(sr|subreddit)$/i
-
-module.exports = handler
+export default handler
